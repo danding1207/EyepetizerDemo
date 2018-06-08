@@ -1,0 +1,21 @@
+buildscript {
+//    var kotlin_version: String by extra
+//    kotlin_version = "1.2.41"
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        // 这里修改为括号调用即可
+        classpath(libs.android_gradle_plugin)
+        classpath(libs.kotlin_plugin)
+//        classpath(kotlinModule("gradle-plugin", kotlin_version))
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
