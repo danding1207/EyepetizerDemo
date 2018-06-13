@@ -4,15 +4,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion build_versions.compile_sdk
-    buildToolsVersion build_versions.build_tools
+    compileSdkVersion Libs.build_versions_compile_sdk
+    buildToolsVersion Libs.build_versions_build_tools
 
     defaultConfig {
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
-        versionCode versionCode
-        versionName versionName
+        minSdkVersion Libs.build_versions_min_sdk
+        targetSdkVersion Libs.build_versions_target_sdk
+        versionCode Libs.versionCode
+        versionName Libs.versionName
     }
+
 
     buildTypes {
         release {
@@ -37,68 +38,59 @@ dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 
     // Support libraries
-    api deps.support.app_compat
-    api deps.support.recyclerview
-    api deps.support.cardview
-    api deps.support.design
-    api deps.support.v4
-    api deps.support.core_utils
-    api deps.support.constraint_layout
+    api Libs.support_app_compat
+    api Libs.support_recyclerview
+    api Libs.support_cardview
+    api Libs.support_design
+    api Libs.support_v4
+    api Libs.support_core_utils
+    api Libs.support_constraint_layout
 
     // kotlin
-    api(deps.kotlin.stdlib, { exclude group: 'com.android.support' })
+    api(Libs.kotlin_stdlib, { exclude group: 'com.android.support' })
 
     // Architecture components lifecycle
-    api(deps.lifecycle.runtime, { exclude group: 'com.android.support' })
-    api(deps.lifecycle.extensions, { exclude group: 'com.android.support' })
-    kapt deps.lifecycle.compiler
+    api(Libs.lifecycle_runtime, { exclude group: 'com.android.support' })
+    api(Libs.lifecycle_extensions, { exclude group: 'com.android.support' })
+    kapt Libs.lifecycle_compiler
 
     // Architecture components room
-    api(deps.room.runtime, { exclude group: 'com.android.support' })
-    api(deps.room.rxjava2, { exclude group: 'com.android.support' })
-    kapt deps.room.compiler
+    api(Libs.room_runtime, { exclude group: 'com.android.support' })
+    api(Libs.room_rxjava2, { exclude group: 'com.android.support' })
+    kapt Libs.room_compiler
 
     // Architecture components paging
-    api(deps.paging.runtime, { exclude group: 'com.android.support' })
+    api(Libs.paging_runtime, { exclude group: 'com.android.support' })
 
     // Architecture components work
-    api(deps.work.runtime, { exclude group: 'com.android.support' })
+    api(Libs.work_runtime, { exclude group: 'com.android.support' })
 
     // Architecture components navigation
-//    api deps.navigation.runtime
-//    api deps.navigation.fragment
-    api(deps.navigation.runtime, { exclude group: 'com.android.support' })
-    api(deps.navigation.fragment, { exclude group: 'com.android.support' })
+    api(Libs.navigation_runtime, { exclude group: 'com.android.support' })
+    api(Libs.navigation_fragment, { exclude group: 'com.android.support' })
 
     // bottomnavigationviewex
-    api(deps.bottomnavigationviewex.runtime, { exclude group: 'com.android.support' })
+    api(Libs.bottomnavigationviewex_runtime, { exclude group: 'com.android.support' })
 
     //glide
-//    api deps.glide.runtime
-    api(deps.glide.runtime, { exclude group: 'com.android.support' })
-    kapt deps.glide.compiler
+    api(Libs.glide_runtime, { exclude group: 'com.android.support' })
+    kapt Libs.glide_compiler
 
     //retrofit + okhttp
-//    api deps.retrofit.runtime
-//    api deps.retrofit.gson
-//    api deps.retrofit.rxjava_adapter
-//    api deps.okhttp.logging_interceptor
-//    api deps.okhttp.runtime
-//    api deps.gson.runtime
-    api(deps.retrofit.runtime, { exclude group: 'com.android.support' })
-    api(deps.retrofit.gson, { exclude group: 'com.android.support' })
-    api(deps.retrofit.rxjava_adapter, { exclude group: 'com.android.support' })
-    api(deps.okhttp.logging_interceptor, { exclude group: 'com.android.support' })
-    api(deps.okhttp.runtime, { exclude group: 'com.android.support' })
-    api(deps.gson.runtime, { exclude group: 'com.android.support' })
+    api(Libs.retrofit_runtime, { exclude group: 'com.android.support' })
+    api(Libs.retrofit_gson, { exclude group: 'com.android.support' })
+    api(Libs.retrofit_rxjava_adapter, { exclude group: 'com.android.support' })
+    api(Libs.okhttp_logging_interceptor, { exclude group: 'com.android.support' })
+    api(Libs.okhttp_runtime, { exclude group: 'com.android.support' })
+    api(Libs.gson_runtime, { exclude group: 'com.android.support' })
 
 
     // RxJava
-    api(deps.rxjava.rxjava, { exclude group: 'com.android.support' })
-    api(deps.rxjava.rx_android, { exclude group: 'com.android.support' })
+    api(Libs.rxjava_rxjava, { exclude group: 'com.android.support' })
+    api(Libs.rxjava_rx_android, { exclude group: 'com.android.support' })
 
     //logger
-    api(deps.logger.runtime, { exclude group: 'com.android.support' })
+    api(Libs.logger_runtime, { exclude group: 'com.android.support' })
 
 
 

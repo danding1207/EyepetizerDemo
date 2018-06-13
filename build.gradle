@@ -2,9 +2,11 @@ buildscript {
     apply from: 'versions.gradle'
     addRepos(repositories)
     dependencies {
-        classpath deps.android_gradle_plugin
-        classpath deps.kotlin.plugin
-//        classpath 'com.alibaba:arouter-register:1.0.0'
+//        classpath deps.android_gradle_plugin
+//        classpath deps.kotlin.plugin
+
+        classpath Libs.android_gradle_plugin
+        classpath Libs.kotlin_plugin
     }
 }
 

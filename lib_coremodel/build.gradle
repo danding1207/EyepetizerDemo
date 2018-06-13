@@ -4,15 +4,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion build_versions.compile_sdk
-    buildToolsVersion build_versions.build_tools
+    compileSdkVersion Libs.build_versions_compile_sdk
+    buildToolsVersion Libs.build_versions_build_tools
 
     defaultConfig {
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
-        versionCode versionCode
-        versionName versionName
+        minSdkVersion Libs.build_versions_min_sdk
+        targetSdkVersion Libs.build_versions_target_sdk
+        versionCode Libs.versionCode
+        versionName Libs.versionName
     }
+
 
     buildTypes {
         release {
