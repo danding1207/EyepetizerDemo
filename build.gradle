@@ -1,24 +1,19 @@
 buildscript {
-    repositories {
-        google()
-        jcenter()
-    }
+    apply from: 'versions.gradle'
+    addRepos(repositories)
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.41'
-    }
-    repositories {
-        google()
+        classpath deps.android_gradle_plugin
+        classpath deps.kotlin.plugin
     }
 }
 
 allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
+    addRepos(repositories)
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+
+

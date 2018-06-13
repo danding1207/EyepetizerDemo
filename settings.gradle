@@ -1,0 +1,10 @@
+include "app"
+include "lib_opensource"
+include "lib_coremodel"
+include "lib_common"
+include "module_home_page"
+include "module_subscription"
+include "module_notification"
+include "module_me"
+
+//rootProject.buildFileName = "build.gradle"
