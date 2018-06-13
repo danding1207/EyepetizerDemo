@@ -42,6 +42,7 @@ versions.kotlin = "1.2.41"
 versions.paging = "1.0.0"
 versions.work = "1.0.0-alpha02"
 versions.navigation = "1.0.0-alpha01"
+versions.bottomnavigationviewex = "1.2.4"
 def deps = [:]
 
 /** support */
@@ -94,6 +95,11 @@ navigation.fragment_ktx = "android.arch.navigation:navigation-fragment-ktx:${ver
 navigation.safe_args_plugin = "android.arch.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
 navigation.testing_ktx = "android.arch.navigation:navigation-testing-ktx:${versions.navigation}"
 deps.navigation = navigation
+
+/** bottomnavigationviewex 底部菜单 */
+def bottomnavigationviewex = [:]
+bottomnavigationviewex.runtime = "com.github.ittianyu:BottomNavigationViewEx:${versions.bottomnavigationviewex}"
+deps.bottomnavigationviewex = bottomnavigationviewex
 
 /** arouter 路由 */
 def arouter = [:]
@@ -168,16 +174,9 @@ def addRepos(RepositoryHandler handler) {
     handler.google()
     handler.jcenter()
     handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    handler.maven { url "https://jitpack.io" }
 }
 
-//def excludeSupport() {
-//    exclude group: 'com.android.support'
-//    exclude group: 'com.android.support', module: 'support-fragment'
-//    exclude group: 'com.android.support', module: 'support-v4'
-//    exclude group: 'com.android.support', module: 'support-core-utils'
-//}
-
-//ext.excludeSupport = this.&excludeSupport
 ext.addRepos = this.&addRepos
 
 
