@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'com.alibaba.arouter'
 
 android {
 
@@ -43,13 +44,18 @@ kapt {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':lib_common')
+
+    if (isModule.toBoolean()) {
+        implementation project(':lib_coremodel')
+    } else {
+        implementation project(':module_home_page')
+        implementation project(':module_subscription')
+        implementation project(':module_notification')
+        implementation project(':module_me')
+    }
 
     //router
-//    implementation deps.arouter.runtime
     implementation(deps.arouter.runtime, { exclude group: 'com.android.support' })
     kapt deps.arouter.compiler
-
-
 }
 

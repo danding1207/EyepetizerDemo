@@ -58,14 +58,8 @@ kapt {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':lib_common')
+    api project(':lib_common')
     //router
-    //    implementation deps.arouter.runtime
-    implementation(deps.arouter.runtime, {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'support-fragment'
-        exclude group: 'com.android.support', module: 'support-v4'
-        exclude group: 'com.android.support', module: 'support-core-utils'
-    })
+    implementation(deps.arouter.runtime, { exclude group: 'com.android.support' })
     kapt deps.arouter.compiler
 }

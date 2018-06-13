@@ -35,4 +35,9 @@ class NoScrollViewPager : ViewPager {
         return isCanScroll && super.onTouchEvent(ev)
 
     }
+
+    override fun setCurrentItem(item: Int) {
+        super.setCurrentItem(item, false)
+    }
+
 }
