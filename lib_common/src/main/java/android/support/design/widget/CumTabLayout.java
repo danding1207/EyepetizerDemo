@@ -1109,6 +1109,11 @@ public class CumTabLayout extends HorizontalScrollView {
         }
     }
 
+    public void selectTab(int position) {
+        selectTab(mTabs.get(position), true);
+    }
+
+
     void selectTab(Tab tab) {
         selectTab(tab, true);
     }

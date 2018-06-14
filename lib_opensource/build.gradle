@@ -92,6 +92,7 @@ dependencies {
     //logger
     api(Libs.logger_runtime, { exclude group: 'com.android.support' })
 
-
+    //smartrefreshlayout
+    api(Libs.smartrefreshlayout, { exclude group: 'com.android.support' })
 
 }

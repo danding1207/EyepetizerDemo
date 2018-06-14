@@ -189,4 +189,27 @@ public class StringUtils {
         }
         return new String(chars);
     }
+
+
+    /**
+     * 秒数转 时分秒字符串
+     *
+     * @param duration 秒数
+     * @return 时分秒
+     */
+    public static String durationToString(int duration) {
+        int h = duration/3600;
+        int m = duration%3600/60;
+        int s = duration%3600%60;
+        StringBuilder result = new StringBuilder();
+        if(h!=0) {
+            result.append(String.format("%02d", h));
+            result.append(":");
+        }
+        result.append(String.format("%02d", m));
+        result.append(":");
+        result.append(String.format("%02d", s));
+        return result.toString();
+    }
+
 }

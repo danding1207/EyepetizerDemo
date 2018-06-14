@@ -21,6 +21,7 @@ object Versions {
     const val work = "1.0.0-alpha02"
     const val navigation = "1.0.0-alpha01"
     const val bottomnavigationviewex = "1.2.4"
+    const val smartrefreshlayout = "1.1.0-alpha-7"
 }
 
 object Libs {
@@ -99,6 +100,9 @@ object Libs {
     /** rxjava */
     val rxjava_rxjava = "io.reactivex.rxjava2:rxjava:${Versions.rxjava}"
     val rxjava_rx_android = "io.reactivex.rxjava2:rxandroid:${Versions.rx_android}"
+
+    /** smartrefreshlayout */
+    val smartrefreshlayout = "com.scwang.smartrefresh:SmartRefreshLayout:${Versions.smartrefreshlayout}"
 
     /** logger */
     val logger_runtime  = "com.orhanobut:logger:${Versions.logger}"

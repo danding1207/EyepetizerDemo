@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 class FragmentHome : BaseFragment() {
 
     private lateinit var homeViewModel:HomeViewModel
+    private lateinit var webBannerAdapter:WebBannerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         ARouter.getInstance().inject(this@FragmentHome)
@@ -32,6 +33,18 @@ class FragmentHome : BaseFragment() {
         homeViewModel.initData()
         subscribeToModel(homeViewModel)
         return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        tabLayout.selectTab(1)
+        webBannerAdapter = WebBannerAdapter(this.context)
+        webBannerAdapter.setOnBannerItemClickListener(object : BannerLayout.OnBannerItemClickListener {
+            override fun onItemClick(position: Int) {
+                Toast.makeText(this@FragmentHome.context, "点击了第  $position  项", Toast.LENGTH_SHORT).show()
+            }
+        })
+        bannerLayout.setAdapter(webBannerAdapter)
     }
 
     /**
@@ -43,24 +56,7 @@ class FragmentHome : BaseFragment() {
         model.liveObservableData!!.observe(this, Observer<TabsSelectedData> { tabsSelectedData ->
             Logger.d("subscribeToModel onChanged onChanged")
             model.setUiObservableData(tabsSelectedData)
-//            girlsAdapter.setGirlsList(tabsSelectedData!!.getResults())
-
-
-            val list = ArrayList<String>()
-            list.add("http://img0.imgtn.bdimg.com/it/u=1352823040,1166166164&fm=27&gp=0.jpg")
-            list.add("http://img3.imgtn.bdimg.com/it/u=2293177440,3125900197&fm=27&gp=0.jpg")
-            list.add("http://img3.imgtn.bdimg.com/it/u=3967183915,4078698000&fm=27&gp=0.jpg")
-            list.add("http://img0.imgtn.bdimg.com/it/u=3184221534,2238244948&fm=27&gp=0.jpg")
-            list.add("http://img4.imgtn.bdimg.com/it/u=1794621527,1964098559&fm=27&gp=0.jpg")
-            list.add("http://img4.imgtn.bdimg.com/it/u=1243617734,335916716&fm=27&gp=0.jpg")
-            val webBannerAdapter = WebBannerAdapter(this.context, tabsSelectedData)
-            webBannerAdapter.setOnBannerItemClickListener(object : BannerLayout.OnBannerItemClickListener {
-                override fun onItemClick(position: Int) {
-                    Toast.makeText(this@FragmentHome.context, "点击了第  $position  项", Toast.LENGTH_SHORT).show()
-            }
-            })
-            bannerLayout.setAdapter(webBannerAdapter)
-
+            webBannerAdapter.refreshData(tabsSelectedData)
         })
     }
 
