@@ -29,10 +29,10 @@ object ApiClient {
         }
 
     /**单例retrofit */
-    private lateinit var retrofitInstance: Retrofit
+    private var retrofitInstance: Retrofit? = null
 
     /**单例OkHttpClient */
-    private lateinit var okHttpClientInstance: OkHttpClient
+    private var okHttpClientInstance: OkHttpClient? = null
 
     /**
      * 获得想要的 retrofit service
@@ -58,7 +58,7 @@ object ApiClient {
                 }
             }
         }
-        return retrofitInstance
+        return retrofitInstance!!
     }
 
     private fun getOkHttpClientInstance(): OkHttpClient {
@@ -75,7 +75,7 @@ object ApiClient {
                 }
             }
         }
-        return okHttpClientInstance
+        return okHttpClientInstance!!
     }
 
 }
