@@ -6,129 +6,164 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <android.support.design.widget.CumTabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         android:background="@color/white"
-        android:fillViewport="false"
-        app:layout_scrollFlags="scroll"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabIndicatorHeight="3.0dp"
-        app:tabMode="scrollable"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabTextColor="@color/colorGray">
+        android:fitsSystemWindows="true"
+        app:elevation="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.design.widget.TabItem
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="发现" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="推荐"
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_action_menus" />
 
-            />
+            <android.support.design.widget.CumTabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:fillViewport="false"
+                app:layout_scrollFlags="scroll"
+                app:tabIndicatorColor="@color/colorPrimary"
+                app:tabIndicatorHeight="3.0dp"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="@color/colorPrimary"
+                app:tabTextColor="@color/colorGray">
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="日报" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="发现" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="广告" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="推荐"
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="生活" />
+                    />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="动画" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="日报" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="搞笑" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="广告" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="开胃" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="生活" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="创意" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="动画" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="运动" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="搞笑" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="音乐" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="开胃" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="萌宠" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="创意" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="剧情" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="运动" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="科技" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="音乐" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="旅行" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="萌宠" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="影视" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="剧情" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="记录" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="科技" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="游戏" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="旅行" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="综艺" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="影视" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="时尚" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="记录" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="锦集" />
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="游戏" />
 
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="综艺" />
 
-    </android.support.design.widget.CumTabLayout>
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="时尚" />
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="锦集" />
+
+            </android.support.design.widget.CumTabLayout>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_action_search" />
+
+        </LinearLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
@@ -137,103 +172,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
-        <com.msc.libcommon.widget.ClassicsHeader
+        <com.scwang.smartrefresh.header.MaterialHeader
+            android:id="@+id/refreshHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_srlBackgroundColor="@color/white"
-            app:srlPrimaryColor="@color/white"
-            app:srlAccentColor="@color/colorPrimaryDark"
+            app:mhPrimaryColor="@color/white"
             />
 
-        <ScrollView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none">
+            android:layout_height="match_parent" />
 
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
-
-                <com.msc.libcommon.widget.banner.BannerLayout
-                    android:id="@+id/bannerLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-
-                    app:autoPlaying="false"
-                    app:centerScale="0.99"
-                    app:interval="0"
-                    app:itemSpace="-28"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2"
-
-                    app:moveSpeed="1.2"
-                    app:orientation="horizontal"
-                    app:showIndicator="false" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
-                    android:text="THURSDAY.JUNE 14"
-                    android:textColor="@color/colorGray"
-                    android:textSize="13sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layerType="software"
-                    android:text="开眼今日编辑精选"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="26sp"
-                    android:typeface="monospace"
-                    app:layout_constraintStart_toStartOf="@+id/textView"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView2"
-                    app:layout_constraintStart_toEndOf="@+id/textView2"
-                    app:layout_constraintTop_toTopOf="@+id/textView2"
-                    app:srcCompat="@drawable/ic_action_arrow" />
-
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="0dp"
-                    android:layout_height="1px"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/colorGray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bannerLayout" />
-
-            </android.support.constraint.ConstraintLayout>
-
-        </ScrollView>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
 
 
 </android.support.constraint.ConstraintLayout>

@@ -19,6 +19,7 @@ import io.reactivex.schedulers.Schedulers
 //import kotlinx.android.synthetic.layout_home_banner_item.view.*
 import android.util.DisplayMetrics
 import com.msc.libcommon.util.StringUtils
+import com.msc.libcoremodel.datamodel.http.entities.AllRecData
 import com.orhanobut.logger.Logger
 import java.util.*
 
@@ -28,32 +29,31 @@ import java.util.*
  */
 class WebBannerAdapter(private val context: Context?) : RecyclerView.Adapter<WebBannerAdapter.MzViewHolder>() {
 
-    private var urlList: List<TabsSelectedData.ItemListBean> =  ArrayList()
+    private var urlList: List<AllRecData.ItemListBeanX.DataBeanXX.ItemListBean> =  ArrayList()
     private var onBannerItemClickListener: BannerLayout.OnBannerItemClickListener? = null
 
     init {
 
     }
 
-    fun refreshData(tabsSelectedData: TabsSelectedData?){
+    fun refreshData(dataBeanXX: AllRecData.ItemListBeanX.DataBeanXX?){
 
         Logger.d("refreshData")
-        Logger.d("listsize--->"+tabsSelectedData!!.itemList!!.size)
+        Logger.d("listsize--->"+dataBeanXX!!.itemList!!.size)
 
-        val date = Date()
+        urlList = dataBeanXX!!.itemList!!
+        notifyDataSetChanged()
 
-        Observable.fromIterable(tabsSelectedData!!.itemList)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter {
-                    return@filter "video" == it.type && it.data != null && "VideoBeanForClient" == it.data!!.dataType && it!!.data!!.library!=null && "DAILY" == it.data!!.library && (date.time-it!!.data!!.date)<86400000
-                }
-                .toList()
-                .subscribe { it ->
-                    urlList = it
-                    Logger.d("listsize--->"+urlList!!.size)
-                    notifyDataSetChanged()
-                }
+//        Observable.fromIterable(allRecData!!.itemList!![0].data!!.itemList)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+////                .filter {
+////                    return@filter "video" == it.type && it.data != null && "VideoBeanForClient" == it.data!!.dataType && it!!.data!!.library!=null && "DAILY" == it.data!!.library && (date.time-it!!.data!!.date)<86400000
+////                }
+//                .toList()
+//                .subscribe { it ->
+//
+//                }
 
     }
 
@@ -68,12 +68,12 @@ class WebBannerAdapter(private val context: Context?) : RecyclerView.Adapter<Web
     override fun onBindViewHolder(holder: WebBannerAdapter.MzViewHolder, position: Int) {
         if (urlList == null || urlList!!.isEmpty())
             return
-        val item:TabsSelectedData.ItemListBean = urlList!![position]
-        Logger.d("coverurl--->"+item.data!!.cover!!.feed)
-        Logger.d("authorurl--->"+item.data!!.author!!.icon)
+        val item:AllRecData.ItemListBeanX.DataBeanXX.ItemListBean = urlList!![position]
+        Logger.d("coverurl--->"+item.data!!.content!!.data!!.cover!!.feed)
+        Logger.d("authorurl--->"+item.data!!.content!!.data!!.author!!.icon)
 
-        Glide.with(context!!).load(item.data!!.cover!!.feed).into(holder.iv_cover)
-        Glide.with(context!!).load(item.data!!.author!!.icon).into(holder.iv_author_cover)
+        Glide.with(context!!).load(item.data!!.content!!.data!!.cover!!.feed).into(holder.ivCover)
+        Glide.with(context!!).load(item.data!!.content!!.data!!.author!!.icon).into(holder.ivAuthorCover)
 
         holder.itemView.setOnClickListener {
             if (onBannerItemClickListener != null) {
@@ -92,15 +92,12 @@ class WebBannerAdapter(private val context: Context?) : RecyclerView.Adapter<Web
 
         val layoutParamsCardView:ConstraintLayout.LayoutParams = holder.cardView.layoutParams as ConstraintLayout.LayoutParams
         layoutParamsCardView.width = width-76
-        layoutParamsCardView.height = layoutParams.width*720/1242
+        layoutParamsCardView.height = layoutParamsCardView.width*720/1242
         holder.cardView.layoutParams = layoutParamsCardView
 
-        holder.tv_description.text = item!!.data!!.slogan
-        holder.tv_title.text =  item!!.data!!.title
-        holder.tv_time.text =  StringUtils.durationToString(item!!.data!!.duration)
-
-
-
+        holder.tvDescription.text = item!!.data!!.header!!.title
+        holder.tvTitle.text =  item!!.data!!.header!!.description
+        holder.tvTime.text =  StringUtils.durationToString(item!!.data!!.content!!.data!!.duration)
 
     }
 
@@ -109,14 +106,14 @@ class WebBannerAdapter(private val context: Context?) : RecyclerView.Adapter<Web
     }
 
     inner class MzViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var iv_cover: ImageView = itemView.findViewById<View>(R.id.iv_cover) as ImageView
-        var iv_flag: ImageView = itemView.findViewById<View>(R.id.iv_flag) as ImageView
-        var iv_author_cover: ImageView = itemView.findViewById<View>(R.id.iv_author_cover) as ImageView
-        var iv_author_icon: ImageView = itemView.findViewById<View>(R.id.iv_author_icon) as ImageView
-        var iv_action_share: ImageView = itemView.findViewById<View>(R.id.iv_action_share) as ImageView
-        var tv_title: TextView = itemView.findViewById<View>(R.id.tv_title) as TextView
-        var tv_description: TextView = itemView.findViewById<View>(R.id.tv_description) as TextView
-        var tv_time: TextView = itemView.findViewById<View>(R.id.tv_time) as TextView
+        var ivCover: ImageView = itemView.findViewById<View>(R.id.iv_cover) as ImageView
+        var ivFlag: ImageView = itemView.findViewById<View>(R.id.iv_flag) as ImageView
+        var ivAuthorCover: ImageView = itemView.findViewById<View>(R.id.iv_author_cover) as ImageView
+        var ivAuthorIcon: ImageView = itemView.findViewById<View>(R.id.iv_author_icon) as ImageView
+        var ivActionShare: ImageView = itemView.findViewById<View>(R.id.iv_action_share) as ImageView
+        var tvTitle: TextView = itemView.findViewById<View>(R.id.tv_title) as TextView
+        var tvDescription: TextView = itemView.findViewById<View>(R.id.tv_description) as TextView
+        var tvTime: TextView = itemView.findViewById<View>(R.id.tv_time) as TextView
 
 
         var cardView: CardView = itemView.findViewById<View>(R.id.cardView) as CardView

@@ -1,11 +1,22 @@
 package com.msc.libcommon.base
 
 import android.app.Application
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.msc.libcommon.R
 
 import com.msc.libcommon.util.ClassUtils
 import com.msc.libcommon.util.Utils
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
+import io.github.inflationx.calligraphy3.CalligraphyConfig
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor
+import io.github.inflationx.viewpump.ViewPump
+import com.tmall.wireless.tangram.util.IInnerImageSetter
+import com.tmall.wireless.tangram.TangramBuilder
+import io.reactivex.annotations.NonNull
+import io.reactivex.annotations.Nullable
+
 
 /**
  * 要想使用BaseApplication，必须在组件中实现自己的Application，并且继承BaseApplication；
@@ -31,6 +42,21 @@ open class BaseApplication : Application() {
             delegate.onCreate()
         }
 
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(CalligraphyInterceptor(
+                        CalligraphyConfig.Builder()
+                                .setDefaultFontPath("fonts/fzltl.ttf")
+                                .setFontAttrId(R.attr.fontPath)
+                                .build()))
+                .build())
+
+        TangramBuilder.init(this, MIInnerImageSetter(), ImageView::class.java)
+    }
+
+    class MIInnerImageSetter : IInnerImageSetter {
+        override fun <IMAGE : ImageView> doLoadImageUrl(view: IMAGE, url: String?) {
+            Glide.with(ins!!.baseContext).load(url).into(view)
+        }
     }
 
     override fun onTerminate() {

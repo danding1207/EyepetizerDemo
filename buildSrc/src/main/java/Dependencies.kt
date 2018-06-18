@@ -22,6 +22,10 @@ object Versions {
     const val navigation = "1.0.0-alpha01"
     const val bottomnavigationviewex = "1.2.4"
     const val smartrefreshlayout = "1.1.0-alpha-7"
+    const val inflationx_calligraphy3 = "3.0.0"
+    const val inflationx_viewpump = "1.0.0"
+    const val tangram = "2.0.5"
+    const val exoplayer = "2.8.1"
 }
 
 object Libs {
@@ -103,16 +107,33 @@ object Libs {
 
     /** smartrefreshlayout */
     val smartrefreshlayout = "com.scwang.smartrefresh:SmartRefreshLayout:${Versions.smartrefreshlayout}"
+    val smartRefreshHeader = "com.scwang.smartrefresh:SmartRefreshHeader:${Versions.smartrefreshlayout}"
 
     /** logger */
     val logger_runtime  = "com.orhanobut:logger:${Versions.logger}"
+
+    /** inflationx 自定义字体 */
+    val inflationx_calligraphy3  = "io.github.inflationx:calligraphy3:${Versions.inflationx_calligraphy3}"
+    val inflationx_viewpump  = "io.github.inflationx:viewpump:${Versions.inflationx_viewpump}"
+
+    /** tangram 动态布局 */
+    val tangram_runtime  = "com.alibaba.android:tangram:${Versions.tangram}"
+
+    /** exoplayer 视频播放 */
+    val exoplayer_runtime  = "com.google.android.exoplayer:exoplayer:${Versions.exoplayer}"
+    val exoplayer_core  = "com.google.android.exoplayer:exoplayer-core:${Versions.exoplayer}"// exoplayer-core：核心功能（必需）。
+    val exoplayer_dash  = "com.google.android.exoplayer:exoplayer-dash:${Versions.exoplayer}"// exoplayer-dash：支持DASH内容。
+    val exoplayer_hls  = "com.google.android.exoplayer:exoplayer-hls:${Versions.exoplayer}"// exoplayer-hls：支持HLS内容。
+    val exoplayer_smoothstreaming  = "com.google.android.exoplayer:exoplayer-smoothstreaming:${Versions.exoplayer}"// exoplayer-smoothstreaming：支持SmoothStreaming内容。
+    val exoplayer_ui  = "com.google.android.exoplayer:exoplayer-ui:${Versions.exoplayer}"// exoplayer-ui：用于ExoPlayer的UI组件和资源。
+
 
     /** android_gradle_plugin */
     val android_gradle_plugin = "com.android.tools.build:gradle:${Versions.android_gradle_plugin}"
 
     /** build_versions */
     val build_versions_compile_sdk = 27
-    val build_versions_min_sdk = 14
+    val build_versions_min_sdk = 21
     val build_versions_target_sdk = 27
     val build_versions_build_tools = "27.0.3"
 

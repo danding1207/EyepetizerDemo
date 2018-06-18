@@ -94,5 +94,19 @@ dependencies {
 
     //smartrefreshlayout
     api(Libs.smartrefreshlayout, { exclude group: 'com.android.support' })
+    api(Libs.smartRefreshHeader, { exclude group: 'com.android.support' })
+
+    //tangram
+    api(Libs.tangram_runtime, { exclude group: 'com.android.support' })
+
+    //inflationx
+    api(Libs.inflationx_calligraphy3, { exclude group: 'com.android.support' })
+    api(Libs.inflationx_viewpump, { exclude group: 'com.android.support' })
+
+    //exoplayer
+    api(Libs.exoplayer_runtime, { exclude group: 'com.android.support' })
+    api(Libs.exoplayer_core, { exclude group: 'com.android.support' })
+
+
 
 }

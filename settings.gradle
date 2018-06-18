@@ -6,5 +6,7 @@ include "module_home_page"
 include "module_subscription"
 include "module_notification"
 include "module_me"
+include "module_launch"
+include "module_videoplayer"
 
 //rootProject.buildFileName = "build.gradle"

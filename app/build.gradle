@@ -14,6 +14,7 @@ android {
         targetSdkVersion Libs.build_versions_target_sdk
         versionCode Libs.versionCode
         versionName Libs.versionName
+//        flavorDimensions Libs.versionCode
     }
 
     buildTypes {
@@ -25,6 +26,40 @@ android {
 //        lintOptions { abortOnError false }
     }
 
+    signingConfigs {
+        release {
+            try {
+                storeFile file("./sign/msc.keystore")
+                storePassword "181207"
+                keyAlias "msc"
+                keyPassword "180507"
+            } catch (ex) {
+                throw new InvalidUserDataException(ex.toString())
+            }
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            def today = new Date()
+            outputFileName = "com.msc.eyepetizer_${variant.buildType.name}_v${variant.versionName}_${today.format('yyyyMMdd')}.apk"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            manifestPlaceholders = [Com_Baidu_Push_Apikey: "f3mjlDvvFNTyCDmSLsjtbZdM"]
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            manifestPlaceholders = [Com_Baidu_Push_Apikey: "1olRgEGaKY2lkksGs9z0YMiN"]
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
@@ -34,7 +69,6 @@ android {
 
 kapt {
 //    generateStubs = true
-
     //ARouter
     arguments {
         arg("moduleName", project.getName())
@@ -51,6 +85,8 @@ dependencies {
         implementation project(':module_subscription')
         implementation project(':module_notification')
         implementation project(':module_me')
+        implementation project(':module_launch')
+        implementation project(':module_videoplayer')
     }
 
     //router

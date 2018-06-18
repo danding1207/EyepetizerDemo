@@ -1,5 +1,10 @@
 package com.msc.libcommon.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * 字符串相关工具类
  */
@@ -198,11 +203,11 @@ public class StringUtils {
      * @return 时分秒
      */
     public static String durationToString(int duration) {
-        int h = duration/3600;
-        int m = duration%3600/60;
-        int s = duration%3600%60;
+        int h = duration / 3600;
+        int m = duration % 3600 / 60;
+        int s = duration % 3600 % 60;
         StringBuilder result = new StringBuilder();
-        if(h!=0) {
+        if (h != 0) {
             result.append(String.format("%02d", h));
             result.append(":");
         }
@@ -210,6 +215,86 @@ public class StringUtils {
         result.append(":");
         result.append(String.format("%02d", s));
         return result.toString();
+    }
+
+    /**
+     * 获取当前日期 星期数 英文
+     *
+     * @param
+     * @return 时分秒
+     */
+    public static String getEnglishWeekString() {
+        Calendar calendar = Calendar.getInstance();
+        int week = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (week) {
+            case 1:
+                return "SUNDAY";
+            case 2:
+                return "MONDAY";
+            case 3:
+                return "TUESDAY";
+            case 4:
+                return "WEDNESDAY";
+            case 5:
+                return "THURSDAY";
+            case 6:
+                return "FRIDAY";
+            case 7:
+                return "SATURDAY";
+            default:
+                return "";
+        }
+    }
+
+    /**
+     * 获取当前日期 月份 英文
+     *
+     * @param
+     * @return 时分秒
+     */
+    public static String getEnglishMonthString() {
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH) + 1;
+        switch (month) {
+            case 1:
+                return "JANUARY";
+            case 2:
+                return "FEBRUARY";
+            case 3:
+                return "MARCH";
+            case 4:
+                return "APRIL";
+            case 5:
+                return "MAY";
+            case 6:
+                return "JUNE";
+            case 7:
+                return "JULY";
+            case 8:
+                return "AUGUST";
+            case 9:
+                return "SEPTEMBER";
+            case 10:
+                return "OCTOBER";
+            case 11:
+                return "NOVEMBER";
+            case 12:
+                return "DECEMBER";
+            default:
+                return "";
+        }
+    }
+
+    /**
+     * 获取现在时间
+     * @param time
+     * @return 返回短时间字符串格式yyyy-MM-dd
+     */
+    public static String getStringDate(long time) {
+        Date currentTime = new Date();
+        currentTime.setTime(time);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd", Locale.CHINA);
+        return formatter.format(currentTime);
     }
 
 }

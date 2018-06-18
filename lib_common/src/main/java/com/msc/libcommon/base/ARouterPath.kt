@@ -11,14 +11,11 @@ package com.msc.libcommon.base
 
 object ARouterPath {
 
-    //    /**妹子列表Activity*/
-    //    public static final String GirlsListAty = "/girls/aty/list";
-    //
-    //    /**妹子列表动态Activity*/
-    //    public static final String DynaGirlsListAty = "/girls/dynaty/list";
-    //
-    //    /**新闻列表Activity*/
-    //    public static final String NewsListAty = "/news/aty/list";
+    /**MainActivity */
+    const val MAIN_ACT = "/main/activity"
+
+    /**VideoPlayerActivity */
+    const val VIDEO_PLAYER_ACT = "/videoplayer/activity"
 
     /**HomeFragment */
     const val HOME_PAGE_FGT = "/homepage/fragment"
@@ -31,4 +28,8 @@ object ARouterPath {
 
     /**MeFragment */
     const val ME_FGT = "/me/fragment"
+
+    /**WelcomeActivity */
+    const val LAUNCH_ACT = "/launch/activity"
+
 }

@@ -2,6 +2,8 @@ package com.msc.eyepetizer
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.content.ContextCompat
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseActivity
@@ -10,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.ArrayList
 
 
+@Route(path = ARouterPath.MAIN_ACT)
 class MainActivity : BaseActivity() {
 
     private val mFragments = ArrayList<BaseFragment>()
@@ -40,6 +43,9 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setStatusBarLightMode(this, ContextCompat.getColor(this, R.color.white))
+
         setContentView(R.layout.activity_main)
         navigation.enableAnimation(false)
         navigation.enableItemShiftingMode(false)
@@ -49,8 +55,7 @@ class MainActivity : BaseActivity() {
         navigation.setTextSize(8f)
         navigation.onNavigationItemSelectedListener = onNavigationItemSelectedListener
 
-
-
+        rootView = constraintLayout
 
         container_pager.offscreenPageLimit = 4
 
@@ -67,8 +72,6 @@ class MainActivity : BaseActivity() {
         mAdapter = FragmentAdapter(supportFragmentManager, mFragments)
         container_pager.adapter = mAdapter
 
-
     }
-
 
 }
