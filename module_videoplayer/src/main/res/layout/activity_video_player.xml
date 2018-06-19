@@ -4,42 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/constraintLayout"
-    android:layout_height="wrap_content">
+    android:background="@color/colorGray"
+    android:layout_height="match_parent">
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/playerView"
+    <com.msc.videoplayer.ui.PlayerControlView
+        android:id="@+id/playerControlView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#88000000"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/playerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/debug_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:textSize="10sp"
-            tools:ignore="SmallSp" />
-
-        <LinearLayout
-            android:id="@+id/controls_root"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone" />
-
-    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

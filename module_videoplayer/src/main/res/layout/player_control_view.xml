@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/constraintLayout"
+    android:background="@color/colorPrimary"
+    android:layout_height="match_parent">
+
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_action_null"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
+        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
+        app:layout_constraintStart_toStartOf="@+id/surfaceView"
+        app:layout_constraintTop_toTopOf="@+id/surfaceView"/>
+
+    <ImageView
+        android:id="@+id/iv_action_play"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
+        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
+        app:layout_constraintStart_toStartOf="@+id/surfaceView"
+        app:layout_constraintTop_toTopOf="@+id/surfaceView"
+        app:srcCompat="@drawable/ic_action_play" />
+
+    <ImageView
+        android:id="@+id/iv_action_pause"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
+        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
+        app:layout_constraintStart_toStartOf="@+id/surfaceView"
+        app:layout_constraintTop_toTopOf="@+id/surfaceView"
+        app:srcCompat="@drawable/ic_action_pause" />
+
+    <ImageView
+        android:id="@+id/iv_action_rewind"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
+        app:layout_constraintEnd_toStartOf="@+id/iv_action_null"
+        app:layout_constraintTop_toTopOf="@+id/surfaceView"
+        app:srcCompat="@drawable/ic_action_rewind" />
+
+    <ImageView
+        android:id="@+id/iv_action_forward"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
+        app:layout_constraintStart_toEndOf="@+id/iv_action_null"
+        app:layout_constraintTop_toTopOf="@+id/surfaceView"
+        app:srcCompat="@drawable/ic_action_forward" />
+
+    <ImageView
+        android:id="@+id/iv_action_player_back"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/surfaceView"
+        app:layout_constraintTop_toTopOf="@+id/surfaceView"
+        app:srcCompat="@drawable/ic_action_player_back" />
+
+    <ImageView
+        android:id="@+id/iv_action_full_screen"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
+        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
+        app:srcCompat="@drawable/ic_action_full_screen" />
+
+    <TextView
+        android:id="@+id/tv_slash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="/"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
+        app:layout_constraintStart_toStartOf="@+id/surfaceView"
+        app:layout_constraintTop_toBottomOf="@+id/iv_action_pause" />
+
+    <TextView
+        android:id="@+id/tv_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        tools:text="00:01"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:gravity="center"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_slash"
+        app:layout_constraintEnd_toStartOf="@+id/tv_slash" />
+
+    <TextView
+        android:id="@+id/tv_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        tools:text="13:24"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:gravity="center"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_slash"
+        app:layout_constraintStart_toEndOf="@+id/tv_slash" />
+
+    <com.google.android.exoplayer2.ui.DefaultTimeBar
+        android:id="@+id/timeBar"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
+        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
+        app:layout_constraintStart_toStartOf="@+id/surfaceView" />
+
+</android.support.constraint.ConstraintLayout>
