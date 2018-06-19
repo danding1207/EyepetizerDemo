@@ -92,7 +92,7 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
         setStatusBarDarkMode(this, ContextCompat.getColor(this, R.color.colorPrimary))
         setContentView(R.layout.activity_video_player)
 
-        downloadManagerInitor = DownloadManagerInitor(this)
+        downloadManagerInitor = DownloadManagerInitor.getInstance(this)
 
         mediaDataSourceFactory = buildDataSourceFactory(true)
         if (CookieHandler.getDefault() != DEFAULT_COOKIE_MANAGER) {

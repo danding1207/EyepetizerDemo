@@ -46,8 +46,21 @@ public class DownloadManagerInitor {
     private DownloadTracker downloadTracker;
     private Context mContext;
 
+    private static volatile DownloadManagerInitor instance;
 
-    public DownloadManagerInitor(Context  context) {
+    public static DownloadManagerInitor getInstance(Context  context) {
+        if (instance == null) {
+            synchronized (DownloadManagerInitor.class) {
+                if (instance == null) {
+                    instance = new DownloadManagerInitor(context);
+                }
+            }
+        }
+        return instance;
+    }
+
+
+    private DownloadManagerInitor(Context  context) {
         this.mContext = context;
         userAgent = Util.getUserAgent(mContext, "com.msc.eyepetizer");
     }
