@@ -26,7 +26,7 @@ class VideoSmallCardViewCell : CommenDataCell<VideoSmallCardView>() {
         val dm = resources.displayMetrics
         val width = dm.widthPixels
         val layoutParamsCardView: ConstraintLayout.LayoutParams = view.cardViewCover!!.layoutParams as ConstraintLayout.LayoutParams
-        layoutParamsCardView.width = (width - DensityUtil.dip2px(view.context, 24f))/2
+        layoutParamsCardView.width = (width - DensityUtil.dp2px(view.context, 24f))/2
         layoutParamsCardView.height = layoutParamsCardView.width * 777 / 1242
         view.cardViewCover!!.layoutParams = layoutParamsCardView
 

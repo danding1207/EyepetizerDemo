@@ -10,5 +10,7 @@
 
     <color name="white">#FFFFFF</color>
 
+    <color name="tarColorPrimary">#AA000000</color>
+
 
 </resources>

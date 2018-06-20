@@ -1,49 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/constraintLayout"
-    android:background="@color/colorPrimary"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <SurfaceView
-        android:id="@+id/surfaceView"
+    <TextureView
+        android:id="@+id/textureView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_backgroud"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textureView"
+        app:layout_constraintEnd_toEndOf="@+id/textureView"
+        app:layout_constraintStart_toStartOf="@+id/textureView"
+        app:layout_constraintTop_toTopOf="@+id/textureView"
+        app:srcCompat="@color/tarColorPrimary" />
+
 
     <ImageView
         android:id="@+id/iv_action_null"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
-        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
-        app:layout_constraintStart_toStartOf="@+id/surfaceView"
-        app:layout_constraintTop_toTopOf="@+id/surfaceView"/>
+        app:layout_constraintBottom_toBottomOf="@+id/textureView"
+        app:layout_constraintEnd_toEndOf="@+id/textureView"
+        app:layout_constraintStart_toStartOf="@+id/textureView"
+        app:layout_constraintTop_toTopOf="@+id/textureView"/>
 
     <ImageView
         android:id="@+id/iv_action_play"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
-        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
-        app:layout_constraintStart_toStartOf="@+id/surfaceView"
-        app:layout_constraintTop_toTopOf="@+id/surfaceView"
+        app:layout_constraintBottom_toBottomOf="@+id/textureView"
+        app:layout_constraintEnd_toEndOf="@+id/textureView"
+        app:layout_constraintStart_toStartOf="@+id/textureView"
+        app:layout_constraintTop_toTopOf="@+id/textureView"
         app:srcCompat="@drawable/ic_action_play" />
+
+    <ImageView
+        android:id="@+id/iv_action_replay"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textureView"
+        app:layout_constraintEnd_toEndOf="@+id/textureView"
+        app:layout_constraintStart_toStartOf="@+id/textureView"
+        app:layout_constraintTop_toTopOf="@+id/textureView"
+        app:srcCompat="@drawable/ic_action_replay" />
 
     <ImageView
         android:id="@+id/iv_action_pause"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
-        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
-        app:layout_constraintStart_toStartOf="@+id/surfaceView"
-        app:layout_constraintTop_toTopOf="@+id/surfaceView"
+        app:layout_constraintBottom_toBottomOf="@+id/textureView"
+        app:layout_constraintEnd_toEndOf="@+id/textureView"
+        app:layout_constraintStart_toStartOf="@+id/textureView"
+        app:layout_constraintTop_toTopOf="@+id/textureView"
         app:srcCompat="@drawable/ic_action_pause" />
 
     <ImageView
@@ -53,9 +73,9 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
+        app:layout_constraintBottom_toBottomOf="@+id/textureView"
         app:layout_constraintEnd_toStartOf="@+id/iv_action_null"
-        app:layout_constraintTop_toTopOf="@+id/surfaceView"
+        app:layout_constraintTop_toTopOf="@+id/textureView"
         app:srcCompat="@drawable/ic_action_rewind" />
 
     <ImageView
@@ -65,9 +85,9 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
+        app:layout_constraintBottom_toBottomOf="@+id/textureView"
         app:layout_constraintStart_toEndOf="@+id/iv_action_null"
-        app:layout_constraintTop_toTopOf="@+id/surfaceView"
+        app:layout_constraintTop_toTopOf="@+id/textureView"
         app:srcCompat="@drawable/ic_action_forward" />
 
     <ImageView
@@ -76,8 +96,8 @@
         android:layout_height="28dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="@+id/surfaceView"
-        app:layout_constraintTop_toTopOf="@+id/surfaceView"
+        app:layout_constraintStart_toStartOf="@+id/textureView"
+        app:layout_constraintTop_toTopOf="@+id/textureView"
         app:srcCompat="@drawable/ic_action_player_back" />
 
     <ImageView
@@ -86,8 +106,8 @@
         android:layout_height="28dp"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
-        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
+        app:layout_constraintBottom_toBottomOf="@+id/textureView"
+        app:layout_constraintEnd_toEndOf="@+id/textureView"
         app:srcCompat="@drawable/ic_action_full_screen" />
 
     <TextView
@@ -96,13 +116,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="/"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
-        app:layout_constraintStart_toStartOf="@+id/surfaceView"
-        app:layout_constraintTop_toBottomOf="@+id/iv_action_pause" />
+        app:layout_constraintEnd_toEndOf="@+id/textureView"
+        app:layout_constraintStart_toStartOf="@+id/textureView"
+        app:layout_constraintTop_toBottomOf="@+id/iv_action_null" />
 
     <TextView
         android:id="@+id/tv_position"
@@ -131,9 +151,10 @@
     <com.google.android.exoplayer2.ui.DefaultTimeBar
         android:id="@+id/timeBar"
         android:layout_width="match_parent"
-        android:layout_height="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/surfaceView"
-        app:layout_constraintEnd_toEndOf="@+id/surfaceView"
-        app:layout_constraintStart_toStartOf="@+id/surfaceView" />
+        android:layout_height="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textureView"
+        app:layout_constraintEnd_toEndOf="@+id/textureView"
+        app:layout_constraintStart_toStartOf="@+id/textureView" />
+
 
 </android.support.constraint.ConstraintLayout>

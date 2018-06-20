@@ -36,7 +36,7 @@ class FollowCardViewCell : CommenDataCell<FollowCardView>() {
                         val dm = resources.displayMetrics
                         val width = dm.widthPixels
                         val layoutParamsCardView: ConstraintLayout.LayoutParams = view.cardViewCover!!.layoutParams as ConstraintLayout.LayoutParams
-                        layoutParamsCardView.width = width - DensityUtil.dip2px(view.context, 16f)
+                        layoutParamsCardView.width = width - DensityUtil.dp2px(view.context, 16f)
                         layoutParamsCardView.height = layoutParamsCardView.width * drawableHeight / drawableWidth
                         view.cardViewCover!!.layoutParams = layoutParamsCardView
                     }

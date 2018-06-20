@@ -89,6 +89,7 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setStatusBarDarkMode(this, ContextCompat.getColor(this, R.color.colorPrimary))
         setContentView(R.layout.activity_video_player)
 
@@ -111,18 +112,15 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
             clearStartPosition()
         }
 
-        val resources = resources
-        val dm = resources.displayMetrics
-        val width = dm.widthPixels
+        val width = DensityUtil.getScreenWidth(this)
+        val height = width * 720 / 1280
         val layoutParamsCardView: ConstraintLayout.LayoutParams = playerControlView!!.layoutParams as ConstraintLayout.LayoutParams
         layoutParamsCardView.width = width
-        layoutParamsCardView.height = layoutParamsCardView.width * 720 / 1280
+        layoutParamsCardView.height = height
         playerControlView.layoutParams = layoutParamsCardView
-
-
+        playerControlView.bindActivty(constraintLayout, this)
 
         Logger.d("mediaDataSourceFactory    success222222222")
-
 
     }
 

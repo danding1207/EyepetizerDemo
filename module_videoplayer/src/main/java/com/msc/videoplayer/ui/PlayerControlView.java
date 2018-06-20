@@ -1,17 +1,24 @@
 package com.msc.videoplayer.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.ActionBar;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +33,10 @@ import com.google.android.exoplayer2.ui.TimeBar;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.RepeatModeUtil;
 import com.google.android.exoplayer2.util.Util;
+import com.msc.libcommon.util.ContextUtils;
+import com.msc.mmdemo.Utils.DensityUtil;
 import com.msc.videoplayer.R;
+import com.orhanobut.logger.Logger;
 
 import java.util.Arrays;
 import java.util.Formatter;
@@ -35,7 +45,9 @@ import java.util.Locale;
 public class PlayerControlView extends FrameLayout {
 
 
-    /** Listener to be notified about changes of the visibility of the UI control. */
+    /**
+     * Listener to be notified about changes of the visibility of the UI control.
+     */
     public interface VisibilityListener {
 
         /**
@@ -46,20 +58,37 @@ public class PlayerControlView extends FrameLayout {
         void onVisibilityChange(int visibility);
     }
 
-    /** The default fast forward increment, in milliseconds. */
+    /**
+     * The default fast forward increment, in milliseconds.
+     */
     public static final int DEFAULT_FAST_FORWARD_MS = 15000;
-    /** The default rewind increment, in milliseconds. */
+    /**
+     * The default rewind increment, in milliseconds.
+     */
     public static final int DEFAULT_REWIND_MS = 5000;
-    /** The default show timeout, in milliseconds. */
+    /**
+     * The default show timeout, in milliseconds.
+     */
     public static final int DEFAULT_SHOW_TIMEOUT_MS = 5000;
-    /** The default repeat toggle modes. */
-    public static final @RepeatModeUtil.RepeatToggleModes int DEFAULT_REPEAT_TOGGLE_MODES =
+    /**
+     * The default repeat toggle modes.
+     */
+    public static final @RepeatModeUtil.RepeatToggleModes
+    int DEFAULT_REPEAT_TOGGLE_MODES =
             RepeatModeUtil.REPEAT_TOGGLE_MODE_NONE;
 
-    /** The maximum number of windows that can be shown in a multi-window time bar. */
+    /**
+     * The maximum number of windows that can be shown in a multi-window time bar.
+     */
     public static final int MAX_WINDOWS_FOR_MULTI_WINDOW_TIME_BAR = 100;
 
     private static final long MAX_POSITION_FOR_SEEK_TO_PREVIOUS = 3000;
+
+    /**
+     * 普通播放 or 全屏播放
+     */
+    public static final int PLAYER_NORMAL = 10;        // 普通播放器
+    public static final int PLAYER_FULL_SCREEN = 11;   // 全屏播放器
 
     private final ComponentListener componentListener;
     private final View playButton;
@@ -69,7 +98,9 @@ public class PlayerControlView extends FrameLayout {
     private final View ivActionFullScreen;
     private final View ivActionPlayerBack;
     private final View tvSlash;
-    private final SurfaceView surfaceView;
+    private final View replayButton;
+    private final TextureView textureView;
+    private final View ivBackgroud;
 
     private final TextView durationView;
     private final TextView positionView;
@@ -85,6 +116,8 @@ public class PlayerControlView extends FrameLayout {
     private @Nullable
     PlaybackPreparer playbackPreparer;
 
+    private int mPlayerState = PLAYER_NORMAL;
+
     private boolean isAttachedToWindow;
     private boolean showMultiWindowTimeBar;
     private boolean multiWindowTimeBar;
@@ -97,6 +130,9 @@ public class PlayerControlView extends FrameLayout {
     private boolean[] playedAdGroups;
     private long[] extraAdGroupTimesMs;
     private boolean[] extraPlayedAdGroups;
+
+    private ConstraintLayout constraintLayout;
+    private Activity activity;
 
     private final Runnable updateProgressAction =
             new Runnable() {
@@ -167,7 +203,11 @@ public class PlayerControlView extends FrameLayout {
         durationView = findViewById(R.id.tv_duration);
         positionView = findViewById(R.id.tv_position);
         tvSlash = findViewById(R.id.tv_slash);
-
+        ivBackgroud = findViewById(R.id.iv_backgroud);
+        replayButton = findViewById(R.id.iv_action_replay);
+        if (replayButton != null) {
+            replayButton.setOnClickListener(componentListener);
+        }
         playButton = findViewById(R.id.iv_action_play);
         if (playButton != null) {
             playButton.setOnClickListener(componentListener);
@@ -176,9 +216,9 @@ public class PlayerControlView extends FrameLayout {
         if (pauseButton != null) {
             pauseButton.setOnClickListener(componentListener);
         }
-        surfaceView = findViewById(R.id.surfaceView);
-        if (surfaceView != null) {
-            surfaceView.setOnClickListener(componentListener);
+        textureView = findViewById(R.id.textureView);
+        if (textureView != null) {
+            textureView.setOnClickListener(componentListener);
         }
         timeBar = findViewById(R.id.timeBar);
         if (timeBar != null) {
@@ -225,7 +265,7 @@ public class PlayerControlView extends FrameLayout {
         this.player = player;
         if (player != null) {
             player.addListener(componentListener);
-            player.setVideoSurfaceView(surfaceView);
+            player.setVideoTextureView(textureView);
         }
         updateAll();
     }
@@ -249,9 +289,9 @@ public class PlayerControlView extends FrameLayout {
      * markers are shown in addition to any ad markers for ads in the player's timeline.
      *
      * @param extraAdGroupTimesMs The millisecond timestamps of the extra ad markers to show, or
-     *     {@code null} to show no extra ad markers.
+     *                            {@code null} to show no extra ad markers.
      * @param extraPlayedAdGroups Whether each ad has been played, or {@code null} to show no extra ad
-     *     markers.
+     *                            markers.
      */
     public void setExtraAdGroupMarkers(
             @Nullable long[] extraAdGroupTimesMs, @Nullable boolean[] extraPlayedAdGroups) {
@@ -288,7 +328,7 @@ public class PlayerControlView extends FrameLayout {
      * Sets the {@link com.google.android.exoplayer2.ControlDispatcher}.
      *
      * @param controlDispatcher The {@link com.google.android.exoplayer2.ControlDispatcher}, or null
-     *     to use {@link com.google.android.exoplayer2.DefaultControlDispatcher}.
+     *                          to use {@link com.google.android.exoplayer2.DefaultControlDispatcher}.
      */
     public void setControlDispatcher(
             @Nullable com.google.android.exoplayer2.ControlDispatcher controlDispatcher) {
@@ -302,7 +342,7 @@ public class PlayerControlView extends FrameLayout {
      * Sets the rewind increment in milliseconds.
      *
      * @param rewindMs The rewind increment in milliseconds. A non-positive value will cause the
-     *     rewind button to be disabled.
+     *                 rewind button to be disabled.
      */
     public void setRewindIncrementMs(int rewindMs) {
         this.rewindMs = rewindMs;
@@ -313,7 +353,7 @@ public class PlayerControlView extends FrameLayout {
      * Sets the fast forward increment in milliseconds.
      *
      * @param fastForwardMs The fast forward increment in milliseconds. A non-positive value will
-     *     cause the fast forward button to be disabled.
+     *                      cause the fast forward button to be disabled.
      */
     public void setFastForwardIncrementMs(int fastForwardMs) {
         this.fastForwardMs = fastForwardMs;
@@ -325,7 +365,7 @@ public class PlayerControlView extends FrameLayout {
      * this duration of time has elapsed without user input.
      *
      * @return The duration in milliseconds. A non-positive value indicates that the controls will
-     *     remain visible indefinitely.
+     * remain visible indefinitely.
      */
     public int getShowTimeoutMs() {
         return showTimeoutMs;
@@ -336,7 +376,7 @@ public class PlayerControlView extends FrameLayout {
      * duration of time has elapsed without user input.
      *
      * @param showTimeoutMs The duration in milliseconds. A non-positive value will cause the controls
-     *     to remain visible indefinitely.
+     *                      to remain visible indefinitely.
      */
     public void setShowTimeoutMs(int showTimeoutMs) {
         this.showTimeoutMs = showTimeoutMs;
@@ -355,6 +395,7 @@ public class PlayerControlView extends FrameLayout {
 
             tvSlash.setVisibility(VISIBLE);
             playButton.setVisibility(VISIBLE);
+            replayButton.setVisibility(VISIBLE);
             pauseButton.setVisibility(VISIBLE);
             fastForwardButton.setVisibility(VISIBLE);
             rewindButton.setVisibility(VISIBLE);
@@ -363,6 +404,7 @@ public class PlayerControlView extends FrameLayout {
             durationView.setVisibility(VISIBLE);
             positionView.setVisibility(VISIBLE);
             timeBar.setVisibility(VISIBLE);
+            ivBackgroud.setVisibility(VISIBLE);
 
             if (visibilityListener != null) {
                 visibilityListener.onVisibilityChange(getVisibility());
@@ -374,12 +416,15 @@ public class PlayerControlView extends FrameLayout {
         hideAfterTimeout();
     }
 
-    /** Hides the controller. */
+    /**
+     * Hides the controller.
+     */
     public void hide() {
         if (isVisible()) {
 
             tvSlash.setVisibility(INVISIBLE);
             playButton.setVisibility(INVISIBLE);
+            replayButton.setVisibility(INVISIBLE);
             pauseButton.setVisibility(INVISIBLE);
             fastForwardButton.setVisibility(INVISIBLE);
             rewindButton.setVisibility(INVISIBLE);
@@ -388,6 +433,7 @@ public class PlayerControlView extends FrameLayout {
             durationView.setVisibility(INVISIBLE);
             positionView.setVisibility(INVISIBLE);
             timeBar.setVisibility(INVISIBLE);
+            ivBackgroud.setVisibility(INVISIBLE);
 
             if (visibilityListener != null) {
                 visibilityListener.onVisibilityChange(getVisibility());
@@ -398,9 +444,11 @@ public class PlayerControlView extends FrameLayout {
         }
     }
 
-    /** Returns whether the controller is currently visible. */
+    /**
+     * Returns whether the controller is currently visible.
+     */
     public boolean isVisible() {
-        return tvSlash.getVisibility() == VISIBLE;
+        return timeBar.getVisibility() == VISIBLE;
     }
 
     private void hideAfterTimeout() {
@@ -422,21 +470,44 @@ public class PlayerControlView extends FrameLayout {
     }
 
     private void updatePlayPauseButton() {
-        if (!isVisible() || !isAttachedToWindow) {
-            return;
-        }
-        boolean requestPlayPauseFocus = false;
-        boolean playing = isPlaying();
-        if (playButton != null) {
-            requestPlayPauseFocus |= playing && playButton.isFocused();
-            playButton.setVisibility(playing ? View.GONE : View.VISIBLE);
-        }
-        if (pauseButton != null) {
-            requestPlayPauseFocus |= !playing && pauseButton.isFocused();
-            pauseButton.setVisibility(!playing ? View.GONE : View.VISIBLE);
-        }
-        if (requestPlayPauseFocus) {
-            requestPlayPauseFocus();
+        if (isPlayEnded()) {
+            //播放完成
+            fastForwardButton.setVisibility(View.INVISIBLE);
+            rewindButton.setVisibility(View.INVISIBLE);
+            tvSlash.setVisibility(View.INVISIBLE);
+            playButton.setVisibility(View.INVISIBLE);
+            pauseButton.setVisibility(View.INVISIBLE);
+            durationView.setVisibility(View.INVISIBLE);
+            positionView.setVisibility(View.INVISIBLE);
+
+            ivBackgroud.setVisibility(VISIBLE);
+            replayButton.setVisibility(View.VISIBLE);
+            timeBar.setVisibility(VISIBLE);
+            ivActionFullScreen.setVisibility(VISIBLE);
+            ivActionPlayerBack.setVisibility(VISIBLE);
+
+        } else {
+            if (!isVisible() || !isAttachedToWindow) {
+                return;
+            }
+
+            boolean requestPlayPauseFocus = false;
+            boolean playing = isPlaying();
+
+            if (playButton != null && !isPlayEnded()) {
+                requestPlayPauseFocus |= playing && playButton.isFocused();
+                playButton.setVisibility(playing ? View.INVISIBLE : View.VISIBLE);
+            }
+            if (pauseButton != null) {
+                requestPlayPauseFocus |= !playing && pauseButton.isFocused();
+                pauseButton.setVisibility(!playing ? View.INVISIBLE : View.VISIBLE);
+            }
+
+            replayButton.setVisibility(View.INVISIBLE);
+
+            if (requestPlayPauseFocus) {
+                requestPlayPauseFocus();
+            }
         }
     }
 
@@ -465,9 +536,11 @@ public class PlayerControlView extends FrameLayout {
     }
 
     private void updateProgress() {
-        if (!isVisible() || !isAttachedToWindow) {
+
+        if (!isPlayEnded() && !isVisible() || !isAttachedToWindow) {
             return;
         }
+
 
         long position = 0;
         long bufferedPosition = 0;
@@ -685,6 +758,12 @@ public class PlayerControlView extends FrameLayout {
         seekTo(windowIndex, positionMs);
     }
 
+    public void bindActivty(ConstraintLayout constraintLayout, Activity activity) {
+        this.constraintLayout = constraintLayout;
+        this.activity = activity;
+    }
+
+
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -764,6 +843,11 @@ public class PlayerControlView extends FrameLayout {
                 && player.getPlayWhenReady();
     }
 
+    private boolean isPlayEnded() {
+        return player != null
+                && player.getPlaybackState() == Player.STATE_ENDED;
+    }
+
     @SuppressLint("InlinedApi")
     private static boolean isHandledMediaKey(int keyCode) {
         return keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
@@ -779,7 +863,7 @@ public class PlayerControlView extends FrameLayout {
      * Returns whether the specified {@code timeline} can be shown on a multi-window time bar.
      *
      * @param timeline The {@link Timeline} to check.
-     * @param window A scratch {@link Timeline.Window} instance.
+     * @param window   A scratch {@link Timeline.Window} instance.
      * @return Whether the specified timeline can be shown on a multi-window time bar.
      */
     private static boolean canShowMultiWindowTimeBar(Timeline timeline, Timeline.Window window) {
@@ -858,11 +942,23 @@ public class PlayerControlView extends FrameLayout {
                     controlDispatcher.dispatchSetPlayWhenReady(player, true);
                 } else if (pauseButton == view) {
                     controlDispatcher.dispatchSetPlayWhenReady(player, false);
-                } else if (surfaceView == view) {
-                    if(isVisible()) {
-                        hide();
-                    } else {
-                        show();
+                } else if (textureView == view) {
+                    if (!isPlayEnded()) {
+                        if (isVisible()) {
+                            hide();
+                        } else {
+                            show();
+                        }
+                    }
+                } else if (replayButton == view) {
+                    controlDispatcher.dispatchSeekTo(player, player.getCurrentWindowIndex(), C.TIME_UNSET);
+                    controlDispatcher.dispatchSetPlayWhenReady(player, true);
+                    hide();
+                } else if (ivActionFullScreen == view) {
+                    if (mPlayerState == PLAYER_FULL_SCREEN) {
+                        exitFullScreen();
+                    } else if (mPlayerState == PLAYER_NORMAL) {
+                        enterFullScreen();
                     }
                 }
 
@@ -870,6 +966,52 @@ public class PlayerControlView extends FrameLayout {
             hideAfterTimeout();
         }
     }
+
+    public boolean enterFullScreen() {
+        if (mPlayerState == PLAYER_FULL_SCREEN) return false;
+
+        int width = DensityUtil.INSTANCE.getScreenWidth(activity);
+        int height = DensityUtil.INSTANCE.getScreenHeight(activity);
+
+
+        // 隐藏ActionBar、状态栏，并横屏
+        ContextUtils.hideActionBar(activity);
+        ContextUtils.scanForActivity(activity)
+                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        ConstraintLayout.LayoutParams layoutParamsCardView =
+                new ConstraintLayout.LayoutParams(height, width);
+//        layoutParamsCardView.width = width;
+//        layoutParamsCardView.height = height;
+        this.setLayoutParams(layoutParamsCardView);
+
+        mPlayerState = PLAYER_FULL_SCREEN;
+        Logger.d("PLAYER_FULL_SCREEN");
+        return true;
+    }
+
+    public boolean exitFullScreen() {
+        if (mPlayerState == PLAYER_NORMAL) return false;
+
+        int width = DensityUtil.INSTANCE.getScreenHeight(activity);
+        int height = width * 720 / 1280;
+
+        // 显示ActionBar、状态栏，并竖屏
+        ContextUtils.showActionBar(activity);
+        ContextUtils.scanForActivity(activity)
+                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        ConstraintLayout.LayoutParams layoutParamsCardView =
+                new ConstraintLayout.LayoutParams(width, height);
+//        layoutParamsCardView.width = width;
+//        layoutParamsCardView.height = height;
+        this.setLayoutParams(layoutParamsCardView);
+
+        mPlayerState = PLAYER_NORMAL;
+        Logger.d("PLAYER_NORMAL");
+        return true;
+    }
+
 
 }
 
