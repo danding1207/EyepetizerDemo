@@ -65,6 +65,7 @@ class FragmentHome : BaseFragment() {
         builder.registerCell("banner",  BannerCardViewCell::class.java, BannerCardView::class.java)
         builder.registerCell("videoSmallCard",  VideoSmallCardViewCell::class.java, VideoSmallCardView::class.java)
         builder.registerCell("followCard",  FollowCardViewCell::class.java, FollowCardView::class.java)
+        builder.registerCell("autoPlayFollowCard",  AutoPlayFollowCardViewCell::class.java, AutoPlayFollowCardView::class.java)
 
         engine = builder.build()
         engine.bindView(recyclerView)
@@ -115,25 +116,36 @@ class FragmentHome : BaseFragment() {
 
             when(cell.stringType){
                 "followCard", "pictureFollowCard"->{
-                    if(mData!==null && mData.content!=null &&  mData.content!!.type!=null && "video" == mData.content!!.type) {
 
-                        Observable.fromIterable(mData.content!!.data!!.playInfo)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .filter {
-                                    return@filter "high" == it.type && it.url != null
-                                }
-                                .subscribe { it ->
-
-                                    //                    val params = Bundle()
-//                    params.
-                                    ARouter.getInstance()
-                                            .build(ARouterPath.VIDEO_PLAYER_ACT)
-                                            .withString("videoUri", it.url)
-                                            .navigation()
-                                }
-
+                    when(mData!!.content!!.type) {
+                        "video"->{
+                            Observable.fromIterable(mData.content!!.data!!.playInfo)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .filter {
+                                        return@filter "high" == it.type && it.url != null
+                                    }
+                                    .subscribe { it ->
+                                        ARouter.getInstance()
+                                                .build(ARouterPath.VIDEO_PLAYER_ACT)
+                                                .withString("videoUri", it.url)
+                                                .navigation()
+                                    }
+                        }
+                        "ugcPicture"->{
+                            ARouter.getInstance()
+                                    .build(ARouterPath.PICTURE_DETAIL_ACT)
+                                    .withString("avatarUrl", mData.content!!.data!!.owner!!.avatar)
+                                    .withString("nickname", mData.content!!.data!!.owner!!.nickname)
+                                    .withString("description", mData.content!!.data!!.description)
+                                    .withString("collectionCount", mData.content!!.data!!.consumption!!.collectionCount.toString())
+                                    .withString("shareCount", mData.content!!.data!!.consumption!!.shareCount.toString())
+                                    .withString("replyCount", mData.content!!.data!!.consumption!!.replyCount.toString())
+                                    .withString("pictureUrl", mData.content!!.data!!.url)
+                                    .navigation()
+                        }
                     }
+
                 }
                 "videoSmallCard"->{
                     if(mData!==null && mData.resourceType!=null && "video" == mData.resourceType) {

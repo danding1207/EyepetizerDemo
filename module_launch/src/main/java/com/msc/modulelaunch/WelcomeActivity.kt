@@ -6,8 +6,10 @@ import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.support.v4.view.animation.LinearOutSlowInInterpolator
 import android.view.View
+import com.alibaba.android.arouter.facade.Postcard
 
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.facade.callback.NavCallback
 import com.alibaba.android.arouter.launcher.ARouter
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseActivity
@@ -42,8 +44,11 @@ class WelcomeActivity : BaseActivity() {
                         .build(ARouterPath.MAIN_ACT)
                         /**可以针对性跳转跳转动画  */
                         .withTransition(R.anim.activity_up_in, R.anim.activity_up_out)
-                        .navigation(this@WelcomeActivity)
-                finish()
+                        .navigation(this@WelcomeActivity, object : NavCallback() {
+                            override fun onArrival(postcard: Postcard?) {
+                                finish()
+                            }
+                        })
             }
             override fun onAnimationCancel(animator: Animator) {}
             override fun onAnimationRepeat(animator: Animator) {}

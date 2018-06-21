@@ -16,6 +16,11 @@
             android:hardwareAccelerated="true"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
+        <activity
+            android:name=".PictureDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+
+
     </application>
 
 </manifest>

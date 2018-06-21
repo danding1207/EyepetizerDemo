@@ -41,11 +41,6 @@ class SquareCardCollectionView : FrameLayout, ITangramViewLifeCycle {
         tvDate = findViewById(R.id.tv_date)
         tvTitle = findViewById(R.id.tv_title)
         webBannerAdapter = WebBannerAdapter(this.context)
-        webBannerAdapter!!.setOnBannerItemClickListener(
-                BannerLayout.OnBannerItemClickListener { position ->
-                    Toast.makeText(this.context, "点击了第  $position  项", Toast.LENGTH_SHORT).show()
-                }
-        )
         bannerLayout!!.setAdapter(webBannerAdapter)
     }
 

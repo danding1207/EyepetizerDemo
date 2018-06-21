@@ -32,9 +32,17 @@ android {
 
 kapt {
 //    generateStubs = true
+
+    //ARouter
+    arguments {
+        arg("moduleName", project.getName())
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':lib_coremodel')
+    //router
+    implementation(Libs.arouter_runtime, { exclude group: 'com.android.support' })
+    kapt Libs.arouter_compiler
 }

@@ -28,13 +28,73 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
 
-            <ImageView
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:visibility="gone"-->
+                <!--android:src="@drawable/ic_title_subscription" />-->
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Subscription"
+                android:textSize="22sp"
+                android:textColor="@color/colorPrimary"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_title_subscription" />
+                android:typeface="monospace"
+                fontPath="fonts/pattaya.ttf"
+                tools:ignore="MissingPrefix"
+                />
+
+
+
+
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center_vertical|right"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_action_search" />
+
 
         </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.CumTabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:fillViewport="false"
+            app:layout_scrollFlags="scroll"
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabIndicatorHeight="3.0dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/colorPrimary"
+            app:tabTextColor="@color/colorGray">
+
+            <android.support.design.widget.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="作品" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="动态"
+
+                />
+
+        </android.support.design.widget.CumTabLayout>
+
 
     </android.support.design.widget.AppBarLayout>
 

@@ -6,6 +6,8 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseActivity
 import android.content.Intent
+import com.alibaba.android.arouter.facade.Postcard
+import com.alibaba.android.arouter.facade.callback.NavCallback
 
 class LaunchActivity : BaseActivity() {
 
@@ -18,7 +20,10 @@ class LaunchActivity : BaseActivity() {
         //跳转到 WelcomeActivity
         ARouter.getInstance()
                 .build(ARouterPath.LAUNCH_ACT)
-                .navigation(this@LaunchActivity)
-        finish()
+                .navigation(this@LaunchActivity, object : NavCallback() {
+                    override fun onArrival(postcard: Postcard?) {
+                        finish()
+                    }
+                })
     }
 }

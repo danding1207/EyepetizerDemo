@@ -92,6 +92,7 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
 
         setStatusBarDarkMode(this, ContextCompat.getColor(this, R.color.colorPrimary))
         setContentView(R.layout.activity_video_player)
+        keepScreenLongLight()
 
         downloadManagerInitor = DownloadManagerInitor.getInstance(this)
 
@@ -99,8 +100,6 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
         if (CookieHandler.getDefault() != DEFAULT_COOKIE_MANAGER) {
             CookieHandler.setDefault(DEFAULT_COOKIE_MANAGER)
         }
-
-        Logger.d("mediaDataSourceFactory    success11111111")
 
         if (savedInstanceState != null) {
             trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS)
@@ -118,9 +117,8 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
         layoutParamsCardView.width = width
         layoutParamsCardView.height = height
         playerControlView.layoutParams = layoutParamsCardView
-        playerControlView.bindActivty(constraintLayout, this)
 
-        Logger.d("mediaDataSourceFactory    success222222222")
+        playerControlView.bindActivty(constraintLayout, this)
 
     }
 

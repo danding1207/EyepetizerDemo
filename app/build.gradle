@@ -86,7 +86,7 @@ dependencies {
         implementation project(':module_notification')
         implementation project(':module_me')
         implementation project(':module_launch')
-        implementation project(':module_videoplayer')
+
     }
 
     //router

@@ -107,6 +107,7 @@ dependencies {
     api(Libs.exoplayer_runtime, { exclude group: 'com.android.support' })
     api(Libs.exoplayer_core, { exclude group: 'com.android.support' })
 
-
+    //photoView
+    api(Libs.photoView_runtime, { exclude group: 'com.android.support' })
 
 }

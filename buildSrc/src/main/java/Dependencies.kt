@@ -26,6 +26,8 @@ object Versions {
     const val inflationx_viewpump = "1.0.0"
     const val tangram = "2.0.5"
     const val exoplayer = "2.8.1"
+    const val photoView = "2.1.3"
+
 }
 
 object Libs {
@@ -127,6 +129,8 @@ object Libs {
     val exoplayer_smoothstreaming  = "com.google.android.exoplayer:exoplayer-smoothstreaming:${Versions.exoplayer}"// exoplayer-smoothstreaming：支持SmoothStreaming内容。
     val exoplayer_ui  = "com.google.android.exoplayer:exoplayer-ui:${Versions.exoplayer}"// exoplayer-ui：用于ExoPlayer的UI组件和资源。
 
+    /** photoView 视频播放 */
+    val photoView_runtime  = "com.github.chrisbanes:PhotoView:${Versions.photoView}"
 
     /** android_gradle_plugin */
     val android_gradle_plugin = "com.android.tools.build:gradle:${Versions.android_gradle_plugin}"

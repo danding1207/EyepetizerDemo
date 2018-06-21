@@ -348,6 +348,7 @@ class AllRecData {
                     var resourceType: String? = null
                     var checkStatus: String? = null
                     var url: String? = null
+                    var playUrl: String? = null
                     var collected: Boolean? = false
                     var tags: List<TagBean>? = null
                     var consumption: ConsumptionBean? = null

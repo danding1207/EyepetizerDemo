@@ -8,6 +8,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.support.design.widget.Snackbar
 import android.util.Log
+import com.msc.libcommon.util.Utils
 import com.msc.libcoremodel.datamodel.http.entities.AllRecData
 
 import com.msc.libcoremodel.datamodel.http.entities.TabsSelectedData
@@ -71,9 +72,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     fun initData(liveObservableData: MutableLiveData<AllRecData>) {
         Logger.d("=======GirlsViewModel--initData=========")
         EyepetizerDataRepository.getAllRecDataRepository(
-                page.toString(),"5ab5bd3e87e04215bf7820e58576aa192784ca51","341","3.19",
-                "MI%203W","eyepetizer_xiaomi_market","eyepetizer_xiaomi_market",
-                "23"
+                page.toString(), Utils.getUDID(),
+                "341","3.19",
+                Utils.getSystemModel(),
+                "eyepetizer_xiaomi_market",
+                "eyepetizer_xiaomi_market",
+                Utils.getSystemVersion()
         )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

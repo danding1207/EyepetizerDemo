@@ -15,7 +15,10 @@ object ARouterPath {
     const val MAIN_ACT = "/main/activity"
 
     /**VideoPlayerActivity */
-    const val VIDEO_PLAYER_ACT = "/videoplayer/activity"
+    const val VIDEO_PLAYER_ACT = "/media/videoplayer/activity"
+
+    /**PictureDetailActivity */
+    const val PICTURE_DETAIL_ACT = "/media/picturedetail/activity"
 
     /**HomeFragment */
     const val HOME_PAGE_FGT = "/homepage/fragment"

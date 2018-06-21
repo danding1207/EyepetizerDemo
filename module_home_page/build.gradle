@@ -59,6 +59,7 @@ kapt {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':lib_common')
+    api project(':module_videoplayer')
     //router
     implementation(Libs.arouter_runtime, { exclude group: 'com.android.support' })
     kapt Libs.arouter_compiler

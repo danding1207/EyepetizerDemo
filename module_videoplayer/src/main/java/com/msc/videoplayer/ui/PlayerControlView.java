@@ -452,14 +452,16 @@ public class PlayerControlView extends FrameLayout {
     }
 
     private void hideAfterTimeout() {
-        removeCallbacks(hideAction);
-        if (showTimeoutMs > 0) {
-            hideAtMs = SystemClock.uptimeMillis() + showTimeoutMs;
-            if (isAttachedToWindow) {
-                postDelayed(hideAction, showTimeoutMs);
+        if (!isPlayEnded()) {
+            removeCallbacks(hideAction);
+            if (showTimeoutMs > 0) {
+                hideAtMs = SystemClock.uptimeMillis() + showTimeoutMs;
+                if (isAttachedToWindow) {
+                    postDelayed(hideAction, showTimeoutMs);
+                }
+            } else {
+                hideAtMs = C.TIME_UNSET;
             }
-        } else {
-            hideAtMs = C.TIME_UNSET;
         }
     }
 
@@ -485,6 +487,8 @@ public class PlayerControlView extends FrameLayout {
             timeBar.setVisibility(VISIBLE);
             ivActionFullScreen.setVisibility(VISIBLE);
             ivActionPlayerBack.setVisibility(VISIBLE);
+
+            removeCallbacks(hideAction);
 
         } else {
             if (!isVisible() || !isAttachedToWindow) {
@@ -540,7 +544,6 @@ public class PlayerControlView extends FrameLayout {
         if (!isPlayEnded() && !isVisible() || !isAttachedToWindow) {
             return;
         }
-
 
         long position = 0;
         long bufferedPosition = 0;
@@ -761,8 +764,12 @@ public class PlayerControlView extends FrameLayout {
     public void bindActivty(ConstraintLayout constraintLayout, Activity activity) {
         this.constraintLayout = constraintLayout;
         this.activity = activity;
+        int width = DensityUtil.INSTANCE.getScreenWidth(activity);
+        int height = width * 720 / 1280;
+        ConstraintLayout.LayoutParams layoutParamsCardView =
+                new ConstraintLayout.LayoutParams(width, height);
+        this.setLayoutParams(layoutParamsCardView);
     }
-
 
     @Override
     public void onAttachedToWindow() {
@@ -960,14 +967,19 @@ public class PlayerControlView extends FrameLayout {
                     } else if (mPlayerState == PLAYER_NORMAL) {
                         enterFullScreen();
                     }
+                } else if (ivActionPlayerBack == view) {
+                    if (mPlayerState == PLAYER_FULL_SCREEN) {
+                        exitFullScreen();
+                    } else if (mPlayerState == PLAYER_NORMAL) {
+                        finshActivity();
+                    }
                 }
-
             }
             hideAfterTimeout();
         }
     }
 
-    public boolean enterFullScreen() {
+    private boolean enterFullScreen() {
         if (mPlayerState == PLAYER_FULL_SCREEN) return false;
 
         int width = DensityUtil.INSTANCE.getScreenWidth(activity);
@@ -990,7 +1002,7 @@ public class PlayerControlView extends FrameLayout {
         return true;
     }
 
-    public boolean exitFullScreen() {
+    private boolean exitFullScreen() {
         if (mPlayerState == PLAYER_NORMAL) return false;
 
         int width = DensityUtil.INSTANCE.getScreenHeight(activity);
@@ -1012,6 +1024,10 @@ public class PlayerControlView extends FrameLayout {
         return true;
     }
 
+    private void finshActivity() {
+        if (activity != null)
+            activity.finish();
+    }
 
 }
 

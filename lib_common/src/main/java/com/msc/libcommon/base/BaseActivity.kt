@@ -30,10 +30,6 @@ import java.lang.reflect.Array.setInt
 import java.lang.reflect.AccessibleObject.setAccessible
 
 
-
-
-
-
 /**
  *
  * Activity基类
@@ -61,6 +57,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         ViewManager.instance.finishActivity(this)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -317,6 +314,15 @@ abstract class BaseActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         return result
+    }
+
+    /**
+     * 是否使屏幕常亮
+     *
+     * @param activity
+     */
+    fun keepScreenLongLight() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
 }

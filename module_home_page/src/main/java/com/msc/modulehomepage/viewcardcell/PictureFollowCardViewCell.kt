@@ -23,7 +23,6 @@ class PictureFollowCardViewCell : CommenDataCell<PictureFollowCardView>() {
         view.tvLikeNum!!.text = mData!!.content!!.data!!.consumption!!.collectionCount.toString()
         view.tvMessageNum!!.text = mData!!.content!!.data!!.consumption!!.replyCount.toString()
         Glide.with(view.context!!).load(mData!!.content!!.data!!.owner!!.avatar).into(view.ivAuthorCover!!)
-//        Glide.with(view.context!!).load(mData!!.content!!.data!!.cover!!.feed).into(view.ivCover!!)
 
         Glide.with(view.context!!)
                 .load(mData!!.content!!.data!!.cover!!.feed)
