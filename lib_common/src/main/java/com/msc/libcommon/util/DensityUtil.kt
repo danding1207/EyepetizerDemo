@@ -1,8 +1,11 @@
-package com.msc.mmdemo.Utils
+package com.msc.libcommon.util
 
 import android.content.Context
+import android.os.Build
+import android.util.DisplayMetrics
 import android.util.TypedValue
-
+import android.view.Display
+import android.view.WindowManager
 
 
 /**
@@ -40,6 +43,33 @@ object DensityUtil {
     fun getScreenHeight(context: Context): Int {
         return context.resources.displayMetrics.heightPixels
     }
+
+    fun getRealHeight(context: Context): Int {
+        val wm: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display: Display = wm.defaultDisplay
+        var screenHeight = 0
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            val dm = DisplayMetrics()
+            display.getRealMetrics(dm)
+            screenHeight = dm.heightPixels
+
+            //或者也可以使用getRealSize方法
+//            Point size = new Point();
+//            display.getRealSize(size);
+//            screenHeight = size.y;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            screenHeight = try {
+                Display::javaClass.invoke(display).getMethod("getRawHeight") as Int
+            } catch (e: Exception) {
+                val dm = DisplayMetrics()
+                display.getMetrics(dm)
+                dm.heightPixels
+            }
+        }
+        return screenHeight
+    }
+
 
     /**
      * dp转px

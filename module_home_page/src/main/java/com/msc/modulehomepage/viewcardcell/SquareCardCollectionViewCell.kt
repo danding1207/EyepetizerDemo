@@ -3,23 +3,24 @@ package com.msc.modulehomepage.viewcardcell
 import com.alibaba.android.arouter.launcher.ARouter
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.widget.banner.BannerLayout
-import com.msc.libcoremodel.datamodel.http.entities.CommenDataCell
+import com.msc.libcoremodel.datamodel.http.entities.AllRecData
+import com.msc.libcommon.base.CommenDataCell
 import com.msc.modulehomepage.viewcard.SquareCardCollectionView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-internal class SquareCardCollectionViewCell : CommenDataCell<SquareCardCollectionView>() {
+internal class SquareCardCollectionViewCell : CommenDataCell<SquareCardCollectionView, AllRecData.ItemListBeanX>() {
 
     override fun bindView(view: SquareCardCollectionView) {
         super.bindView(view)
         view.webBannerAdapter!!.setOnBannerItemClickListener(
                 BannerLayout.OnBannerItemClickListener { position ->
 
-                    mData!!.itemList!![position].data!!.content!!.type
+                    mData!!.data!!.itemList!![position].data!!.content!!.type
 
-                    if (mData!!.itemList!![position].data!!.content!!.type == "video"){
-                        Observable.fromIterable(mData!!.itemList!![position].data!!.content!!.data!!.playInfo)
+                    if (mData!!.data!!.itemList!![position].data!!.content!!.type == "video"){
+                        Observable.fromIterable(mData!!.data!!.itemList!![position].data!!.content!!.data!!.playInfo)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .filter {
@@ -34,9 +35,9 @@ internal class SquareCardCollectionViewCell : CommenDataCell<SquareCardCollectio
                     }
                 }
         )
-        view.tvDate!!.text = mData!!.header!!.subTitle
-        view.tvTitle!!.text = mData!!.header!!.title
-        view.webBannerAdapter!!.refreshData(mData)
+        view.tvDate!!.text = mData!!.data!!.header!!.subTitle
+        view.tvTitle!!.text = mData!!.data!!.header!!.title
+        view.webBannerAdapter!!.refreshData(mData!!.data!!)
     }
 
 }

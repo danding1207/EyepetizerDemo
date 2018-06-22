@@ -1,4 +1,4 @@
-package com.msc.modulehomepage.ui
+package com.msc.modulenotification.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -7,59 +7,59 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.alibaba.android.arouter.facade.annotation.Route
+
 import com.alibaba.android.arouter.launcher.ARouter
 import com.google.gson.Gson
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseFragment
 import com.msc.libcoremodel.datamodel.http.entities.AllRecData
-import com.msc.modulehomepage.R
-import com.msc.modulehomepage.viewmodel.HomeViewModel
-import com.msc.modulehomepage.viewcard.*
-import com.msc.modulehomepage.viewcardcell.*
+import com.msc.libcoremodel.datamodel.http.entities.MessagesData
+import com.msc.modulenotification.R
+import com.msc.modulenotification.viewcard.EndCardView
+import com.msc.modulenotification.viewcard.MessageCardView
+import com.msc.modulenotification.viewcardcell.EndCardViewCell
+import com.msc.modulenotification.viewcardcell.MessageCardViewCell
+import com.msc.modulenotification.viewmodel.NotificationViewModel
 import com.orhanobut.logger.Logger
 import com.tmall.wireless.tangram.TangramBuilder
 import com.tmall.wireless.tangram.TangramEngine
-import com.tmall.wireless.tangram.support.SimpleClickSupport
-import org.json.JSONArray
 import com.tmall.wireless.tangram.structure.BaseCell
+import com.tmall.wireless.tangram.support.SimpleClickSupport
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_notification.*
+import org.json.JSONArray
 
+@Route(path = ARouterPath.NOTIFICATION_FGT)
+class FragmentNotification : BaseFragment() {
 
-@Route(path = ARouterPath.HOME_PAGE_FGT)
-class FragmentHome : BaseFragment() {
-
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: NotificationViewModel
     private lateinit var engine: TangramEngine
     private lateinit var builder: TangramBuilder.InnerBuilder
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        ARouter.getInstance().inject(this@FragmentHome)
-        viewModel = ViewModelProviders.of(this@FragmentHome).get(HomeViewModel::class.java!!)
+        ARouter.getInstance().inject(this@FragmentNotification)
+        viewModel = ViewModelProviders.of(this@FragmentNotification).get(NotificationViewModel::class.java)
         viewModel.initData()
         subscribeToModel(viewModel)
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_notification, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tabLayout.selectTab(1)
+        tabLayout.selectTab(0)
 
         refreshHeader.setColorSchemeResources(R.color.colorPrimaryDark)
         refreshHeader.setShowBezierWave(true)
 
-        builder = TangramBuilder.newInnerBuilder(this@FragmentHome.context!!)
+        builder = TangramBuilder.newInnerBuilder(this@FragmentNotification.context!!)
 
         //Step 3: register business cells and cards
-        builder.registerCell("squareCardCollection", SquareCardCollectionViewCell::class.java, SquareCardCollectionView::class.java)
-        builder.registerCell("textCard", TextCardViewCell::class.java, TextCardView::class.java)
-        builder.registerCell("pictureFollowCard", PictureFollowCardViewCell::class.java, PictureFollowCardView::class.java)
-        builder.registerCell("banner", BannerCardViewCell::class.java, BannerCardView::class.java)
-        builder.registerCell("videoSmallCard", VideoSmallCardViewCell::class.java, VideoSmallCardView::class.java)
-        builder.registerCell("followCard", FollowCardViewCell::class.java, FollowCardView::class.java)
-        builder.registerCell("autoPlayFollowCard", AutoPlayFollowCardViewCell::class.java, AutoPlayFollowCardView::class.java)
+        builder.registerCell("normal", MessageCardViewCell::class.java, MessageCardView::class.java)
+        builder.registerCell("end", EndCardViewCell::class.java, EndCardView::class.java)
+
 
         engine = builder.build()
         engine.bindView(recyclerView)
@@ -78,18 +78,25 @@ class FragmentHome : BaseFragment() {
 
     }
 
+
+
     /**
      * 订阅数据变化来刷新UI
      * @param model
      */
-    private fun subscribeToModel(model: HomeViewModel) {
+    private fun subscribeToModel(model: NotificationViewModel) {
         //观察数据变化来刷新UI
-        model.liveObservableData!!.observe(this, Observer<AllRecData> { allRecData ->
+        model.liveObservableData.observe(this, Observer<MessagesData> { messagesData ->
             Logger.d("subscribeToModel onChanged onChanged")
-            model.setUiObservableData(allRecData)
+            model.setUiObservableData(messagesData)
+
+            if(messagesData!!.messageList!![messagesData.messageList!!.size-1].type == "end") {
+                refreshLayout.isEnableLoadMore = false
+            }
+
             refreshLayout.finishRefresh(true)//传入false表示刷新失败
             refreshLayout.finishLoadMore()
-            val data = Gson().toJson(allRecData!!.itemList)
+            val data = Gson().toJson(messagesData.messageList)
             Logger.d(data)
             val s = JSONArray(data)
             engine.setData(s)

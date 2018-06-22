@@ -1,62 +1,45 @@
 package com.msc.videoplayer
 
 import android.content.Intent
-import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.support.annotation.Nullable
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.Button
-
-import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.android.arouter.launcher.ARouter
 import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.drm.DefaultDrmSessionManager
-import com.google.android.exoplayer2.drm.FrameworkMediaCrypto
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.extractor.ExtractorsFactory
-import com.google.android.exoplayer2.offline.*
+import com.google.android.exoplayer2.offline.FilteringManifestParser
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource
-import com.google.android.exoplayer2.source.dash.manifest.DashManifest
 import com.google.android.exoplayer2.source.dash.manifest.DashManifestParser
 import com.google.android.exoplayer2.source.dash.manifest.RepresentationKey
-import com.google.android.exoplayer2.source.dash.offline.DashDownloadAction
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.source.hls.offline.HlsDownloadAction
 import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylistParser
 import com.google.android.exoplayer2.source.hls.playlist.RenditionKey
 import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource
 import com.google.android.exoplayer2.source.smoothstreaming.manifest.SsManifestParser
 import com.google.android.exoplayer2.source.smoothstreaming.manifest.StreamKey
-import com.google.android.exoplayer2.source.smoothstreaming.offline.SsDownloadAction
 import com.google.android.exoplayer2.trackselection.*
 import com.google.android.exoplayer2.ui.DebugTextViewHelper
 import com.google.android.exoplayer2.ui.PlayerControlView
-import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.*
-import com.google.android.exoplayer2.upstream.cache.*
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.util.EventLogger
 import com.google.android.exoplayer2.util.Util
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseActivity
-import com.msc.mmdemo.Utils.DensityUtil
+import com.msc.libcommon.util.DensityUtil
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.activity_video_player.*
-import java.io.File
-
 import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
-import java.util.*
 
 @Route(path = ARouterPath.VIDEO_PLAYER_ACT)
 class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPreparer, PlayerControlView.VisibilityListener {

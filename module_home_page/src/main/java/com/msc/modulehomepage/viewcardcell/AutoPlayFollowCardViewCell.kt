@@ -12,19 +12,20 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.msc.libcommon.util.StringUtils
-import com.msc.libcoremodel.datamodel.http.entities.CommenDataCell
+import com.msc.libcoremodel.datamodel.http.entities.AllRecData
+import com.msc.libcommon.base.CommenDataCell
 import com.msc.modulehomepage.viewcard.AutoPlayFollowCardView
 
-class AutoPlayFollowCardViewCell : CommenDataCell<AutoPlayFollowCardView>() {
+class AutoPlayFollowCardViewCell : CommenDataCell<AutoPlayFollowCardView, AllRecData.ItemListBeanX>() {
 
     override fun bindView(view: AutoPlayFollowCardView) {
         super.bindView(view)
-        view.tvName!!.text = mData!!.content!!.data!!.owner!!.nickname
-        view.tvDescription!!.text = mData!!.content!!.data!!.description
-        view.tvDate!!.text = StringUtils.getStringDate(mData!!.content!!.data!!.updateTime)
-        view.tvLikeNum!!.text = mData!!.content!!.data!!.consumption!!.collectionCount.toString()
-        view.tvMessageNum!!.text = mData!!.content!!.data!!.consumption!!.replyCount.toString()
-        Glide.with(view.context!!).load(mData!!.content!!.data!!.owner!!.avatar).into(view.ivAuthorCover!!)
+        view.tvName!!.text = mData!!.data!!.content!!.data!!.owner!!.nickname
+        view.tvDescription!!.text = mData!!.data!!.content!!.data!!.description
+        view.tvDate!!.text = StringUtils.getStringDate(mData!!.data!!.content!!.data!!.updateTime)
+        view.tvLikeNum!!.text = mData!!.data!!.content!!.data!!.consumption!!.collectionCount.toString()
+        view.tvMessageNum!!.text = mData!!.data!!.content!!.data!!.consumption!!.replyCount.toString()
+        Glide.with(view.context!!).load(mData!!.data!!.content!!.data!!.owner!!.avatar).into(view.ivAuthorCover!!)
 
         // 1. Create a default TrackSelector
         val bandwidthMeter = DefaultBandwidthMeter()
@@ -46,14 +47,12 @@ class AutoPlayFollowCardViewCell : CommenDataCell<AutoPlayFollowCardView>() {
         // Produces Extractor instances for parsing the media data.
         val extractorsFactory = DefaultExtractorsFactory()
         // This is the MediaSource representing the media to be played.
-        val mediaSource = ExtractorMediaSource(Uri.parse(mData!!.content!!.data!!.playUrl),
+        val mediaSource = ExtractorMediaSource(Uri.parse(mData!!.data!!.content!!.data!!.playUrl),
                 dataSourceFactory, extractorsFactory, null, null)
 
         player!!.playWhenReady = true
-        view.playerControlView!!.player = player
-
+        player.setVideoTextureView(view.textureView)
         player.prepare(mediaSource, false, false)
-
     }
 
 }

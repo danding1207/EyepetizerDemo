@@ -1,4 +1,4 @@
-package com.msc.eyepetizer
+package com.msc.eyepetizer.ui
 
 import android.os.Bundle
 

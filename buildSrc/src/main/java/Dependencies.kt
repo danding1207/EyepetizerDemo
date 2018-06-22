@@ -27,7 +27,7 @@ object Versions {
     const val tangram = "2.0.5"
     const val exoplayer = "2.8.1"
     const val photoView = "2.1.3"
-
+    const val bugly = "latest.release"
 }
 
 object Libs {
@@ -131,6 +131,10 @@ object Libs {
 
     /** photoView 视频播放 */
     val photoView_runtime  = "com.github.chrisbanes:PhotoView:${Versions.photoView}"
+
+    /** bugly 异常上报 */
+    val bugly_runtime  = "com.tencent.bugly:crashreport:${Versions.bugly}"
+
 
     /** android_gradle_plugin */
     val android_gradle_plugin = "com.android.tools.build:gradle:${Versions.android_gradle_plugin}"

@@ -195,7 +195,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun setStatusBarColor(activity: Activity, statusColor: Int) {
+    private fun setStatusBarColor(activity: Activity, statusColor: Int) {
         val window = activity.window
         //取消状态栏透明
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -255,7 +255,8 @@ abstract class BaseActivity : AppCompatActivity() {
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 //如果是6.0以上将状态栏文字改为黑色，并设置状态栏颜色
                 activity.window.setBackgroundDrawableResource(android.R.color.transparent)
-                activity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                activity.window.decorView.systemUiVisibility =
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 activity.window.statusBarColor = color
                 //fitsSystemWindow 为 false, 不预留系统栏位置.
                 val mContentView = activity.window.findViewById<View>(Window.ID_ANDROID_CONTENT) as ViewGroup
@@ -268,7 +269,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun MIUISetStatusBarLightMode(activity: Activity, darkmode: Boolean): Boolean {
+    private fun MIUISetStatusBarLightMode(activity: Activity, darkmode: Boolean): Boolean {
         val window = window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -290,7 +291,7 @@ abstract class BaseActivity : AppCompatActivity() {
         return result
     }
 
-    fun FlymeSetStatusBarLightMode(activity: Activity, darkmode: Boolean): Boolean {
+    private fun FlymeSetStatusBarLightMode(activity: Activity, darkmode: Boolean): Boolean {
         var result = false
         try {
             val lp = activity.window.attributes

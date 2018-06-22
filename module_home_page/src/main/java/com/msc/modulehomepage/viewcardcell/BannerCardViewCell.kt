@@ -2,16 +2,17 @@ package com.msc.modulehomepage.viewcardcell
 
 import android.support.constraint.ConstraintLayout
 import com.bumptech.glide.Glide
-import com.msc.libcoremodel.datamodel.http.entities.CommenDataCell
-import com.msc.mmdemo.Utils.DensityUtil
+import com.msc.libcoremodel.datamodel.http.entities.AllRecData
+import com.msc.libcommon.base.CommenDataCell
+import com.msc.libcommon.util.DensityUtil
 import com.msc.modulehomepage.viewcard.BannerCardView
 
-class BannerCardViewCell : CommenDataCell<BannerCardView>() {
+class BannerCardViewCell : CommenDataCell<BannerCardView, AllRecData.ItemListBeanX>() {
 
     override fun bindView(view: BannerCardView) {
         super.bindView(view)
 
-        Glide.with(view.context!!).load(mData!!.image).into(view.ivBannerCover!!)
+        Glide.with(view.context!!).load(mData!!.data!!.image).into(view.ivBannerCover!!)
 
         val resources = view.context.resources
         val dm = resources.displayMetrics

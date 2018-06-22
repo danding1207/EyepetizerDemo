@@ -288,13 +288,15 @@ public class StringUtils {
     /**
      * 获取现在时间
      * @param time
-     * @return 返回短时间字符串格式yyyy-MM-dd
+     * @return 返回短时间字符串格式yyyy-MM-dd HH:mm:ss
      */
     public static String getStringDate(long time) {
         Date currentTime = new Date();
         currentTime.setTime(time);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd", Locale.CHINA);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.CHINA);
         return formatter.format(currentTime);
     }
+
+
 
 }

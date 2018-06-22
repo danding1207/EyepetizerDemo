@@ -110,4 +110,11 @@ dependencies {
     //photoView
     api(Libs.photoView_runtime, { exclude group: 'com.android.support' })
 
+    //photoView
+    api(Libs.bugly_runtime, { exclude group: 'com.android.support' })
+
+
+
+
+
 }

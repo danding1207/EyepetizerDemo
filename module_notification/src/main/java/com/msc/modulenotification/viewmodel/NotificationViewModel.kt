@@ -1,4 +1,4 @@
-package com.msc.modulehomepage.viewModel
+package com.msc.modulenotification.viewmodel
 
 import android.app.Application
 import android.arch.core.util.Function
@@ -6,12 +6,11 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
-import android.support.design.widget.Snackbar
-import android.util.Log
+import android.text.TextUtils
 import com.msc.libcommon.util.Utils
 import com.msc.libcoremodel.datamodel.http.entities.AllRecData
+import com.msc.libcoremodel.datamodel.http.entities.MessagesData
 
-import com.msc.libcoremodel.datamodel.http.entities.TabsSelectedData
 import com.msc.libcoremodel.datamodel.http.repository.EyepetizerDataRepository
 import com.msc.libcoremodel.datamodel.http.utils.NetUtils
 import com.orhanobut.logger.Logger
@@ -22,17 +21,15 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
+class NotificationViewModel(application: Application) : AndroidViewModel(application) {
 
     private var mApplication: Application
-
-    private var page = 0
 
     /**
      * LiveData支持了lifecycle生命周期检测
      * @return
      */
-    var liveObservableData: MutableLiveData<AllRecData>
+    var liveObservableData: MutableLiveData<MessagesData>
 
     //UI使用可观察的数据 ObservableField是一个包装类
     //    public ObservableField<TabsSelectedData> uiObservableData = new ObservableField<>();
@@ -45,16 +42,16 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         mApplication = application
         //这里的trigger为网络检测，也可以换成缓存数据是否存在检测
         liveObservableData = Transformations
-                .switchMap<Boolean, AllRecData>(NetUtils.netConnected(mApplication),
-                        Function<Boolean, LiveData<AllRecData>> { isNetConnected ->
+                .switchMap<Boolean, MessagesData>(NetUtils.netConnected(mApplication),
+                        Function<Boolean, LiveData<MessagesData>> { isNetConnected ->
                             Logger.d("=======GirlsViewModel--apply=========")
                             if (!isNetConnected) {
                                 return@Function ABSENT //网络未连接返回空
                             }
-                            val applyData = MutableLiveData<AllRecData>()
+                            val applyData = MutableLiveData<MessagesData>()
                             initData(applyData)
                             applyData
-                        }) as MutableLiveData<AllRecData>
+                        }) as MutableLiveData<MessagesData>
     }
 
     /**
@@ -69,10 +66,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
      * 刷新数据
      * @param
      */
-    fun initData(liveObservableData: MutableLiveData<AllRecData>) {
+    fun initData(liveObservableData: MutableLiveData<MessagesData>) {
         Logger.d("=======GirlsViewModel--initData=========")
-        EyepetizerDataRepository.getAllRecDataRepository(
-                page.toString(), Utils.getUDID(),
+        EyepetizerDataRepository.getMessagesDataRepository(
+                Utils.getUDID(),
                 "341","3.19",
                 Utils.getSystemModel(),
                 "eyepetizer_xiaomi_market",
@@ -81,12 +78,19 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<AllRecData> {
+                .subscribe(object : Observer<MessagesData> {
                     override fun onSubscribe(d: Disposable) {
                         mDisposable.add(d)
                     }
-                    override fun onNext(value: AllRecData) {
+                    override fun onNext(value: MessagesData) {
                         Logger.d("=======GirlsViewModel--onNext=========")
+                        if(TextUtils.isEmpty(value.nextPageUrl)) {
+                            val endmessage = MessagesData.MessageListBean()
+                            endmessage.type="end"
+                            (value!!.messageList
+                                    as MutableList<MessagesData.MessageListBean>)
+                                    .add(endmessage)
+                        }
                         liveObservableData.value = value
                     }
                     override fun onError(e: Throwable) {
@@ -107,27 +111,34 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         getMoreData(liveObservableData)
     }
 
-    private fun getMoreData(liveObservableData: MutableLiveData<AllRecData>) {
+    private fun getMoreData(liveObservableData: MutableLiveData<MessagesData>) {
         Logger.d("=======GirlsViewModel--initData=========")
 
         if(liveObservableData.value!=null && liveObservableData.value!!.nextPageUrl !=null) {
-            EyepetizerDataRepository.getMoreRecDataRepository(
+            EyepetizerDataRepository.getMoreMessagesDataRepository(
                     liveObservableData.value!!.nextPageUrl!!
             )
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Observer<AllRecData> {
+                    .subscribe(object : Observer<MessagesData> {
                         override fun onSubscribe(d: Disposable) {
                             mDisposable.add(d)
                         }
-                        override fun onNext(value: AllRecData) {
+                        override fun onNext(value: MessagesData) {
                             Logger.d("=======GirlsViewModel--onNext=========")
                             val oldValue = liveObservableData.value
-                            (oldValue!!.itemList as MutableList<AllRecData.ItemListBeanX>).addAll(value.itemList!!)
-                            oldValue.count +=value.count
-                            oldValue.total =value.total
+                            (oldValue!!.messageList as MutableList<MessagesData.MessageListBean>).addAll(value.messageList!!)
+
                             oldValue.nextPageUrl =value.nextPageUrl
-                            oldValue.adExist =value.adExist
+
+                            if(TextUtils.isEmpty(oldValue.nextPageUrl)) {
+                                val endmessage = MessagesData.MessageListBean()
+                                endmessage.type="end"
+                                (oldValue!!.messageList
+                                        as MutableList<MessagesData.MessageListBean>)
+                                        .add(endmessage)
+                            }
+
                             liveObservableData.value = oldValue
                         }
                         override fun onError(e: Throwable) {
@@ -148,7 +159,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
      * 设置
      * @param product
      */
-    fun setUiObservableData(product: AllRecData?) {
+    fun setUiObservableData(product: MessagesData?) {
 //        this.uiObservableData.set(product)
     }
 
@@ -159,7 +170,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     companion object {
-        private val ABSENT = MutableLiveData<AllRecData>()
+        private val ABSENT = MutableLiveData<MessagesData>()
     }
 
 }

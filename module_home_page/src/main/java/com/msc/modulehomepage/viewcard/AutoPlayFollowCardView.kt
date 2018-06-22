@@ -3,6 +3,7 @@ package com.msc.modulehomepage.viewcard
 import android.content.Context
 import android.support.v7.widget.CardView
 import android.util.AttributeSet
+import android.view.TextureView
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -23,7 +24,7 @@ class AutoPlayFollowCardView : FrameLayout, ITangramViewLifeCycle {
     var ivLike: ImageView? = null
     var ivMessage: ImageView? = null
     var cardViewCover: CardView? = null
-    var playerControlView: PlayerControlView? = null
+    var textureView: TextureView? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -42,7 +43,7 @@ class AutoPlayFollowCardView : FrameLayout, ITangramViewLifeCycle {
         ivAuthorCover = findViewById(R.id.iv_author_cover)
         tvName = findViewById(R.id.tv_name)
         tvDescription = findViewById(R.id.tv_description)
-        playerControlView = findViewById(R.id.playerControlView)
+        textureView = findViewById(R.id.textureView)
         ivLike = findViewById(R.id.iv_like)
         ivMessage = findViewById(R.id.iv_message)
         tvDate = findViewById(R.id.tv_date)

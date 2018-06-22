@@ -34,7 +34,7 @@ import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.RepeatModeUtil;
 import com.google.android.exoplayer2.util.Util;
 import com.msc.libcommon.util.ContextUtils;
-import com.msc.mmdemo.Utils.DensityUtil;
+import com.msc.libcommon.util.DensityUtil;
 import com.msc.videoplayer.R;
 import com.orhanobut.logger.Logger;
 
@@ -101,6 +101,8 @@ public class PlayerControlView extends FrameLayout {
     private final View replayButton;
     private final TextureView textureView;
     private final View ivBackgroud;
+    private final View progressBar;
+
 
     private final TextView durationView;
     private final TextView positionView;
@@ -205,6 +207,7 @@ public class PlayerControlView extends FrameLayout {
         tvSlash = findViewById(R.id.tv_slash);
         ivBackgroud = findViewById(R.id.iv_backgroud);
         replayButton = findViewById(R.id.iv_action_replay);
+        progressBar = findViewById(R.id.progressBar);
         if (replayButton != null) {
             replayButton.setOnClickListener(componentListener);
         }
@@ -405,6 +408,7 @@ public class PlayerControlView extends FrameLayout {
             positionView.setVisibility(VISIBLE);
             timeBar.setVisibility(VISIBLE);
             ivBackgroud.setVisibility(VISIBLE);
+            progressBar.setVisibility(INVISIBLE);
 
             if (visibilityListener != null) {
                 visibilityListener.onVisibilityChange(getVisibility());
@@ -434,6 +438,7 @@ public class PlayerControlView extends FrameLayout {
             positionView.setVisibility(INVISIBLE);
             timeBar.setVisibility(INVISIBLE);
             ivBackgroud.setVisibility(INVISIBLE);
+            progressBar.setVisibility(INVISIBLE);
 
             if (visibilityListener != null) {
                 visibilityListener.onVisibilityChange(getVisibility());
@@ -452,7 +457,7 @@ public class PlayerControlView extends FrameLayout {
     }
 
     private void hideAfterTimeout() {
-        if (!isPlayEnded()) {
+        if (!isPlayEnded() && !isPlayBuffering()) {
             removeCallbacks(hideAction);
             if (showTimeoutMs > 0) {
                 hideAtMs = SystemClock.uptimeMillis() + showTimeoutMs;
@@ -487,13 +492,36 @@ public class PlayerControlView extends FrameLayout {
             timeBar.setVisibility(VISIBLE);
             ivActionFullScreen.setVisibility(VISIBLE);
             ivActionPlayerBack.setVisibility(VISIBLE);
+            progressBar.setVisibility(INVISIBLE);
 
             removeCallbacks(hideAction);
+
+
+        } else if(isPlayBuffering()) {
+
+            progressBar.setVisibility(VISIBLE);
+
+
+            fastForwardButton.setVisibility(View.INVISIBLE);
+            rewindButton.setVisibility(View.INVISIBLE);
+            tvSlash.setVisibility(View.INVISIBLE);
+            playButton.setVisibility(View.INVISIBLE);
+            pauseButton.setVisibility(View.INVISIBLE);
+            durationView.setVisibility(View.INVISIBLE);
+            positionView.setVisibility(View.INVISIBLE);
+
+            ivBackgroud.setVisibility(INVISIBLE);
+            replayButton.setVisibility(View.INVISIBLE);
+            timeBar.setVisibility(VISIBLE);
+            ivActionFullScreen.setVisibility(VISIBLE);
+            ivActionPlayerBack.setVisibility(VISIBLE);
 
         } else {
             if (!isVisible() || !isAttachedToWindow) {
                 return;
             }
+
+            progressBar.setVisibility(INVISIBLE);
 
             boolean requestPlayPauseFocus = false;
             boolean playing = isPlaying();
@@ -855,6 +883,11 @@ public class PlayerControlView extends FrameLayout {
                 && player.getPlaybackState() == Player.STATE_ENDED;
     }
 
+    private boolean isPlayBuffering() {
+        return player != null
+                && player.getPlaybackState() == Player.STATE_BUFFERING;
+    }
+
     @SuppressLint("InlinedApi")
     private static boolean isHandledMediaKey(int keyCode) {
         return keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD
@@ -915,6 +948,15 @@ public class PlayerControlView extends FrameLayout {
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             updatePlayPauseButton();
             updateProgress();
+        }
+
+        @Override
+        public void onLoadingChanged(boolean isLoading) {
+            super.onLoadingChanged(isLoading);
+
+
+
+
         }
 
         @Override
@@ -983,8 +1025,7 @@ public class PlayerControlView extends FrameLayout {
         if (mPlayerState == PLAYER_FULL_SCREEN) return false;
 
         int width = DensityUtil.INSTANCE.getScreenWidth(activity);
-        int height = DensityUtil.INSTANCE.getScreenHeight(activity);
-
+        int height = DensityUtil.INSTANCE.getRealHeight(activity);
 
         // 隐藏ActionBar、状态栏，并横屏
         ContextUtils.hideActionBar(activity);
@@ -993,8 +1034,6 @@ public class PlayerControlView extends FrameLayout {
 
         ConstraintLayout.LayoutParams layoutParamsCardView =
                 new ConstraintLayout.LayoutParams(height, width);
-//        layoutParamsCardView.width = width;
-//        layoutParamsCardView.height = height;
         this.setLayoutParams(layoutParamsCardView);
 
         mPlayerState = PLAYER_FULL_SCREEN;
@@ -1015,8 +1054,6 @@ public class PlayerControlView extends FrameLayout {
 
         ConstraintLayout.LayoutParams layoutParamsCardView =
                 new ConstraintLayout.LayoutParams(width, height);
-//        layoutParamsCardView.width = width;
-//        layoutParamsCardView.height = height;
         this.setLayoutParams(layoutParamsCardView);
 
         mPlayerState = PLAYER_NORMAL;

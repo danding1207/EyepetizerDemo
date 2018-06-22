@@ -49,14 +49,14 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            buildConfigField "String", "BUGLY_APPID", "\"1a070e7f48\""
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            manifestPlaceholders = [Com_Baidu_Push_Apikey: "f3mjlDvvFNTyCDmSLsjtbZdM"]
         }
         debug {
             minifyEnabled false
+            buildConfigField "String", "BUGLY_APPID", "\"1a070e7f48\""
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            manifestPlaceholders = [Com_Baidu_Push_Apikey: "1olRgEGaKY2lkksGs9z0YMiN"]
         }
     }
 
