@@ -4,6 +4,7 @@ buildscript {
     dependencies {
         classpath Libs.android_gradle_plugin
         classpath Libs.kotlin_plugin
+        classpath Libs.tinkerpatch_gradle_plugin
     }
 }
 

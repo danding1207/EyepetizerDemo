@@ -74,7 +74,7 @@ class MainActivity : BaseActivity() {
 
         mAdapter = FragmentAdapter(supportFragmentManager, mFragments)
         container_pager.adapter = mAdapter
-        
+
     }
 
 }

@@ -3,6 +3,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+
 android {
 
     compileSdkVersion Libs.build_versions_compile_sdk
@@ -15,15 +16,8 @@ android {
         versionCode Libs.versionCode
         versionName Libs.versionName
 //        flavorDimensions Libs.versionCode
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-
-//        lintOptions { abortOnError false }
+        multiDexEnabled true
+//        multiDexKeepProguard file("tinkerMultidexKeep.pro") //keep specific classes using proguard syntax
     }
 
     signingConfigs {
@@ -51,12 +45,13 @@ android {
             minifyEnabled false
             buildConfigField "String", "BUGLY_APPID", "\"1a070e7f48\""
             signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
+            debuggable true
             minifyEnabled false
             buildConfigField "String", "BUGLY_APPID", "\"1a070e7f48\""
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -92,5 +87,12 @@ dependencies {
     //router
     implementation(Libs.arouter_runtime, { exclude group: 'com.android.support' })
     kapt Libs.arouter_compiler
+
+    //tinker
+    implementation(Libs.tinker_runtime) { changing = true }
+    implementation(Libs.tinker_anno) { changing = true }
+    kapt(Libs.tinker_compiler) { changing = true }
+
 }
 
+apply from: 'tinkerpatch.gradle'

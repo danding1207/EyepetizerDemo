@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">module_videoplayer</string>
 
     <string name="download_start_error">Failed to start download</string>
 

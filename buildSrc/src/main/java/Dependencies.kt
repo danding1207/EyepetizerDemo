@@ -3,6 +3,7 @@ object Versions {
     const val room = "1.1.0"
     const val lifecycle = "1.1.1"
     const val support = "27.1.1"
+    const val multidex = "1.0.2"
     const val retrofit = "2.3.0"
     const val gson = "2.8.5"
     const val okhttp = "3.4.1"
@@ -13,6 +14,7 @@ object Versions {
     const val constraint_layout = "1.0.2"
     const val glide = "4.7.1"
     const val android_gradle_plugin = "3.1.2"
+    const val tinkerpatch_gradle_plugin = "1.2.8"
     const val rxjava = "2.1.9"
     const val rx_android = "2.0.1"
     const val logger = "2.2.0"
@@ -28,6 +30,9 @@ object Versions {
     const val exoplayer = "2.8.1"
     const val photoView = "2.1.3"
     const val bugly = "latest.release"
+    const val tinker = "1.9.8"
+    const val tinkerpatch = "1.2.8"
+
 }
 
 object Libs {
@@ -41,6 +46,7 @@ object Libs {
     val support_v4 = "com.android.support:support-v4:${Versions.support}"
     val support_core_utils = "com.android.support:support-core-utils:${Versions.support}"
     val support_constraint_layout = "com.android.support.constraint:constraint-layout:${Versions.constraint_layout}"
+    val support_multidex = "com.android.support:multidex:${Versions.multidex}"
 
     /** room 数据库 */
     val room_runtime = "android.arch.persistence.room:runtime:${Versions.room}"
@@ -135,9 +141,16 @@ object Libs {
     /** bugly 异常上报 */
     val bugly_runtime  = "com.tencent.bugly:crashreport:${Versions.bugly}"
 
+    /** tinker 热修复 */
+    val tinker_runtime  =  "com.tinkerpatch.sdk:tinkerpatch-android-sdk:${Versions.tinkerpatch}"
+    val tinker_anno  =     "com.tinkerpatch.tinker:tinker-android-anno:${Versions.tinker}"
+    val tinker_compiler  = "com.tinkerpatch.tinker:tinker-android-anno:${Versions.tinker}"
 
-    /** android_gradle_plugin */
+    /** android_gradle_plugin  */
     val android_gradle_plugin = "com.android.tools.build:gradle:${Versions.android_gradle_plugin}"
+
+    /** tinkerpatch_gradle_plugin tinker热修复 */
+    val tinkerpatch_gradle_plugin = "com.tinkerpatch.sdk:tinkerpatch-gradle-plugin:${Versions.tinkerpatch_gradle_plugin}"
 
     /** build_versions */
     val build_versions_compile_sdk = 27
@@ -149,6 +162,5 @@ object Libs {
     val versionCode = 1
     val versionName = "1.0.0"
     val applicationId = "com.msc.eyepetizer"
-
 
 }
