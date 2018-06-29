@@ -13,7 +13,7 @@ object Versions {
     const val arouter_processor_version = "1.1.4"
     const val constraint_layout = "1.0.2"
     const val glide = "4.7.1"
-    const val android_gradle_plugin = "3.1.2"
+    const val android_gradle_plugin = "3.1.0"
     const val tinkerpatch_gradle_plugin = "1.2.8"
     const val rxjava = "2.1.9"
     const val rx_android = "2.0.1"
@@ -153,10 +153,10 @@ object Libs {
     val tinkerpatch_gradle_plugin = "com.tinkerpatch.sdk:tinkerpatch-gradle-plugin:${Versions.tinkerpatch_gradle_plugin}"
 
     /** build_versions */
-    val build_versions_compile_sdk = 27
+    val build_versions_compile_sdk = 28
     val build_versions_min_sdk = 21
-    val build_versions_target_sdk = 27
-    val build_versions_build_tools = "27.0.3"
+    val build_versions_target_sdk = 28
+    val build_versions_build_tools = "28.0.0"
 
     /** versionCode */
     val versionCode = 1

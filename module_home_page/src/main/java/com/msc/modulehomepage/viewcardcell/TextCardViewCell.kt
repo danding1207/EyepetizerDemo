@@ -11,7 +11,7 @@ class TextCardViewCell : CommenDataCell<TextCardView, AllRecData.ItemListBeanX>(
     override fun bindView(view: TextCardView) {
         super.bindView(view)
 
-        when (mData!!.type) {
+        when (mData!!.data!!.type) {
             "header5" -> {
                 view.tvFooterTextContent!!.visibility = View.INVISIBLE
                 view.ivFooterArrow!!.visibility = View.INVISIBLE

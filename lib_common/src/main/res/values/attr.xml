@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="interval" format="integer"/>
+<attr name="interval" format="integer"/>
     <attr name="showIndicator" format="boolean"/>
     <attr name="orientation" format="enum">
         <enum name="horizontal" value="0"/>
         <enum name="vertical" value="1"/>
     </attr>
     <attr name="autoPlaying" format="boolean"/>
+
     <declare-styleable name="RecyclerViewBannerBase">
         <attr name="interval"/>
         <attr name="showIndicator" />
@@ -34,6 +35,5 @@
         <attr name="centerScale" format="float"/>
         <attr name="moveSpeed" format="float"/>
     </declare-styleable>
-
 
 </resources>

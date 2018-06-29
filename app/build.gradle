@@ -18,6 +18,11 @@ android {
 //        flavorDimensions Libs.versionCode
         multiDexEnabled true
 //        multiDexKeepProguard file("tinkerMultidexKeep.pro") //keep specific classes using proguard syntax
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
     }
 
     signingConfigs {
@@ -90,7 +95,7 @@ dependencies {
 
     //tinker
     implementation(Libs.tinker_runtime) { changing = true }
-    implementation(Libs.tinker_anno) { changing = true }
+    compileOnly(Libs.tinker_anno) { changing = true }
     kapt(Libs.tinker_compiler) { changing = true }
 
 }
