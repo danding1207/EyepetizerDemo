@@ -3,8 +3,8 @@ apply plugin: 'tinkerpatch-support'
 /**
  * TODO: 请按自己的需求修改为适应自己工程的参数
  */
-def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-1.0.0-0629-15-34-24"
+def bakPath = file("${rootDir}/bakApk/")
+def baseInfo = "app-1.0.0-0702-15-31-51"
 def variantName = "release"
 
 /**
@@ -36,7 +36,7 @@ tinkerpatchSupport {
     appKey = "e1b59c1dee83cc45"
 
     /** 注意: 若发布新的全量包, appVersion一定要更新 **/
-    appVersion = "1.0.0"
+    appVersion = "1.0.1"
 
     /**
      * （可选）重命名备份文件的格式化字符串，默认为'${appName}-${variantName}'

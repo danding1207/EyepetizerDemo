@@ -15,6 +15,7 @@ object Versions {
     const val glide = "4.7.1"
     const val android_gradle_plugin = "3.1.0"
     const val tinkerpatch_gradle_plugin = "1.2.8"
+    const val walle_gradle_plugin = "1.1.6"
     const val rxjava = "2.1.9"
     const val rx_android = "2.0.1"
     const val logger = "2.2.0"
@@ -32,6 +33,7 @@ object Versions {
     const val bugly = "latest.release"
     const val tinker = "1.9.8"
     const val tinkerpatch = "1.2.8"
+    const val walle = "1.1.6"
 
 }
 
@@ -146,11 +148,17 @@ object Libs {
     val tinker_anno  =     "com.tinkerpatch.tinker:tinker-android-anno:${Versions.tinker}"
     val tinker_compiler  = "com.tinkerpatch.tinker:tinker-android-anno:${Versions.tinker}"
 
+    /** walle 热修复 */
+    val walle_runtime  =  "com.meituan.android.walle:library:${Versions.walle}"
+
     /** android_gradle_plugin  */
     val android_gradle_plugin = "com.android.tools.build:gradle:${Versions.android_gradle_plugin}"
 
     /** tinkerpatch_gradle_plugin tinker热修复 */
     val tinkerpatch_gradle_plugin = "com.tinkerpatch.sdk:tinkerpatch-gradle-plugin:${Versions.tinkerpatch_gradle_plugin}"
+
+    /** walle_gradle_plugin walle渠道包打包 */
+    val walle_gradle_plugin = "com.meituan.android.walle:plugin:${Versions.walle_gradle_plugin}"
 
     /** build_versions */
     val build_versions_compile_sdk = 28
@@ -159,8 +167,8 @@ object Libs {
     val build_versions_build_tools = "28.0.0"
 
     /** versionCode */
-    val versionCode = 1
-    val versionName = "1.0.0"
+    val versionCode = 2
+    val versionName = "1.0.1"
     val applicationId = "com.msc.eyepetizer"
 
 }

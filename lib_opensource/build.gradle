@@ -68,8 +68,8 @@ dependencies {
     api(Libs.work_runtime, { exclude group: 'com.android.support' })
 
     // Architecture components navigation
-    api(Libs.navigation_runtime, { exclude group: 'com.android.support' })
-    api(Libs.navigation_fragment, { exclude group: 'com.android.support' })
+//    api(Libs.navigation_runtime, { exclude group: 'com.android.support' })
+//    api(Libs.navigation_fragment, { exclude group: 'com.android.support' })
 
     // bottomnavigationviewex
     api(Libs.bottomnavigationviewex_runtime, { exclude group: 'com.android.support' })

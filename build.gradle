@@ -5,6 +5,7 @@ buildscript {
         classpath Libs.android_gradle_plugin
         classpath Libs.kotlin_plugin
         classpath Libs.tinkerpatch_gradle_plugin
+//        classpath Libs.walle_gradle_plugin
     }
 }
 

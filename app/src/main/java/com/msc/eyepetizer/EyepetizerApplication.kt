@@ -11,6 +11,8 @@ import com.tencent.bugly.crashreport.CrashReport.UserStrategy
 import com.tencent.tinker.loader.app.ApplicationLike
 import com.tinkerpatch.sdk.TinkerPatch
 import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike
+import com.meituan.android.walle.WalleChannelReader
+
 
 class EyepetizerApplication : BaseApplication() {
 
@@ -34,8 +36,11 @@ class EyepetizerApplication : BaseApplication() {
 //        strategy.appChannel = "myChannel"; //设置渠道
         strategy.appPackageName = BuildConfig.APPLICATION_ID //App的包名
 
-        CrashReport.initCrashReport(this, BuildConfig.BUGLY_APPID, true, strategy);
+        CrashReport.initCrashReport(this, BuildConfig.BUGLY_APPID, true, strategy)
         CrashReport.setUserId(Utils.getUDID()) //该用户本次启动后的异常日志用户ID都将是9 527
+
+        val channel = WalleChannelReader.getChannel(this.applicationContext)
+        Logger.i("Current channel is ： $channel")
 
     }
 
@@ -57,10 +62,10 @@ class EyepetizerApplication : BaseApplication() {
                     .reflectPatchLibrary()
                     .setPatchRollbackOnScreenOff(true)
                     .setPatchRestartOnSrceenOff(true)
-                    .setFetchPatchIntervalByHours(3)
+                    .setFetchPatchIntervalByHours(1)
 
             // 获取当前的补丁版本
-            Logger.d("Current patch version is " + TinkerPatch.with().patchVersion!!)
+            Logger.i("Current patch version is " + TinkerPatch.with().patchVersion!!)
 
             // fetchPatchUpdateAndPollWithInterval 与 fetchPatchUpdate(false)
             // 不同的是，会通过handler的方式去轮询

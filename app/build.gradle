@@ -3,7 +3,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-
 android {
 
     compileSdkVersion Libs.build_versions_compile_sdk
@@ -23,6 +22,11 @@ android {
                 includeCompileClasspath = true
             }
         }
+    }
+
+    aaptOptions {
+        additionalParameters '--utf16'
+        failOnMissingConfigEntry true
     }
 
     signingConfigs {
@@ -97,6 +101,9 @@ dependencies {
     implementation(Libs.tinker_runtime) { changing = true }
     compileOnly(Libs.tinker_anno) { changing = true }
     kapt(Libs.tinker_compiler) { changing = true }
+
+    //walle
+    implementation(Libs.walle_runtime) { changing = true }
 
 }
 
