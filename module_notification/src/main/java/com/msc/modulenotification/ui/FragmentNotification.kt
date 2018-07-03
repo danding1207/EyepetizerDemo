@@ -89,11 +89,9 @@ class FragmentNotification : BaseFragment() {
         model.liveObservableData.observe(this, Observer<MessagesData> { messagesData ->
             Logger.d("subscribeToModel onChanged onChanged")
             model.setUiObservableData(messagesData)
-
             if(messagesData!!.messageList!![messagesData.messageList!!.size-1].type == "end") {
                 refreshLayout.isEnableLoadMore = false
             }
-
             refreshLayout.finishRefresh(true)//传入false表示刷新失败
             refreshLayout.finishLoadMore()
             val data = Gson().toJson(messagesData.messageList)
@@ -111,56 +109,56 @@ class FragmentNotification : BaseFragment() {
 
         override fun defaultClick(targetView: View?, cell: BaseCell<*>?, eventType: Int) {
             super.defaultClick(targetView, cell, eventType)
-            val mData: AllRecData.ItemListBeanX.DataBeanXX? = Gson().fromJson<AllRecData.ItemListBeanX.DataBeanXX>(cell!!.optStringParam("data"), AllRecData.ItemListBeanX.DataBeanXX::class.java)
-            when (cell.stringType) {
-                "followCard", "autoPlayFollowCard", "pictureFollowCard" -> {
-                    when (mData!!.content!!.type) {
-                        "video" -> {
-                            Observable.fromIterable(mData.content!!.data!!.playInfo)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .filter {
-                                        return@filter "high" == it.type && it.url != null
-                                    }
-                                    .subscribe { it ->
-                                        ARouter.getInstance()
-                                                .build(ARouterPath.VIDEO_PLAYER_ACT)
-                                                .withString("videoUri", it.url)
-                                                .navigation()
-                                    }
-                        }
-                        "ugcPicture" -> {
-                            ARouter.getInstance()
-                                    .build(ARouterPath.PICTURE_DETAIL_ACT)
-                                    .withString("avatarUrl", mData.content!!.data!!.owner!!.avatar)
-                                    .withString("nickname", mData.content!!.data!!.owner!!.nickname)
-                                    .withString("description", mData.content!!.data!!.description)
-                                    .withString("collectionCount", mData.content!!.data!!.consumption!!.collectionCount.toString())
-                                    .withString("shareCount", mData.content!!.data!!.consumption!!.shareCount.toString())
-                                    .withString("replyCount", mData.content!!.data!!.consumption!!.replyCount.toString())
-                                    .withString("pictureUrl", mData.content!!.data!!.url)
-                                    .navigation()
-                        }
-                    }
-
-                }
-                "videoSmallCard" -> {
-                    if (mData !== null && mData.resourceType != null && "video" == mData.resourceType) {
-                        Observable.fromIterable(mData.playInfo)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .filter {
-                                    return@filter "high" == it.type && it.url != null
-                                }
-                                .subscribe { it ->
-                                    ARouter.getInstance()
-                                            .build(ARouterPath.VIDEO_PLAYER_ACT)
-                                            .withString("videoUri", it.url)
-                                            .navigation()
-                                }
-                    }
-                }
-            }
+//            val mData: AllRecData.ItemListBeanX.DataBeanXX? = Gson().fromJson<AllRecData.ItemListBeanX.DataBeanXX>(cell!!.optStringParam("data"), AllRecData.ItemListBeanX.DataBeanXX::class.java)
+//            when (cell.stringType) {
+//                "followCard", "autoPlayFollowCard", "pictureFollowCard" -> {
+//                    when (mData!!.content!!.type) {
+//                        "video" -> {
+//                            Observable.fromIterable(mData.content!!.data!!.playInfo)
+//                                    .subscribeOn(Schedulers.io())
+//                                    .observeOn(AndroidSchedulers.mainThread())
+//                                    .filter {
+//                                        return@filter "high" == it.type && it.url != null
+//                                    }
+//                                    .subscribe { it ->
+//                                        ARouter.getInstance()
+//                                                .build(ARouterPath.VIDEO_PLAYER_ACT)
+//                                                .withString("videoUri", it.url)
+//                                                .navigation()
+//                                    }
+//                        }
+//                        "ugcPicture" -> {
+//                            ARouter.getInstance()
+//                                    .build(ARouterPath.PICTURE_DETAIL_ACT)
+//                                    .withString("avatarUrl", mData.content!!.data!!.owner!!.avatar)
+//                                    .withString("nickname", mData.content!!.data!!.owner!!.nickname)
+//                                    .withString("description", mData.content!!.data!!.description)
+//                                    .withString("collectionCount", mData.content!!.data!!.consumption!!.collectionCount.toString())
+//                                    .withString("shareCount", mData.content!!.data!!.consumption!!.shareCount.toString())
+//                                    .withString("replyCount", mData.content!!.data!!.consumption!!.replyCount.toString())
+//                                    .withString("pictureUrl", mData.content!!.data!!.url)
+//                                    .navigation()
+//                        }
+//                    }
+//
+//                }
+//                "videoSmallCard" -> {
+//                    if (mData !== null && mData.resourceType != null && "video" == mData.resourceType) {
+//                        Observable.fromIterable(mData.playInfo)
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .filter {
+//                                    return@filter "high" == it.type && it.url != null
+//                                }
+//                                .subscribe { it ->
+//                                    ARouter.getInstance()
+//                                            .build(ARouterPath.VIDEO_PLAYER_ACT)
+//                                            .withString("videoUri", it.url)
+//                                            .navigation()
+//                                }
+//                    }
+//                }
+//            }
         }
     }
 

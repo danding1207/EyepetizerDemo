@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme.NoActionBar" >
 
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".ui.WelcomeActivity"
             android:theme="@style/AppTheme.Fullscreen" />
 
     </application>

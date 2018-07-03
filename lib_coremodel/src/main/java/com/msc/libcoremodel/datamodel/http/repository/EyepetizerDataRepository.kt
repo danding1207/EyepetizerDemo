@@ -96,7 +96,15 @@ object EyepetizerDataRepository {
 
 
 
-
+    //可以操作Observable来筛选网络或者是本地数据
+    fun getConfigsDataRepository(model: String,udid: String, vc: String,
+                                  vn: String, deviceModel: String, first_channel: String,
+                                  last_channel: String, system_version_code: String): Observable<ConfigsData> {
+        return ApiClient
+                .eyepetizerDataService.getConfigsData(model, udid, vc,
+                vn, deviceModel, first_channel,
+                last_channel, system_version_code)
+    }
 
 
 

@@ -38,7 +38,7 @@ class FragmentHome : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         ARouter.getInstance().inject(this@FragmentHome)
         viewModel = ViewModelProviders.of(this@FragmentHome).get(HomeViewModel::class.java!!)
-        viewModel.initData()
+//        viewModel.initData()
         subscribeToModel(viewModel)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
@@ -86,22 +86,18 @@ class FragmentHome : BaseFragment() {
         //观察数据变化来刷新UI
         model.liveObservableData!!.observe(this, Observer<AllRecData> { allRecData ->
             Logger.d("subscribeToModel onChanged onChanged")
-            model.setUiObservableData(allRecData)
             refreshLayout.finishRefresh(true)//传入false表示刷新失败
             refreshLayout.finishLoadMore()
             val data = Gson().toJson(allRecData!!.itemList)
-            Logger.d(data)
             val s = JSONArray(data)
             engine.setData(s)
         })
     }
 
     class SampleClickSupport : SimpleClickSupport() {
-
         init {
             setOptimizedMode(true)
         }
-
         override fun defaultClick(targetView: View?, cell: BaseCell<*>?, eventType: Int) {
             super.defaultClick(targetView, cell, eventType)
             val mData: AllRecData.ItemListBeanX.DataBeanXX? = Gson().fromJson<AllRecData.ItemListBeanX.DataBeanXX>(cell!!.optStringParam("data"), AllRecData.ItemListBeanX.DataBeanXX::class.java)
@@ -109,18 +105,26 @@ class FragmentHome : BaseFragment() {
                 "followCard", "autoPlayFollowCard", "pictureFollowCard" -> {
                     when (mData!!.content!!.type) {
                         "video" -> {
-                            Observable.fromIterable(mData.content!!.data!!.playInfo)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .filter {
-                                        return@filter "high" == it.type && it.url != null
-                                    }
-                                    .subscribe { it ->
-                                        ARouter.getInstance()
-                                                .build(ARouterPath.VIDEO_PLAYER_ACT)
-                                                .withString("videoUri", it.url)
-                                                .navigation()
-                                    }
+                            if(mData.content!!.data!!.playInfo==null) {
+                                ARouter.getInstance()
+                                        .build(ARouterPath.VIDEO_PLAYER_ACT)
+                                        .withString("videoUri", mData.content!!.data!!.playUrl)
+                                        .navigation()
+                            } else {
+                                Observable.fromIterable(mData.content!!.data!!.playInfo)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .filter {
+                                            return@filter "high" == it.type && it.url != null
+                                        }
+                                        .subscribe { it ->
+                                            ARouter.getInstance()
+                                                    .build(ARouterPath.VIDEO_PLAYER_ACT)
+                                                    .withString("videoUri", it.url)
+                                                    .navigation()
+                                        }
+                            }
+
                         }
                         "ugcPicture" -> {
                             ARouter.getInstance()

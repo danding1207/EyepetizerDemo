@@ -60,6 +60,7 @@ class EyepetizerApplication : BaseApplication() {
             // 初始化TinkerPatch SDK
             TinkerPatch.init(tinkerApplicationLike)
                     .reflectPatchLibrary()
+                    .fetchPatchUpdate(true)
                     .setPatchRollbackOnScreenOff(true)
                     .setPatchRestartOnSrceenOff(true)
                     .setFetchPatchIntervalByHours(1)

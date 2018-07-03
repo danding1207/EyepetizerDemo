@@ -167,8 +167,8 @@ object Libs {
     val build_versions_build_tools = "28.0.0"
 
     /** versionCode */
-    val versionCode = 2
-    val versionName = "1.0.1"
+    val versionCode = 352
+    val versionName = "4.0"
     val applicationId = "com.msc.eyepetizer"
 
 }

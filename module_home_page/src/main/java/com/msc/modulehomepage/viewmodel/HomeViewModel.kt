@@ -11,6 +11,7 @@ import com.msc.libcoremodel.datamodel.http.entities.AllRecData
 
 import com.msc.libcoremodel.datamodel.http.repository.EyepetizerDataRepository
 import com.msc.libcoremodel.datamodel.http.utils.NetUtils
+import com.msc.modulehomepage.BuildConfig
 import com.orhanobut.logger.Logger
 
 import io.reactivex.Observer
@@ -29,20 +30,19 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
      */
     var liveObservableData: MutableLiveData<AllRecData>
 
-    //UI使用可观察的数据 ObservableField是一个包装类
-    //    public ObservableField<TabsSelectedData> uiObservableData = new ObservableField<>();
-
     private val mDisposable = CompositeDisposable()
 
     init {
         ABSENT.value = null
-        Logger.d("=======GirlsViewModel--init=========")
+        Logger.d("=======HomeViewModel--init=========")
         mApplication = application
         //这里的trigger为网络检测，也可以换成缓存数据是否存在检测
         liveObservableData = Transformations
-                .switchMap<Boolean, AllRecData>(NetUtils.netConnected(mApplication),
-                        Function<Boolean, LiveData<AllRecData>> { isNetConnected ->
-                            Logger.d("=======GirlsViewModel--apply=========")
+                .switchMap<Boolean, AllRecData>(
+                        NetUtils.netConnected(mApplication),
+                        Function<Boolean, LiveData<AllRecData>> {
+                            isNetConnected ->
+                            Logger.d("=======HomeViewModel--apply=========")
                             if (!isNetConnected) {
                                 return@Function ABSENT //网络未连接返回空
                             }
@@ -65,10 +65,11 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
      * @param
      */
     fun initData(liveObservableData: MutableLiveData<AllRecData>) {
-        Logger.d("=======GirlsViewModel--initData=========")
+        Logger.d("=======HomeViewModel--initData=========")
         EyepetizerDataRepository.getAllRecDataRepository(
                 "0", Utils.getUDID(),
-                "341","3.19",
+                BuildConfig.VERSION_CODE.toString(),
+                BuildConfig.VERSION_NAME,
                 Utils.getSystemModel(),
                 "eyepetizer_xiaomi_market",
                 "eyepetizer_xiaomi_market",
@@ -81,15 +82,16 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                         mDisposable.add(d)
                     }
                     override fun onNext(value: AllRecData) {
-                        Logger.d("=======GirlsViewModel--onNext=========")
+                        Logger.d("=======HomeViewModel--onNext=========")
                         liveObservableData.value = value
                     }
                     override fun onError(e: Throwable) {
-                        Logger.d("=======GirlsViewModel--onError=========")
+                        liveObservableData.value = ABSENT.value //网络未连接返回空
+                        Logger.e("=======HomeViewModel--onError=========")
                         e.printStackTrace()
                     }
                     override fun onComplete() {
-                        Logger.d("=======GirlsViewModel--onComplete=========")
+                        Logger.d("=======HomeViewModel--onComplete=========")
                     }
                 })
     }
@@ -113,10 +115,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : Observer<AllRecData> {
                         override fun onSubscribe(d: Disposable) {
-                            mDisposable.add(d)
                         }
                         override fun onNext(value: AllRecData) {
-                            Logger.d("=======GirlsViewModel--onNext=========")
+                            Logger.d("=======HomeViewModel--onNext=========")
                             val oldValue = liveObservableData.value
                             (oldValue!!.itemList as MutableList<AllRecData.ItemListBeanX>).addAll(value.itemList!!)
                             oldValue.count +=value.count
@@ -126,11 +127,11 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                             liveObservableData.value = oldValue
                         }
                         override fun onError(e: Throwable) {
-                            Logger.d("=======GirlsViewModel--onError=========")
+                            Logger.d("=======HomeViewModel--onError=========")
                             e.printStackTrace()
                         }
                         override fun onComplete() {
-                            Logger.d("=======GirlsViewModel--onComplete=========")
+                            Logger.d("=======HomeViewModel--onComplete=========")
                         }
                     })
         } else {
@@ -139,18 +140,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    /**
-     * 设置
-     * @param product
-     */
-    fun setUiObservableData(product: AllRecData?) {
-//        this.uiObservableData.set(product)
-    }
-
     override fun onCleared() {
         super.onCleared()
         mDisposable.clear()
-        Logger.d("=======GirlsViewModel--onCleared=========")
+        Logger.d("=======HomeViewModel--onCleared=========")
     }
 
     companion object {
