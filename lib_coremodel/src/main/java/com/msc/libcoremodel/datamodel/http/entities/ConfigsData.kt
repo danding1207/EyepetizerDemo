@@ -31,6 +31,11 @@ class ConfigsData {
         var videoNum: Int = 0
         var version: String? = null
         var offset: Int = 0
+
+        override fun toString(): String {
+            return "AutoCacheBean(isForceOff=$isForceOff, videoNum=$videoNum, version=$version, offset=$offset)"
+        }
+
     }
 
     class StartPageAdBean {
@@ -48,6 +53,9 @@ class ConfigsData {
         var endTime: Long = 0
         var newImageUrl: String? = null
         var adTrack: List<*>? = null
+        override fun toString(): String {
+            return "StartPageAdBean(displayTimeDuration=$displayTimeDuration, isShowBottomBar=$isShowBottomBar, isCountdown=$isCountdown, actionUrl=$actionUrl, blurredImageUrl=$blurredImageUrl, isCanSkip=$isCanSkip, version=$version, imageUrl=$imageUrl, displayCount=$displayCount, startTime=$startTime, endTime=$endTime, newImageUrl=$newImageUrl, adTrack=$adTrack)"
+        }
     }
 
     class VideoAdsConfigBean {
@@ -82,6 +90,13 @@ class ConfigsData {
             var endTime: Long = 0
             var status: String? = null
             var adTrack: List<*>? = null
+            override fun toString(): String {
+                return "ListBean(id=$id, icon=$icon, title=$title, description=$description, url=$url, actionUrl=$actionUrl, imageUrl=$imageUrl, displayTimeDuration=$displayTimeDuration, displayCount=$displayCount, isShowImage=$isShowImage, showImageTime=$showImageTime, loadingMode=$loadingMode, isCountdown=$isCountdown, isCanSkip=$isCanSkip, timeBeforeSkip=$timeBeforeSkip, isShowActionButton=$isShowActionButton, videoType=$videoType, videoAdType=$videoAdType, categoryId=$categoryId, position=$position, startTime=$startTime, endTime=$endTime, status=$status, adTrack=$adTrack)"
+            }
+        }
+
+        override fun toString(): String {
+            return "VideoAdsConfigBean(version=$version, list=$list)"
         }
     }
 
@@ -90,12 +105,18 @@ class ConfigsData {
         var imageUrl: String? = null
         var actionUrl: String? = null
         var version: String? = null
+        override fun toString(): String {
+            return "StartPageBean(imageUrl=$imageUrl, actionUrl=$actionUrl, version=$version)"
+        }
     }
 
     class LogBean {
 
         var isPlayLog: Boolean = false
         var version: String? = null
+        override fun toString(): String {
+            return "LogBean(isPlayLog=$isPlayLog, version=$version)"
+        }
     }
 
     class IssueCoverBean {
@@ -106,6 +127,13 @@ class ConfigsData {
         class IssueLogoBean {
             var weekendExtra: String? = null
             var isAdapter: Boolean = false
+            override fun toString(): String {
+                return "IssueLogoBean(weekendExtra=$weekendExtra, isAdapter=$isAdapter)"
+            }
+        }
+
+        override fun toString(): String {
+            return "IssueCoverBean(issueLogo=$issueLogo, version=$version)"
         }
     }
 
@@ -125,24 +153,36 @@ class ConfigsData {
         var endTime: Long = 0
         var timeBeforeSkip: Int = 0
         var adTrack: List<*>? = null
+        override fun toString(): String {
+            return "StartPageVideoBean(displayTimeDuration=$displayTimeDuration, showImageTime=$showImageTime, actionUrl=$actionUrl, isCountdown=$isCountdown, isShowImage=$isShowImage, isCanSkip=$isCanSkip, version=$version, url=$url, loadingMode=$loadingMode, displayCount=$displayCount, startTime=$startTime, endTime=$endTime, timeBeforeSkip=$timeBeforeSkip, adTrack=$adTrack)"
+        }
     }
 
     class ConsumptionBean {
 
         var isDisplay: Boolean = false
         var version: String? = null
+        override fun toString(): String {
+            return "ConsumptionBean(isDisplay=$isDisplay, version=$version)"
+        }
     }
 
     class LaunchBean {
 
         var version: String? = null
         var adTrack: List<*>? = null
+        override fun toString(): String {
+            return "LaunchBean(version=$version, adTrack=$adTrack)"
+        }
     }
 
     class PreloadBean {
 
         var version: String? = null
         var isOn: Boolean = false
+        override fun toString(): String {
+            return "PreloadBean(version=$version, isOn=$isOn)"
+        }
     }
 
     class PushBean {
@@ -151,12 +191,18 @@ class ConfigsData {
         var endTime: Int = 0
         var message: String? = null
         var version: String? = null
+        override fun toString(): String {
+            return "PushBean(startTime=$startTime, endTime=$endTime, message=$message, version=$version)"
+        }
     }
 
     class AndroidPlayerBean {
 
         var version: String? = null
         var playerList: List<String>? = null
+        override fun toString(): String {
+            return "AndroidPlayerBean(version=$version, playerList=$playerList)"
+        }
     }
 
     class ProfilePageAdBean {
@@ -167,12 +213,18 @@ class ConfigsData {
         var endTime: Long = 0
         var version: String? = null
         var adTrack: List<*>? = null
+        override fun toString(): String {
+            return "ProfilePageAdBean(imageUrl=$imageUrl, actionUrl=$actionUrl, startTime=$startTime, endTime=$endTime, version=$version, adTrack=$adTrack)"
+        }
     }
 
     class FirstLaunchBean {
 
         var isShowFirstDetail: Boolean = false
         var version: String? = null
+        override fun toString(): String {
+            return "FirstLaunchBean(isShowFirstDetail=$isShowFirstDetail, version=$version)"
+        }
     }
 
     class ShareTitleBean {
@@ -181,6 +233,9 @@ class ConfigsData {
         var wechatMoments: String? = null
         var qzone: String? = null
         var version: String? = null
+        override fun toString(): String {
+            return "ShareTitleBean(weibo=$weibo, wechatMoments=$wechatMoments, qzone=$qzone, version=$version)"
+        }
     }
 
     class CampaignInDetailBean {
@@ -190,6 +245,9 @@ class ConfigsData {
         var actionUrl: String? = null
         var showType: String? = null
         var version: String? = null
+        override fun toString(): String {
+            return "CampaignInDetailBean(imageUrl=$imageUrl, isAvailable=$isAvailable, actionUrl=$actionUrl, showType=$showType, version=$version)"
+        }
     }
 
     class CampaignInFeedBean {
@@ -198,12 +256,18 @@ class ConfigsData {
         var isAvailable: Boolean = false
         var actionUrl: String? = null
         var version: String? = null
+        override fun toString(): String {
+            return "CampaignInFeedBean(imageUrl=$imageUrl, isAvailable=$isAvailable, actionUrl=$actionUrl, version=$version)"
+        }
     }
 
     class ReplyBean {
 
         var version: String? = null
         var isOn: Boolean = false
+        override fun toString(): String {
+            return "ReplyBean(version=$version, isOn=$isOn)"
+        }
     }
 
     class StartPageVideoConfigBean {
@@ -237,6 +301,9 @@ class ConfigsData {
             var endTime: Long = 0
             var status: String? = null
             var adTrack: List<*>? = null
+            override fun toString(): String {
+                return "ListBeanX(id=$id, icon=$icon, title=$title, description=$description, url=$url, actionUrl=$actionUrl, imageUrl=$imageUrl, displayTimeDuration=$displayTimeDuration, displayCount=$displayCount, isShowImage=$isShowImage, showImageTime=$showImageTime, loadingMode=$loadingMode, isCountdown=$isCountdown, isCanSkip=$isCanSkip, timeBeforeSkip=$timeBeforeSkip, isShowActionButton=$isShowActionButton, videoType=$videoType, videoAdType=$videoAdType, categoryId=$categoryId, position=$position, startTime=$startTime, endTime=$endTime, status=$status, adTrack=$adTrack)"
+            }
         }
     }
 
@@ -244,11 +311,21 @@ class ConfigsData {
 
         var normal: String? = null
         var version: String? = null
+        override fun toString(): String {
+            return "PushInfoBean(normal=$normal, version=$version)"
+        }
     }
 
     class HomepageBean {
 
         var cover: String? = null
         var version: String? = null
+        override fun toString(): String {
+            return "HomepageBean(cover=$cover, version=$version)"
+        }
+    }
+
+    override fun toString(): String {
+        return "ConfigsData(autoCache=$autoCache, startPageAd=$startPageAd, videoAdsConfig=$videoAdsConfig, startPage=$startPage, log=$log, issueCover=$issueCover, startPageVideo=$startPageVideo, consumption=$consumption, launch=$launch, preload=$preload, version=$version, push=$push, androidPlayer=$androidPlayer, profilePageAd=$profilePageAd, firstLaunch=$firstLaunch, shareTitle=$shareTitle, campaignInDetail=$campaignInDetail, campaignInFeed=$campaignInFeed, reply=$reply, startPageVideoConfig=$startPageVideoConfig, pushInfo=$pushInfo, homepage=$homepage)"
     }
 }

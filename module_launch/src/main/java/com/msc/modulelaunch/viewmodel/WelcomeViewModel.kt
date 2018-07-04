@@ -83,6 +83,7 @@ class WelcomeViewModel(application: Application) : AndroidViewModel(application)
                     }
                     override fun onNext(value: ConfigsData) {
                         Logger.d("=======WelcomeViewModel--onNext=========")
+                        Logger.d("=======ConfigsData=========:"+value.toString())
                         liveObservableData.value = value
                     }
                     override fun onError(e: Throwable) {
