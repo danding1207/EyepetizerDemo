@@ -11,7 +11,12 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.google.gson.Gson
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseFragment
+import com.msc.libcommon.viewcard.TextCardView
+import com.msc.libcommon.viewcard.VideoSmallCardView
+import com.msc.libcommon.viewcardcell.TextCardViewCell
+import com.msc.libcommon.viewcardcell.VideoSmallCardViewCell
 import com.msc.libcoremodel.datamodel.http.entities.AllRecData
+import com.msc.libcoremodel.datamodel.http.entities.CommonData
 import com.msc.modulehomepage.R
 import com.msc.modulehomepage.viewmodel.HomeViewModel
 import com.msc.modulehomepage.viewcard.*
@@ -65,7 +70,7 @@ class FragmentHome : BaseFragment() {
         engine.bindView(recyclerView)
         //Step 6: enable auto load more if your page's data is lazy loaded
         engine.enableAutoLoadMore(true)
-        engine.addSimpleClickSupport(SampleClickSupport())
+        engine.addSimpleClickSupport(viewModel.listener)
 
         //Step 9: set an offset to fix card
 
@@ -84,81 +89,16 @@ class FragmentHome : BaseFragment() {
      */
     private fun subscribeToModel(model: HomeViewModel) {
         //观察数据变化来刷新UI
-        model.liveObservableData!!.observe(this, Observer<AllRecData> { allRecData ->
+        model.liveObservableData!!.observe(this, Observer<CommonData> { commonData ->
             Logger.d("subscribeToModel onChanged onChanged")
             refreshLayout.finishRefresh(true)//传入false表示刷新失败
             refreshLayout.finishLoadMore()
-            val data = Gson().toJson(allRecData!!.itemList)
-            val s = JSONArray(data)
-            engine.setData(s)
-        })
-    }
-
-    class SampleClickSupport : SimpleClickSupport() {
-        init {
-            setOptimizedMode(true)
-        }
-        override fun defaultClick(targetView: View?, cell: BaseCell<*>?, eventType: Int) {
-            super.defaultClick(targetView, cell, eventType)
-            val mData: AllRecData.ItemListBeanX.DataBeanXX? = Gson().fromJson<AllRecData.ItemListBeanX.DataBeanXX>(cell!!.optStringParam("data"), AllRecData.ItemListBeanX.DataBeanXX::class.java)
-            when (cell.stringType) {
-                "followCard", "autoPlayFollowCard", "pictureFollowCard" -> {
-                    when (mData!!.content!!.type) {
-                        "video" -> {
-                            if(mData.content!!.data!!.playInfo==null) {
-                                ARouter.getInstance()
-                                        .build(ARouterPath.VIDEO_PLAYER_ACT)
-                                        .withString("videoUri", mData.content!!.data!!.playUrl)
-                                        .navigation()
-                            } else {
-                                Observable.fromIterable(mData.content!!.data!!.playInfo)
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .filter {
-                                            return@filter "high" == it.type && it.url != null
-                                        }
-                                        .subscribe { it ->
-                                            ARouter.getInstance()
-                                                    .build(ARouterPath.VIDEO_PLAYER_ACT)
-                                                    .withString("videoUri", it.url)
-                                                    .navigation()
-                                        }
-                            }
-
-                        }
-                        "ugcPicture" -> {
-                            ARouter.getInstance()
-                                    .build(ARouterPath.PICTURE_DETAIL_ACT)
-                                    .withString("avatarUrl", mData.content!!.data!!.owner!!.avatar)
-                                    .withString("nickname", mData.content!!.data!!.owner!!.nickname)
-                                    .withString("description", mData.content!!.data!!.description)
-                                    .withString("collectionCount", mData.content!!.data!!.consumption!!.collectionCount.toString())
-                                    .withString("shareCount", mData.content!!.data!!.consumption!!.shareCount.toString())
-                                    .withString("replyCount", mData.content!!.data!!.consumption!!.replyCount.toString())
-                                    .withString("pictureUrl", mData.content!!.data!!.url)
-                                    .navigation()
-                        }
-                    }
-
-                }
-                "videoSmallCard" -> {
-                    if (mData !== null && mData.resourceType != null && "video" == mData.resourceType) {
-                        Observable.fromIterable(mData.playInfo)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .filter {
-                                    return@filter "high" == it.type && it.url != null
-                                }
-                                .subscribe { it ->
-                                    ARouter.getInstance()
-                                            .build(ARouterPath.VIDEO_PLAYER_ACT)
-                                            .withString("videoUri", it.url)
-                                            .navigation()
-                                }
-                    }
-                }
+            if(commonData!=null) {
+                val data = Gson().toJson(commonData!!.itemList)
+                val s = JSONArray(data)
+                engine.setData(s)
             }
-        }
+        })
     }
 
 }

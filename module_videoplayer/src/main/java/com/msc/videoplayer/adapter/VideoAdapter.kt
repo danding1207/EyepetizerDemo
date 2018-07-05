@@ -14,7 +14,7 @@ class VideoAdapter(private val context: Context?) : RecyclerView.Adapter<Recycle
     val FOOTERTYPE = 1002
     val NORMALTYPE = 1003
 
-    var mData : AllRecData.DataBeanXX? = null
+    var mData : AllRecData.ItemListBeanX.DataBeanXX? = null
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
@@ -33,7 +33,7 @@ class VideoAdapter(private val context: Context?) : RecyclerView.Adapter<Recycle
         }
     }
 
-    fun setData(data : AllRecData.DataBeanXX?) {
+    fun setData(data : AllRecData.ItemListBeanX.DataBeanXX?) {
         mData = data
         notifyDataSetChanged()
     }

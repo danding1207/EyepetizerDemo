@@ -95,7 +95,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/cardView_author_cover"
         app:layout_constraintEnd_toEndOf="@+id/cardView_cover"
         app:layout_constraintTop_toTopOf="@+id/cardView_author_cover"
-        app:srcCompat="@drawable/ic_action_share" />
+        app:srcCompat="@drawable/ic_action_share_dark" />
 
     <TextView
         android:id="@+id/tv_title"

@@ -12,5 +12,8 @@
 
     <color name="tarColorPrimary">#AA000000</color>
 
+    <color name="transparent">#00FFFFFF</color>
+
+
 
 </resources>

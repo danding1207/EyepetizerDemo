@@ -1,4 +1,4 @@
-package com.msc.videoplayer
+package com.msc.videoplayer.ui
 
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -9,9 +9,9 @@ import com.bumptech.glide.Priority
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_picture_detail.*
-import com.orhanobut.logger.Logger
 import com.msc.libcommon.widget.transform.GlideCircleTransform
 import com.bumptech.glide.request.RequestOptions
+import com.msc.videoplayer.R
 
 
 @Route(path = ARouterPath.PICTURE_DETAIL_ACT)

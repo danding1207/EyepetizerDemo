@@ -12,12 +12,12 @@
         android:theme="@style/AppTheme.NoActionBar">
 
         <activity
-            android:name=".VideoPlayerActivity"
+            android:name=".ui.VideoPlayerActivity"
             android:hardwareAccelerated="true"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <activity
-            android:name=".PictureDetailActivity"
+            android:name=".ui.PictureDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
 

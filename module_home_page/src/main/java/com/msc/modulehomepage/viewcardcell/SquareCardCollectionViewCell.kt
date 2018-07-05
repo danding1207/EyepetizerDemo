@@ -5,12 +5,13 @@ import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.widget.banner.BannerLayout
 import com.msc.libcoremodel.datamodel.http.entities.AllRecData
 import com.msc.libcommon.base.CommenDataCell
+import com.msc.libcoremodel.datamodel.http.entities.CommonData
 import com.msc.modulehomepage.viewcard.SquareCardCollectionView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-internal class SquareCardCollectionViewCell : CommenDataCell<SquareCardCollectionView, AllRecData.ItemListBeanX>() {
+internal class SquareCardCollectionViewCell : CommenDataCell<SquareCardCollectionView, CommonData.CommonItemList>() {
 
     override fun bindView(view: SquareCardCollectionView) {
         super.bindView(view)

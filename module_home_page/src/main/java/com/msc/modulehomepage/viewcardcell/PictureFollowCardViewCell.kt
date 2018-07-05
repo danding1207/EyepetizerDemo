@@ -9,9 +9,10 @@ import com.msc.libcommon.util.StringUtils
 import com.msc.libcoremodel.datamodel.http.entities.AllRecData
 import com.msc.libcommon.base.CommenDataCell
 import com.msc.libcommon.util.DensityUtil
+import com.msc.libcoremodel.datamodel.http.entities.CommonData
 import com.msc.modulehomepage.viewcard.PictureFollowCardView
 
-class PictureFollowCardViewCell : CommenDataCell<PictureFollowCardView, AllRecData.ItemListBeanX>() {
+class PictureFollowCardViewCell : CommenDataCell<PictureFollowCardView, CommonData.CommonItemList>() {
 
     var drawableWidth =0
     var drawableHeight =0

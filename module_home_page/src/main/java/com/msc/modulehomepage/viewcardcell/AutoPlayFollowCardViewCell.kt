@@ -14,9 +14,10 @@ import com.google.android.exoplayer2.util.Util
 import com.msc.libcommon.util.StringUtils
 import com.msc.libcoremodel.datamodel.http.entities.AllRecData
 import com.msc.libcommon.base.CommenDataCell
+import com.msc.libcoremodel.datamodel.http.entities.CommonData
 import com.msc.modulehomepage.viewcard.AutoPlayFollowCardView
 
-class AutoPlayFollowCardViewCell : CommenDataCell<AutoPlayFollowCardView, AllRecData.ItemListBeanX>() {
+class AutoPlayFollowCardViewCell : CommenDataCell<AutoPlayFollowCardView, CommonData.CommonItemList>() {
 
     override fun bindView(view: AutoPlayFollowCardView) {
         super.bindView(view)

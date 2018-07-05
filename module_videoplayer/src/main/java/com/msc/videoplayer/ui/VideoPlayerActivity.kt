@@ -1,5 +1,7 @@
-package com.msc.videoplayer
+package com.msc.videoplayer.ui
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +11,7 @@ import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.Button
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.offline.FilteringManifestParser
 import com.google.android.exoplayer2.source.ExtractorMediaSource
@@ -32,11 +35,32 @@ import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.util.EventLogger
 import com.google.android.exoplayer2.util.Util
+import com.google.gson.Gson
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseActivity
 import com.msc.libcommon.util.DensityUtil
+import com.msc.libcommon.viewcard.EndCardView
+import com.msc.libcommon.viewcard.TextCardView
+import com.msc.libcommon.viewcard.VideoSmallCardView
+import com.msc.libcommon.viewcardcell.EndCardViewCell
+import com.msc.libcommon.viewcardcell.TextCardViewCell
+import com.msc.libcommon.viewcardcell.VideoSmallCardViewCell
+import com.msc.libcoremodel.datamodel.http.entities.AllRecData
+import com.msc.libcoremodel.datamodel.http.entities.CommonData
+import com.msc.libcoremodel.datamodel.http.entities.VideoRelatedData
+import com.msc.videoplayer.utils.DownloadManagerInitor
+import com.msc.videoplayer.R
+import com.msc.videoplayer.viewmodel.VideoPlayerViewModel
 import com.orhanobut.logger.Logger
+import com.tmall.wireless.tangram.TangramBuilder
+import com.tmall.wireless.tangram.TangramEngine
+import com.tmall.wireless.tangram.structure.BaseCell
+import com.tmall.wireless.tangram.support.SimpleClickSupport
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_video_player.*
+import org.json.JSONArray
 import java.net.CookieHandler
 import java.net.CookieManager
 import java.net.CookiePolicy
@@ -69,6 +93,10 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
 
     val PREFER_EXTENSION_DECODERS_EXTRA = "prefer_extension_decoders"
 
+    private lateinit var viewModel: VideoPlayerViewModel
+    private lateinit var engine: TangramEngine
+    private lateinit var builder: TangramBuilder.InnerBuilder
+    private lateinit var item :CommonData.CommonItemList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +104,36 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
         setStatusBarDarkMode(this, ContextCompat.getColor(this, R.color.colorPrimary))
         setContentView(R.layout.activity_video_player)
         keepScreenLongLight()
+
+        item = Gson().fromJson<CommonData.CommonItemList>(
+                intent.extras.getString("data"),
+                CommonData.CommonItemList::class.java)
+
+        viewModel = ViewModelProviders.of(this@VideoPlayerActivity)
+                .get(VideoPlayerViewModel::class.java)
+        viewModel.initData(item.data!!.id.toString())
+
+        viewModel.item = item
+
+        subscribeToModel(viewModel)
+
+        builder = TangramBuilder.newInnerBuilder(this@VideoPlayerActivity )
+
+        //Step 3: register business cells and cards
+
+        builder.registerCell("textCard", TextCardViewCell::class.java, TextCardView::class.java)
+        builder.registerCell("videoSmallCard", VideoSmallCardViewCell::class.java, VideoSmallCardView::class.java)
+        builder.registerCell("end", EndCardViewCell::class.java, EndCardView::class.java)
+
+        builder.registerCell("header", EndCardViewCell::class.java, EndCardView::class.java)
+
+
+        engine = builder.build()
+        engine.bindView(recyclerView)
+        //Step 6: enable auto load more if your page's data is lazy loaded
+        engine.enableAutoLoadMore(false)
+        engine.addSimpleClickSupport(SampleClickSupport())
+
 
         downloadManagerInitor = DownloadManagerInitor.getInstance(this)
 
@@ -196,7 +254,7 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
 
             Logger.d("mediaDataSourceFactory    initializePlayer")
 
-            var uri: Uri = Uri.parse(intent.extras.getString("videoUri"))
+            var uri: Uri = Uri.parse(item.data!!.playUrl)
 
             Logger.d("mediaDataSourceFactory    uri")
 
@@ -308,10 +366,6 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
         }
     }
 
-    fun showControls() {
-//        debug_text_view.visibility = View.VISIBLE
-    }
-
     /**
      * Returns a new DataSource factory.
      *
@@ -378,6 +432,90 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
         init {
             DEFAULT_COOKIE_MANAGER = CookieManager()
             DEFAULT_COOKIE_MANAGER.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER)
+        }
+    }
+
+
+    /**
+     * 订阅数据变化来刷新UI
+     * @param model
+     */
+    private fun subscribeToModel(model: VideoPlayerViewModel) {
+        //观察数据变化来刷新UI
+        model.liveObservableData!!.observe(this, Observer<CommonData> { commonData ->
+            Logger.d("subscribeToModel onChanged onChanged")
+            if(commonData!=null) {
+                val data = Gson().toJson(commonData!!.itemList)
+                val s = JSONArray(data)
+                engine.setData(s)
+            }
+        })
+    }
+
+    class SampleClickSupport : SimpleClickSupport() {
+        init {
+            setOptimizedMode(true)
+        }
+        override fun defaultClick(targetView: View?, cell: BaseCell<*>?, eventType: Int) {
+            super.defaultClick(targetView, cell, eventType)
+//            val mData: AllRecData.ItemListBeanX.DataBeanXX? = Gson().fromJson<AllRecData.ItemListBeanX.DataBeanXX>(cell!!.optStringParam("data"), AllRecData.ItemListBeanX.DataBeanXX::class.java)
+//            when (cell.stringType) {
+//                "followCard", "autoPlayFollowCard", "pictureFollowCard" -> {
+//                    when (mData!!.content!!.type) {
+//                        "video" -> {
+//                            if(mData.content!!.data!!.playInfo==null) {
+//                                ARouter.getInstance()
+//                                        .build(ARouterPath.VIDEO_PLAYER_ACT)
+//                                        .withString("videoUri", mData.content!!.data!!.playUrl)
+//                                        .navigation()
+//                            } else {
+//                                Observable.fromIterable(mData.content!!.data!!.playInfo)
+//                                        .subscribeOn(Schedulers.io())
+//                                        .observeOn(AndroidSchedulers.mainThread())
+//                                        .filter {
+//                                            return@filter "high" == it.type && it.url != null
+//                                        }
+//                                        .subscribe { it ->
+//                                            ARouter.getInstance()
+//                                                    .build(ARouterPath.VIDEO_PLAYER_ACT)
+//                                                    .withString("videoUri", it.url)
+//                                                    .navigation()
+//                                        }
+//                            }
+//
+//                        }
+//                        "ugcPicture" -> {
+//                            ARouter.getInstance()
+//                                    .build(ARouterPath.PICTURE_DETAIL_ACT)
+//                                    .withString("avatarUrl", mData.content!!.data!!.owner!!.avatar)
+//                                    .withString("nickname", mData.content!!.data!!.owner!!.nickname)
+//                                    .withString("description", mData.content!!.data!!.description)
+//                                    .withString("collectionCount", mData.content!!.data!!.consumption!!.collectionCount.toString())
+//                                    .withString("shareCount", mData.content!!.data!!.consumption!!.shareCount.toString())
+//                                    .withString("replyCount", mData.content!!.data!!.consumption!!.replyCount.toString())
+//                                    .withString("pictureUrl", mData.content!!.data!!.url)
+//                                    .navigation()
+//                        }
+//                    }
+//
+//                }
+//                "videoSmallCard" -> {
+//                    if (mData !== null && mData.resourceType != null && "video" == mData.resourceType) {
+//                        Observable.fromIterable(mData.playInfo)
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .filter {
+//                                    return@filter "high" == it.type && it.url != null
+//                                }
+//                                .subscribe { it ->
+//                                    ARouter.getInstance()
+//                                            .build(ARouterPath.VIDEO_PLAYER_ACT)
+//                                            .withString("videoUri", it.url)
+//                                            .navigation()
+//                                }
+//                    }
+//                }
+//            }
         }
     }
 

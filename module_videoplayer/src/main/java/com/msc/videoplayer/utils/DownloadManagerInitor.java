@@ -1,4 +1,4 @@
-package com.msc.videoplayer;
+package com.msc.videoplayer.utils;
 
 import android.content.Context;
 
@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import com.google.android.exoplayer2.util.Util;
+import com.msc.videoplayer.BuildConfig;
 
 import java.io.File;
 

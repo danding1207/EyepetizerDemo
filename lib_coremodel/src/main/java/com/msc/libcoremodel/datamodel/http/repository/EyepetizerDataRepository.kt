@@ -7,17 +7,6 @@ import io.reactivex.Observable
 
 object EyepetizerDataRepository {
 
-
-    //可以操作Observable来筛选网络或者是本地数据
-    val tabsSelectedDataRepository: Observable<TabsSelectedData>
-        get() {
-            val observableForGetTabsSelectedDataFromNetWork = ApiClient
-                    .eyepetizerDataService.tabsSelectedData
-
-            return ApiClient
-                    .eyepetizerDataService.tabsSelectedData
-        }
-
     //可以操作Observable来筛选网络或者是本地数据
     val followDataRepository: Observable<FollowData>
         get() {
@@ -32,7 +21,7 @@ object EyepetizerDataRepository {
     //可以操作Observable来筛选网络或者是本地数据
     fun getAllRecDataRepository(page: String, udid: String, vc: String,
                                 vn: String, deviceModel: String, first_channel: String,
-                                last_channel: String, system_version_code: String): Observable<AllRecData> {
+                                last_channel: String, system_version_code: String): Observable<CommonData> {
         return ApiClient
                 .eyepetizerDataService.getAllRecData(page, udid, vc,
                 vn, deviceModel, first_channel,
@@ -40,7 +29,7 @@ object EyepetizerDataRepository {
     }
 
     //可以操作Observable来筛选网络或者是本地数据
-    fun getMoreRecDataRepository(nextPageUrl: String): Observable<AllRecData> {
+    fun getMoreRecDataRepository(nextPageUrl: String): Observable<CommonData> {
         return ApiClient
                 .eyepetizerDataService.getMoreRecData(nextPageUrl)
     }
@@ -107,5 +96,14 @@ object EyepetizerDataRepository {
     }
 
 
+    //可以操作Observable来筛选网络或者是本地数据
+    fun getVideoRelatedDataRepository(id: String,udid: String, vc: String,
+                                 vn: String, deviceModel: String, first_channel: String,
+                                 last_channel: String, system_version_code: String): Observable<CommonData> {
+        return ApiClient
+                .eyepetizerDataService.getVideoRelatedData(id, udid, vc,
+                vn, deviceModel, first_channel,
+                last_channel, system_version_code)
+    }
 
 }

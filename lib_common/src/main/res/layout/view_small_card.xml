@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     tools:layout_editor_absoluteY="25dp">
 
     <TextView
@@ -102,7 +101,7 @@
         android:layout_marginRight="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_tag"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_action_share" />
+        app:srcCompat="@drawable/ic_action_share_dark" />
 
 
 </android.support.constraint.ConstraintLayout>

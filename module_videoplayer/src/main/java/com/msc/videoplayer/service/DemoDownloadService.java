@@ -1,4 +1,4 @@
-package com.msc.videoplayer;
+package com.msc.videoplayer.service;
 
 import android.app.Notification;
 import com.google.android.exoplayer2.offline.DownloadManager;
@@ -8,6 +8,8 @@ import com.google.android.exoplayer2.scheduler.PlatformScheduler;
 import com.google.android.exoplayer2.ui.DownloadNotificationUtil;
 import com.google.android.exoplayer2.util.NotificationUtil;
 import com.google.android.exoplayer2.util.Util;
+import com.msc.videoplayer.R;
+import com.msc.videoplayer.ui.VideoPlayerActivity;
 
 /** A service for downloading media. */
 public class DemoDownloadService extends DownloadService {

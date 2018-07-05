@@ -1,4 +1,4 @@
-package com.msc.modulehomepage.viewcard
+package com.msc.libcommon.viewcard
 
 import android.content.Context
 import android.support.v7.widget.CardView
@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import com.msc.modulehomepage.R
+import com.msc.libcommon.R
 import com.tmall.wireless.tangram.structure.BaseCell
 import com.tmall.wireless.tangram.structure.view.ITangramViewLifeCycle
 

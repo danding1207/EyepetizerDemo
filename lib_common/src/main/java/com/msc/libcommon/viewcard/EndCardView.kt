@@ -1,26 +1,19 @@
-package com.msc.modulehomepage.viewcard
+package com.msc.libcommon.viewcard
 
 import android.content.Context
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.TextView
-import com.google.gson.Gson
-
-import com.msc.libcommon.widget.banner.BannerLayout
-import com.msc.libcoremodel.datamodel.http.entities.AllRecData
-import com.msc.modulehomepage.R
-import com.orhanobut.logger.Logger
+import com.msc.libcommon.R
 import com.tmall.wireless.tangram.structure.BaseCell
 import com.tmall.wireless.tangram.structure.view.ITangramViewLifeCycle
 
-class TextCardView : FrameLayout, ITangramViewLifeCycle {
+class EndCardView : FrameLayout, ITangramViewLifeCycle {
 
-    var tvTextContent: TextView? = null
-    var ivArrow: ImageView? = null
-    var tvFooterTextContent: TextView? = null
-    var ivFooterArrow: ImageView? = null
+    var constraintLayoutBg: ConstraintLayout? = null
+    var tvEnd: TextView? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -35,11 +28,9 @@ class TextCardView : FrameLayout, ITangramViewLifeCycle {
     }
 
     private fun init() {
-        View.inflate(context, R.layout.view_text_card, this)
-        tvTextContent = findViewById(R.id.tv_text_content)
-        ivArrow = findViewById(R.id.iv_arrow)
-        tvFooterTextContent = findViewById(R.id.tv_footer_text_content)
-        ivFooterArrow = findViewById(R.id.iv_footer_arrow)
+        View.inflate(context, R.layout.view_end_card, this)
+        constraintLayoutBg = findViewById(R.id.constraintLayout_bg)
+        tvEnd = findViewById(R.id.tv_end)
     }
 
     override fun cellInited(cell: BaseCell<*>) {
@@ -50,5 +41,6 @@ class TextCardView : FrameLayout, ITangramViewLifeCycle {
     }
 
     override fun postUnBindView(cell: BaseCell<*>) {
+
     }
 }

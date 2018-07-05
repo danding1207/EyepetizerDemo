@@ -5,9 +5,10 @@ import com.bumptech.glide.Glide
 import com.msc.libcoremodel.datamodel.http.entities.AllRecData
 import com.msc.libcommon.base.CommenDataCell
 import com.msc.libcommon.util.DensityUtil
+import com.msc.libcoremodel.datamodel.http.entities.CommonData
 import com.msc.modulehomepage.viewcard.BannerCardView
 
-class BannerCardViewCell : CommenDataCell<BannerCardView, AllRecData.ItemListBeanX>() {
+class BannerCardViewCell : CommenDataCell<BannerCardView, CommonData.CommonItemList>() {
 
     override fun bindView(view: BannerCardView) {
         super.bindView(view)

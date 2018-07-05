@@ -36,7 +36,7 @@ tinkerpatchSupport {
     appKey = "e1b59c1dee83cc45"
 
     /** 注意: 若发布新的全量包, appVersion一定要更新 **/
-    appVersion = "1.0.1"
+    appVersion = Libs.versionName
 
     /**
      * （可选）重命名备份文件的格式化字符串，默认为'${appName}-${variantName}'

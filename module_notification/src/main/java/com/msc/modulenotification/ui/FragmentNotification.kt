@@ -12,12 +12,11 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.google.gson.Gson
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseFragment
-import com.msc.libcoremodel.datamodel.http.entities.AllRecData
+import com.msc.libcommon.viewcard.EndCardView
+import com.msc.libcommon.viewcardcell.EndCardViewCell
 import com.msc.libcoremodel.datamodel.http.entities.MessagesData
 import com.msc.modulenotification.R
-import com.msc.modulenotification.viewcard.EndCardView
 import com.msc.modulenotification.viewcard.MessageCardView
-import com.msc.modulenotification.viewcardcell.EndCardViewCell
 import com.msc.modulenotification.viewcardcell.MessageCardViewCell
 import com.msc.modulenotification.viewmodel.NotificationViewModel
 import com.orhanobut.logger.Logger
@@ -25,9 +24,6 @@ import com.tmall.wireless.tangram.TangramBuilder
 import com.tmall.wireless.tangram.TangramEngine
 import com.tmall.wireless.tangram.structure.BaseCell
 import com.tmall.wireless.tangram.support.SimpleClickSupport
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_notification.*
 import org.json.JSONArray
 
@@ -38,11 +34,10 @@ class FragmentNotification : BaseFragment() {
     private lateinit var engine: TangramEngine
     private lateinit var builder: TangramBuilder.InnerBuilder
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         ARouter.getInstance().inject(this@FragmentNotification)
         viewModel = ViewModelProviders.of(this@FragmentNotification).get(NotificationViewModel::class.java)
-        viewModel.initData()
+//        viewModel.initData()
         subscribeToModel(viewModel)
         return inflater.inflate(R.layout.fragment_notification, container, false)
     }

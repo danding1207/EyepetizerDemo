@@ -102,6 +102,7 @@ class WelcomeActivity : BaseActivity() {
                 animatorSet.play(animator1).with(animator2)
                 animatorSet.startDelay = 500
                 animatorSet.start()
+
             } else {
 
                 val calendar = Calendar.getInstance()
@@ -205,11 +206,7 @@ class WelcomeActivity : BaseActivity() {
                     animatorSet.start()
 
                 }
-
-
             }
-
-
         })
     }
 

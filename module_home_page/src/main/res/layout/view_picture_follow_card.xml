@@ -116,7 +116,7 @@
         app:layout_constraintBottom_toTopOf="@+id/view_cutline"
         app:layout_constraintStart_toStartOf="@+id/cardView_cover"
         app:layout_constraintTop_toBottomOf="@+id/cardView_cover"
-        app:srcCompat="@drawable/ic_action_like" />
+        app:srcCompat="@drawable/ic_action_like_dark" />
 
     <ImageView
         android:id="@+id/iv_share"
@@ -129,7 +129,7 @@
         app:layout_constraintBottom_toTopOf="@+id/view_cutline"
         app:layout_constraintEnd_toEndOf="@+id/cardView_cover"
         app:layout_constraintTop_toBottomOf="@+id/cardView_cover"
-        app:srcCompat="@drawable/ic_action_share" />
+        app:srcCompat="@drawable/ic_action_share_dark" />
 
     <ImageView
         android:id="@+id/iv_message"

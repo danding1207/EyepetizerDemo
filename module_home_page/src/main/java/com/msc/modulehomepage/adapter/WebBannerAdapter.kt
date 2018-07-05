@@ -20,6 +20,7 @@ import io.reactivex.schedulers.Schedulers
 import android.util.DisplayMetrics
 import com.msc.libcommon.util.StringUtils
 import com.msc.libcoremodel.datamodel.http.entities.AllRecData
+import com.msc.libcoremodel.datamodel.http.entities.CommonData
 import com.orhanobut.logger.Logger
 import java.util.*
 
@@ -29,14 +30,14 @@ import java.util.*
  */
 class WebBannerAdapter(private val context: Context?) : RecyclerView.Adapter<WebBannerAdapter.MzViewHolder>() {
 
-    private var urlList: List<AllRecData.ItemListBeanX.DataBeanXX.ItemListBean> =  ArrayList()
+    private var urlList: List<CommonData.CommonItemList> =  ArrayList()
     private var onBannerItemClickListener: BannerLayout.OnBannerItemClickListener? = null
 
     init {
 
     }
 
-    fun refreshData(dataBeanXX: AllRecData.ItemListBeanX.DataBeanXX?){
+    fun refreshData(dataBeanXX: CommonData.CommonItemList.CommonItemListData?){
 
         Logger.d("refreshData")
         Logger.d("listsize--->"+dataBeanXX!!.itemList!!.size)
@@ -68,7 +69,7 @@ class WebBannerAdapter(private val context: Context?) : RecyclerView.Adapter<Web
     override fun onBindViewHolder(holder: WebBannerAdapter.MzViewHolder, position: Int) {
         if (urlList == null || urlList!!.isEmpty())
             return
-        val item:AllRecData.ItemListBeanX.DataBeanXX.ItemListBean = urlList!![position]
+        val item:CommonData.CommonItemList = urlList!![position]
         Logger.d("coverurl--->"+item.data!!.content!!.data!!.cover!!.feed)
         Logger.d("authorurl--->"+item.data!!.content!!.data!!.author!!.icon)
 

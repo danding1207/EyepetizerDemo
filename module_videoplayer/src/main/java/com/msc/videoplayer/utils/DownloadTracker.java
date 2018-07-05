@@ -1,4 +1,4 @@
-package com.msc.videoplayer;
+package com.msc.videoplayer.utils;
 
 
 import android.app.Activity;
@@ -21,33 +21,21 @@ import com.google.android.exoplayer2.offline.DownloadHelper;
 import com.google.android.exoplayer2.offline.DownloadManager;
 import com.google.android.exoplayer2.offline.DownloadManager.TaskState;
 import com.google.android.exoplayer2.offline.DownloadService;
-import com.google.android.exoplayer2.offline.DownloaderConstructorHelper;
-import com.google.android.exoplayer2.offline.ProgressiveDownloadAction;
 import com.google.android.exoplayer2.offline.ProgressiveDownloadHelper;
 import com.google.android.exoplayer2.offline.SegmentDownloadAction;
 import com.google.android.exoplayer2.offline.TrackKey;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.source.dash.offline.DashDownloadAction;
 import com.google.android.exoplayer2.source.dash.offline.DashDownloadHelper;
-import com.google.android.exoplayer2.source.hls.offline.HlsDownloadAction;
 import com.google.android.exoplayer2.source.hls.offline.HlsDownloadHelper;
-import com.google.android.exoplayer2.source.smoothstreaming.offline.SsDownloadAction;
 import com.google.android.exoplayer2.source.smoothstreaming.offline.SsDownloadHelper;
 import com.google.android.exoplayer2.ui.DefaultTrackNameProvider;
 import com.google.android.exoplayer2.ui.TrackNameProvider;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.upstream.FileDataSourceFactory;
-import com.google.android.exoplayer2.upstream.HttpDataSource;
-import com.google.android.exoplayer2.upstream.TransferListener;
-import com.google.android.exoplayer2.upstream.cache.Cache;
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
-import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor;
-import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import com.google.android.exoplayer2.util.Util;
+import com.msc.videoplayer.R;
+import com.msc.videoplayer.service.DemoDownloadService;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

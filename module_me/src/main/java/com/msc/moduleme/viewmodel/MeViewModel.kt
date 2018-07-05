@@ -66,32 +66,32 @@ class MeViewModel(application: Application) : AndroidViewModel(application) {
      */
     fun initData(liveObservableData: MutableLiveData<AllRecData>) {
         Logger.d("=======GirlsViewModel--initData=========")
-        EyepetizerDataRepository.getAllRecDataRepository(
-                "0", Utils.getUDID(),
-                "341","3.19",
-                Utils.getSystemModel(),
-                "eyepetizer_xiaomi_market",
-                "eyepetizer_xiaomi_market",
-                Utils.getSystemVersion()
-        )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<AllRecData> {
-                    override fun onSubscribe(d: Disposable) {
-                        mDisposable.add(d)
-                    }
-                    override fun onNext(value: AllRecData) {
-                        Logger.d("=======GirlsViewModel--onNext=========")
-                        liveObservableData.value = value
-                    }
-                    override fun onError(e: Throwable) {
-                        Logger.d("=======GirlsViewModel--onError=========")
-                        e.printStackTrace()
-                    }
-                    override fun onComplete() {
-                        Logger.d("=======GirlsViewModel--onComplete=========")
-                    }
-                })
+//        EyepetizerDataRepository.getAllRecDataRepository(
+//                "0", Utils.getUDID(),
+//                "341","3.19",
+//                Utils.getSystemModel(),
+//                "eyepetizer_xiaomi_market",
+//                "eyepetizer_xiaomi_market",
+//                Utils.getSystemVersion()
+//        )
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(object : Observer<AllRecData> {
+//                    override fun onSubscribe(d: Disposable) {
+//                        mDisposable.add(d)
+//                    }
+//                    override fun onNext(value: AllRecData) {
+//                        Logger.d("=======GirlsViewModel--onNext=========")
+//                        liveObservableData.value = value
+//                    }
+//                    override fun onError(e: Throwable) {
+//                        Logger.d("=======GirlsViewModel--onError=========")
+//                        e.printStackTrace()
+//                    }
+//                    override fun onComplete() {
+//                        Logger.d("=======GirlsViewModel--onComplete=========")
+//                    }
+//                })
     }
 
     /**
@@ -106,33 +106,33 @@ class MeViewModel(application: Application) : AndroidViewModel(application) {
         Logger.d("=======GirlsViewModel--initData=========")
 
         if(liveObservableData.value!=null && liveObservableData.value!!.nextPageUrl !=null) {
-            EyepetizerDataRepository.getMoreRecDataRepository(
-                    liveObservableData.value!!.nextPageUrl!!
-            )
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Observer<AllRecData> {
-                        override fun onSubscribe(d: Disposable) {
-                            mDisposable.add(d)
-                        }
-                        override fun onNext(value: AllRecData) {
-                            Logger.d("=======GirlsViewModel--onNext=========")
-                            val oldValue = liveObservableData.value
-                            (oldValue!!.itemList as MutableList<AllRecData.ItemListBeanX>).addAll(value.itemList!!)
-                            oldValue.count +=value.count
-                            oldValue.total =value.total
-                            oldValue.nextPageUrl =value.nextPageUrl
-                            oldValue.adExist =value.adExist
-                            liveObservableData.value = oldValue
-                        }
-                        override fun onError(e: Throwable) {
-                            Logger.d("=======GirlsViewModel--onError=========")
-                            e.printStackTrace()
-                        }
-                        override fun onComplete() {
-                            Logger.d("=======GirlsViewModel--onComplete=========")
-                        }
-                    })
+//            EyepetizerDataRepository.getMoreRecDataRepository(
+//                    liveObservableData.value!!.nextPageUrl!!
+//            )
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(object : Observer<AllRecData> {
+//                        override fun onSubscribe(d: Disposable) {
+//                            mDisposable.add(d)
+//                        }
+//                        override fun onNext(value: AllRecData) {
+//                            Logger.d("=======GirlsViewModel--onNext=========")
+//                            val oldValue = liveObservableData.value
+//                            (oldValue!!.itemList as MutableList<AllRecData.ItemListBeanX>).addAll(value.itemList!!)
+//                            oldValue.count +=value.count
+//                            oldValue.total =value.total
+//                            oldValue.nextPageUrl =value.nextPageUrl
+//                            oldValue.adExist =value.adExist
+//                            liveObservableData.value = oldValue
+//                        }
+//                        override fun onError(e: Throwable) {
+//                            Logger.d("=======GirlsViewModel--onError=========")
+//                            e.printStackTrace()
+//                        }
+//                        override fun onComplete() {
+//                            Logger.d("=======GirlsViewModel--onComplete=========")
+//                        }
+//                    })
         } else {
 
         }
