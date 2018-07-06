@@ -146,7 +146,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/iv_like"
         app:layout_constraintTop_toBottomOf="@+id/cardView_cover"
-        app:srcCompat="@drawable/ic_action_message" />
+        app:srcCompat="@drawable/ic_action_reply_dark" />
 
     <TextView
         android:id="@+id/tv_date"

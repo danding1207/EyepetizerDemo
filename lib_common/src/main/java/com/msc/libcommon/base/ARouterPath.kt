@@ -29,6 +29,12 @@ object ARouterPath {
     /**NotificationFragment */
     const val NOTIFICATION_FGT = "/notification/fragment"
 
+    /**FragmentInteractionNotification */
+    const val INTERACTION_NOTIFICATION_FGT = "/notification/interaction/fragment"
+
+    /**FragmentOfficialNotification */
+    const val OFFICIAL_NOTIFICATION_FGT = "/notification/official/fragment"
+
     /**MeFragment */
     const val ME_FGT = "/me/fragment"
 

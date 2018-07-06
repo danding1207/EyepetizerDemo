@@ -36,4 +36,8 @@
         <attr name="moveSpeed" format="float"/>
     </declare-styleable>
 
+    <declare-styleable name="NoScrollViewPager">
+        <attr name="canScroll" format="boolean" />
+    </declare-styleable>
+
 </resources>

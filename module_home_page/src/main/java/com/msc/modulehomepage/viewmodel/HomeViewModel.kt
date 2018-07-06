@@ -187,16 +187,13 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                         "video" -> {
                             ARouter.getInstance()
                                     .build(ARouterPath.VIDEO_PLAYER_ACT)
-//                                    .withString("videoUri", mData.data!!.content!!.data!!.playUrl)
-//                                    .withString("videoId", mData.data!!.content!!.data!!.id.toString())
-                                    .withString("data", cell.extras.toString())
+                                    .withString("data", Gson().toJson(mData.data!!.content!!))
                                     .navigation()
                         }
                         "ugcPicture" -> {
                             ARouter.getInstance()
                                     .build(ARouterPath.PICTURE_DETAIL_ACT)
-                                    .withString("data", cell.extras.toString())
-
+                                    .withString("data", Gson().toJson(mData.data!!.content!!))
                                     .withString("avatarUrl", mData.data!!.content!!.data!!.owner!!.avatar)
                                     .withString("nickname", mData.data!!.content!!.data!!.owner!!.nickname)
                                     .withString("description", mData.data!!.content!!.data!!.description)
@@ -211,11 +208,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 "videoSmallCard" -> {
                     if (mData !== null && mData.data!!.resourceType != null && "video" == mData.data!!.resourceType) {
+
                         ARouter.getInstance()
                                 .build(ARouterPath.VIDEO_PLAYER_ACT)
-//                                .withString("videoUri", mData.data!!.playUrl)
-//                                .withString("videoId", mData.id.toString())
-                                .withString("data", cell.extras.toString())
+                                .withString("data", Gson().toJson(mData))
                                 .navigation()
                     }
                 }

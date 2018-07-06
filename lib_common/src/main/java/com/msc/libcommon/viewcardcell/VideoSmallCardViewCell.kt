@@ -19,10 +19,12 @@ class VideoSmallCardViewCell : CommenDataCell<VideoSmallCardView, CommonData.Com
 
         when (mData!!.color) {
             "black" -> {
+                view.ivShare!!.setImageResource(R.drawable.ic_action_share_dark)
                 view.tvTitle!!.setTextColor(ContextCompat.getColor(view.context, R.color.colorPrimary))
                 view.tvTag!!.setTextColor(ContextCompat.getColor(view.context, R.color.colorPrimary))
             }
             "white" -> {
+                view.ivShare!!.setImageResource(R.drawable.ic_action_share_light)
                 view.tvTitle!!.setTextColor(ContextCompat.getColor(view.context, R.color.white))
                 view.tvTag!!.setTextColor(ContextCompat.getColor(view.context, R.color.white))
             }

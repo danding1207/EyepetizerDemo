@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.constraint.ConstraintLayout
+import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.Button
@@ -41,9 +42,11 @@ import com.msc.libcommon.base.BaseActivity
 import com.msc.libcommon.util.DensityUtil
 import com.msc.libcommon.viewcard.EndCardView
 import com.msc.libcommon.viewcard.TextCardView
+import com.msc.libcommon.viewcard.VideoHeaderCardView
 import com.msc.libcommon.viewcard.VideoSmallCardView
 import com.msc.libcommon.viewcardcell.EndCardViewCell
 import com.msc.libcommon.viewcardcell.TextCardViewCell
+import com.msc.libcommon.viewcardcell.VideoHeaderCardViewCell
 import com.msc.libcommon.viewcardcell.VideoSmallCardViewCell
 import com.msc.libcoremodel.datamodel.http.entities.AllRecData
 import com.msc.libcoremodel.datamodel.http.entities.CommonData
@@ -105,6 +108,8 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
         setContentView(R.layout.activity_video_player)
         keepScreenLongLight()
 
+        rootView = constraintLayout
+
         item = Gson().fromJson<CommonData.CommonItemList>(
                 intent.extras.getString("data"),
                 CommonData.CommonItemList::class.java)
@@ -124,15 +129,13 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
         builder.registerCell("textCard", TextCardViewCell::class.java, TextCardView::class.java)
         builder.registerCell("videoSmallCard", VideoSmallCardViewCell::class.java, VideoSmallCardView::class.java)
         builder.registerCell("end", EndCardViewCell::class.java, EndCardView::class.java)
-
-        builder.registerCell("header", EndCardViewCell::class.java, EndCardView::class.java)
-
+        builder.registerCell("header", VideoHeaderCardViewCell::class.java, VideoHeaderCardView::class.java)
 
         engine = builder.build()
         engine.bindView(recyclerView)
         //Step 6: enable auto load more if your page's data is lazy loaded
         engine.enableAutoLoadMore(false)
-        engine.addSimpleClickSupport(SampleClickSupport())
+        engine.addSimpleClickSupport(viewModel.listener)
 
 
         downloadManagerInitor = DownloadManagerInitor.getInstance(this)
@@ -253,8 +256,16 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
         if (player == null) {
 
             Logger.d("mediaDataSourceFactory    initializePlayer")
-
-            var uri: Uri = Uri.parse(item.data!!.playUrl)
+            val uri: Uri = if(item.data!!.playUrl!=null) {
+                Uri.parse(item.data!!.playUrl)
+            } else if (item.data!!.content!=null
+                    && item.data!!.content!!.data!=null
+                    && item.data!!.content!!.data!!.playUrl!=null) {
+                Uri.parse(item.data!!.content!!.data!!.playUrl)
+            } else {
+                Snackbar.make(rootView!!, "播放地址无效", Snackbar.LENGTH_SHORT)
+                return
+            }
 
             Logger.d("mediaDataSourceFactory    uri")
 

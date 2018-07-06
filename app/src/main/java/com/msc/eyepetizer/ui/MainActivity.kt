@@ -5,15 +5,13 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.msc.eyepetizer.FragmentAdapter
 import com.msc.eyepetizer.R
+import com.msc.libcommon.adapter.FragmentAdapter
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseActivity
 import com.msc.libcommon.base.BaseFragment
-import com.tencent.bugly.crashreport.CrashReport
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.ArrayList
-
 
 @Route(path = ARouterPath.MAIN_ACT)
 class MainActivity : BaseActivity() {

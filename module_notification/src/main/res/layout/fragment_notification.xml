@@ -72,44 +72,19 @@
             app:tabSelectedTextColor="@color/colorPrimary"
             app:tabTextColor="@color/colorGray">
 
-            <android.support.design.widget.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:text="官方" />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:text="互动"
-
-                />
-
         </android.support.design.widget.CumTabLayout>
-
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/container_pager"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_weight="1"
+        app:canScroll="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
-
-        <com.scwang.smartrefresh.header.MaterialHeader
-            android:id="@+id/refreshHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:mhPrimaryColor="@color/white"
-            />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
 </android.support.constraint.ConstraintLayout>

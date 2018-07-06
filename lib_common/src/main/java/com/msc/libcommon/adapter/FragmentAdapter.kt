@@ -1,4 +1,4 @@
-package com.msc.eyepetizer
+package com.msc.libcommon.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

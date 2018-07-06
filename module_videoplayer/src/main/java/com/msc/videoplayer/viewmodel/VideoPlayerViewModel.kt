@@ -7,6 +7,11 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.text.TextUtils
+import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
+import com.google.gson.Gson
+import com.msc.libcommon.base.ARouterPath
+import com.msc.libcommon.base.CommenDataCell
 import com.msc.libcommon.util.Utils
 import com.msc.libcoremodel.datamodel.http.entities.CommonData
 import com.msc.libcoremodel.datamodel.http.entities.MessagesData
@@ -14,6 +19,8 @@ import com.msc.libcoremodel.datamodel.http.repository.EyepetizerDataRepository
 import com.msc.libcoremodel.datamodel.http.utils.NetUtils
 import com.msc.videoplayer.BuildConfig
 import com.orhanobut.logger.Logger
+import com.tmall.wireless.tangram.structure.BaseCell
+import com.tmall.wireless.tangram.support.SimpleClickSupport
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -33,10 +40,15 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
 
     private val mDisposable = CompositeDisposable()
 
+    var listener: VideoPlayerViewModelClickSupport
+
+
     init {
         ABSENT.value = null
         Logger.d("=======VideoPlayerViewModel--init=========")
         mApplication = application
+        listener = VideoPlayerViewModelClickSupport()
+
         //这里的trigger为网络检测，也可以换成缓存数据是否存在检测
         liveObservableData = Transformations
                 .switchMap<Boolean, CommonData>(
@@ -51,7 +63,6 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
                             applyData
                         }) as MutableLiveData<CommonData>
     }
-
 
 
     /**
@@ -90,7 +101,7 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
                         if(item!=null) {
                             item!!.type = "header"
                             (value.itemList as ArrayList<CommonData.CommonItemList>)
-                                    .add(item!!)
+                                    .add(0, item!!)
                         }
 
                         val enddata = CommonData.CommonItemList()
@@ -142,5 +153,30 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
     companion object {
         private val ABSENT = MutableLiveData<CommonData>()
     }
+
+    class VideoPlayerViewModelClickSupport : SimpleClickSupport() {
+        init {
+            setOptimizedMode(true)
+        }
+
+        override fun defaultClick(targetView: View?, cell: BaseCell<*>?, eventType: Int) {
+            super.defaultClick(targetView, cell, eventType)
+
+            val mData: CommonData.CommonItemList? = (cell as CommenDataCell<*, CommonData.CommonItemList>).mData
+
+            when (cell.stringType) {
+                "videoSmallCard" -> {
+                    if (mData !== null && mData.data!!.resourceType != null && "video" == mData.data!!.resourceType) {
+
+                        ARouter.getInstance()
+                                .build(ARouterPath.VIDEO_PLAYER_ACT)
+                                .withString("data", Gson().toJson(mData))
+                                .navigation()
+                    }
+                }
+            }
+        }
+    }
+
 
 }

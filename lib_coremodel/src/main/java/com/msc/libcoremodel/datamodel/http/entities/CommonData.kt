@@ -49,6 +49,25 @@ class CommonData {
                 var description: String? = null
                 var time: Long = 0
                 var showHateVideo: Boolean = false
+
+                override fun toString(): String {
+                    return "{" +
+                            "\"id\":$id, " +
+                            "\"title\":\"$title\", " +
+                            "\"font\":\"$font\", " +
+                            "\"subTitle\":\"$subTitle\", " +
+                            "\"subTitleFont\":\"$subTitleFont\", " +
+                            "\"textAlign\":\"$textAlign\", " +
+                            "\"cover\":\"$cover\", " +
+                            "\"label\":\"$label\", " +
+                            "\"actionUrl\":\"$actionUrl\", " +
+                            "\"icon\":\"$icon\", " +
+                            "\"iconType\":\"$iconType\", " +
+                            "\"description\":\"$description\", " +
+                            "\"time\":$time, " +
+                            "\"showHateVideo\":$showHateVideo}"
+                }
+
             }
 
             var content: CommonItemList? = null
@@ -76,7 +95,29 @@ class CommonData {
                 var cover: String? = null
                 var actionUrl: String? = null
                 var library: String? = null
+
+                override fun toString(): String {
+                    return "{" +
+                            "\"uid\":$uid, " +
+                            "\"registDate\":$registDate, " +
+                            "\"releaseDate\":$releaseDate, " +
+                            "\"ifPgc\":$ifPgc, " +
+                            "\"followed\":$followed, " +
+                            "\"limitVideoOpen\":$limitVideoOpen, " +
+                            "\"nickname\":\"$nickname\", " +
+                            "\"avatar\":\"$avatar\", " +
+                            "\"userType\":\"$userType\", " +
+                            "\"description\":\"$description\", " +
+                            "\"area\":\"$area\", " +
+                            "\"gender\":\"$gender\", " +
+                            "\"cover\":\"$cover\", " +
+                            "\"actionUrl\":\"$actionUrl\", " +
+                            "\"library\":\"$library\"}"
+                }
+
+
             }
+
             var uid: Int = 0
             var createTime: Long = 0
             var updateTime: Long = 0
@@ -115,6 +156,16 @@ class CommonData {
                 var bgPicture: String? = null
                 var headerImage: String? = null
                 var tagRecType: String? = null
+
+                override fun toString(): String {
+                    return "{" +
+                            "\"id\":$id, " +
+                            "\"name\":\"$name\", " +
+                            "\"actionUrl\":\"$actionUrl\", " +
+                            "\"bgPicture\":\"$bgPicture\", " +
+                            "\"headerImage\":\"$headerImage\", " +
+                            "\"tagRecType\":\"$tagRecType\"}"
+                }
 //TODO
 //                "adTrack":null,
 //                "desc":null,
@@ -127,6 +178,12 @@ class CommonData {
                 var collectionCount: Int = 0
                 var shareCount: Int = 0
                 var replyCount: Int = 0
+                override fun toString(): String {
+                    return "{" +
+                            "\"collectionCount\":$collectionCount, " +
+                            "\"shareCount\":$shareCount, " +
+                            "\"replyCount\":$replyCount}"
+                }
 
             }
 
@@ -137,6 +194,13 @@ class CommonData {
                 var name: String? = null
                 var alias: String? = null
                 var icon: String? = null
+                override fun toString(): String {
+                    return "{" +
+                            "\"name\":\"$name\", " +
+                            "\"alias\":\"$alias\", " +
+                            "\"icon\":\"$icon\"}"
+                }
+
             }
 
             var provider: CommonItemListDataProvider? = null
@@ -165,6 +229,13 @@ class CommonData {
                     var itemType: String? = null
                     var itemId: Int = 0
                     var followed: Boolean = false
+                    override fun toString(): String {
+                        return "{" +
+                                "\"itemType\":\"$itemType\", " +
+                                "\"itemId\":$itemId, " +
+                                "\"followed\":$followed}"
+                    }
+
                 }
 
                 var shield: CommonItemListDataAuthorShield? = null
@@ -173,6 +244,27 @@ class CommonData {
                     var itemType: String? = null
                     var itemId: Int = 0
                     var shielded: Boolean = false
+                    override fun toString(): String {
+                        return "{" +
+                                "\"itemType\":\"$itemType\", " +
+                                "\"itemId\":$itemId, " +
+                                "\"shielded\":$shielded}"
+                    }
+                }
+
+                override fun toString(): String {
+                    return "{" +
+                            "\"id\":$id, " +
+                            "\"videoNum\":$videoNum, " +
+                            "\"approvedNotReadyVideoCount\":$approvedNotReadyVideoCount, " +
+                            "\"latestReleaseTime\":$latestReleaseTime, " +
+                            "\"icon\":\"$icon\", " +
+                            "\"name\":\"$name\", " +
+                            "\"description\":\"$description\", " +
+                            "\"link\":\"$link\", " +
+                            "\"ifPgc\":$ifPgc, " +
+                            "\"follow\":${follow.toString()}, " +
+                            "\"shield\":${shield.toString()}}"
                 }
 
             }
@@ -185,6 +277,15 @@ class CommonData {
                 var blurred: String? = null
                 var sharing: String? = null
                 var homepage: String? = null
+                override fun toString(): String {
+                    return "{" +
+                            "\"feed\":\"$feed\", " +
+                            "\"detail\":\"$detail\", " +
+                            "\"blurred\":\"$blurred\", " +
+                            "\"sharing\":\"$sharing\", " +
+                            "\"homepage\":\"$homepage\"}"
+                }
+
             }
 
             var cover: CommonItemListDataCover? = null
@@ -197,6 +298,12 @@ class CommonData {
             class CommonItemListDataWebUrl {
                 var raw: String? = null
                 var forWeibo: String? = null
+                override fun toString(): String {
+                    return "{" +
+                            "\"raw\":\"$raw\", " +
+                            "\"forWeibo\":\"$forWeibo\"}"
+                }
+
             }
 
             var webUrl: CommonItemListDataWebUrl? = null
@@ -220,6 +327,27 @@ class CommonData {
                     var name: String? = null
                     var url: String? = null
                     var size: Long = 0
+                    override fun toString(): String {
+                        return "{" +
+                                "\"name\":\"$name\", " +
+                                "\"url\":\"$url\", " +
+                                "\"size\":$size}"
+                    }
+
+                }
+
+                override fun toString(): String {
+                    return "{" +
+                            "\"height\":$height, " +
+                            "\"width\":$width, " +
+                            "\"name\":\"$name\", " +
+                            "\"type\":\"$type\", " +
+                            "\"url\":\"$url\", " +
+//                            "\"urlList\":$urlList" +
+                            "\"urlList\":${
+                                urlList!!.forEach { it->it.toString() }
+                            }" +
+                            "}"
                 }
 
             }
@@ -240,6 +368,12 @@ class CommonData {
             class CommonItemListDataLabelList {
                 var text: String? = null
                 var actionUrl: String? = null
+                override fun toString(): String {
+                    return "{" +
+                            "\"text\":\"$text\", " +
+                            "\"actionUrl\":\"$actionUrl\"}"
+                }
+
             }
 
             var subTitles: List<CommonItemListDatasubTitle>? = null
@@ -247,6 +381,78 @@ class CommonData {
             class CommonItemListDatasubTitle {
                 var type: String? = null
                 var url: String? = null
+                override fun toString(): String {
+                    return "{" +
+                            "\"type\":\"$type\", " +
+                            "\"url\":\"$url\"}"
+                }
+
+            }
+
+            override fun toString(): String {
+                return "{" +
+                        "\"count\":$count, " +
+//                        "\"itemList\":$itemList, " +
+                        "\"itemList\":${
+                            itemList!!.forEach { it->it.toString() }
+                        }, " +
+                        "\"header\":${header.toString()}, " +
+                        "\"content\":${content.toString()}, " +
+                        "\"owner\":${owner.toString()}, " +
+                        "\"uid\":$uid, " +
+                        "\"createTime\":$createTime, " +
+                        "\"updateTime\":$updateTime, " +
+                        "\"selectedTime\":$selectedTime, " +
+                        "\"status\":\"$status\", " +
+                        "\"checkStatus\":\"$checkStatus\", " +
+                        "\"url\":\"$url\", " +
+                        "\"image\":\"$image\", " +
+                        "\"id\":$id, " +
+                        "\"type\":\"$type\", " +
+                        "\"dataType\":\"$dataType\", " +
+                        "\"text\":\"$text\", " +
+                        "\"subTitle\":\"$subTitle\", " +
+                        "\"actionUrl\":\"$actionUrl\", " +
+                        "\"title\":\"$title\", " +
+                        "\"description\":\"$description\", " +
+                        "\"library\":\"$library\", " +
+//                        "\"tags\":$tags, " +
+                        "\"tags\":${
+                            tags!!.forEach { it->it.toString() }
+                        }, " +
+                        "\"consumption\":${consumption.toString()}, " +
+                        "\"resourceType\":\"$resourceType\", " +
+                        "\"slogan\":\"$slogan\", " +
+                        "\"provider\":${provider.toString()}, " +
+                        "\"category\":\"$category\", " +
+                        "\"author\":${author.toString()}, " +
+                        "\"cover\":${cover.toString()}, " +
+                        "\"playUrl\":\"$playUrl\", " +
+                        "\"thumbPlayUrl\":\"$thumbPlayUrl\", " +
+                        "\"duration\":$duration, " +
+                        "\"webUrl\":${webUrl.toString()}, " +
+                        "\"releaseTime\":$releaseTime, " +
+//                        "\"playInfo\":$playInfo, " +
+                        "\"playInfo\":${
+                            playInfo!!.forEach { it->it.toString() }
+                        }, " +
+                        "\"descriptionEditor\":\"$descriptionEditor\", " +
+                        "\"date\":$date, " +
+                        "\"searchWeight\":$searchWeight, " +
+                        "\"idx\":$idx, " +
+                        "\"src\":$src, " +
+                        "\"ifLimitVideo\":$ifLimitVideo, " +
+                        "\"collected\":$collected, " +
+                        "\"played\":$played, " +
+//                        "\"labelList\":$labelList, " +
+                        "\"labelList\":${
+                            labelList!!.forEach { it->it.toString() }
+                        }, " +
+//                        "\"subTitles\":$subTitles" +
+                        "\"subTitles\":${
+                            subTitles!!.forEach { it->it.toString() }
+                        }" +
+                        "}"
             }
 
             //TODO
@@ -268,10 +474,18 @@ class CommonData {
 
         }
 
+        override fun toString(): String {
+            return "{" +
+                    "\"id\":$id, " +
+                    "\"adIndex\":$adIndex, " +
+                    "\"type\":\"$type\", " +
+                    "\"data\":${if(data==null) null else data.toString()}\", " +
+                    "\"color\":\"$color\"}"
+        }
+
         //TODO
         //"tag":null
         //"adTrack":null
-
     }
 
 }

@@ -106,4 +106,24 @@ object EyepetizerDataRepository {
                 last_channel, system_version_code)
     }
 
+    //可以操作Observable来筛选网络或者是本地数据
+    fun getSearchDataRepository(query: String,udid: String, vc: String,
+                                      vn: String, deviceModel: String, first_channel: String,
+                                      last_channel: String, system_version_code: String): Observable<CommonData> {
+        return ApiClient
+                .eyepetizerDataService.getSearchData(query, udid, vc,
+                vn, deviceModel, first_channel,
+                last_channel, system_version_code)
+    }
+
+    //可以操作Observable来筛选网络或者是本地数据
+    fun getSearchHotsDataRepository(query: String,udid: String, vc: String,
+                                vn: String, deviceModel: String, first_channel: String,
+                                last_channel: String, system_version_code: String): Observable<List<String>> {
+        return ApiClient
+                .eyepetizerDataService.getSearchHotsData(udid, vc,
+                vn, deviceModel, first_channel,
+                last_channel, system_version_code)
+    }
+
 }

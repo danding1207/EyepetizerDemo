@@ -10,6 +10,8 @@ import com.msc.libcoremodel.datamodel.http.entities.MessagesData;
 import com.msc.libcoremodel.datamodel.http.entities.TabsSelectedData;
 import com.msc.libcoremodel.datamodel.http.entities.VideoRelatedData;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -121,6 +123,31 @@ public interface EyepetizerDataService {
                                                @Query("first_channel") String first_channel,
                                                @Query("last_channel") String last_channel,
                                                @Query("system_version_code") String system_version_code);
+
+
+//    http://baobab.kaiyanapp.com/api/v3/search?query=%E8%B0%B7%E9%98%BF%E8%8E%AB&udid=5ab5bd3e87e04215bf7820e58576aa192784ca51&vc=352&vn=4.0&deviceModel=MI%203W&first_channel=eyepetizer_xiaomi_market&last_channel=eyepetizer_xiaomi_market&system_version_code=23
+
+    @GET("v3/search")
+    Observable<CommonData> getSearchData(@Query("query") String query,
+                                               @Query("udid") String udid,
+                                               @Query("vc") String vc,
+                                               @Query("vn") String vn,
+                                               @Query("deviceModel") String deviceModel,
+                                               @Query("first_channel") String first_channel,
+                                               @Query("last_channel") String last_channel,
+                                               @Query("system_version_code") String system_version_code);
+
+//    http://baobab.kaiyanapp.com/api/v3/queries/hot?udid=5ab5bd3e87e04215bf7820e58576aa192784ca51&vc=352&vn=4.0&deviceModel=MI%203W&first_channel=eyepetizer_xiaomi_market&last_channel=eyepetizer_xiaomi_market&system_version_code=23
+
+    @GET("v3/queries/hot")
+    Observable<List<String>> getSearchHotsData(
+                                         @Query("udid") String udid,
+                                         @Query("vc") String vc,
+                                         @Query("vn") String vn,
+                                         @Query("deviceModel") String deviceModel,
+                                         @Query("first_channel") String first_channel,
+                                         @Query("last_channel") String last_channel,
+                                         @Query("system_version_code") String system_version_code);
 
 
 }
