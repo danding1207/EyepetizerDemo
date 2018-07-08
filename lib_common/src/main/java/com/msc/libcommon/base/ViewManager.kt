@@ -76,9 +76,21 @@ class ViewManager private constructor() {
         if (activity != null) {
             activityStack!!.remove(activity)
             activity.finish()
+
+            activity.finishAfterTransition()
         }
     }
 
+    /**
+     * 结束指定的Activity
+     */
+    fun finishAfterTransitionActivity(activity: Activity?) {
+        var activity = activity
+        if (activity != null) {
+            activityStack!!.remove(activity)
+            activity.finishAfterTransition()
+        }
+    }
 
     /**
      * 结束指定Class的Activity
@@ -92,6 +104,17 @@ class ViewManager private constructor() {
         }
     }
 
+    /**
+     * 结束指定Class的Activity
+     */
+    fun finishAfterTransitionActivity(cls: Class<*>) {
+        for (activity in activityStack!!) {
+            if (activity.javaClass == cls) {
+                finishAfterTransitionActivity(activity)
+                return
+            }
+        }
+    }
 
     /**
      * 结束全部的Activity

@@ -20,6 +20,9 @@ object ARouterPath {
     /**PictureDetailActivity */
     const val PICTURE_DETAIL_ACT = "/media/picturedetail/activity"
 
+    /**SearchActivity */
+    const val SEARCH_ACT = "/search/activity"
+
     /**HomeFragment */
     const val HOME_PAGE_FGT = "/homepage/fragment"
 

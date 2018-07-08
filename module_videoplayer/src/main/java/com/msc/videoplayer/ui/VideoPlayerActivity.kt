@@ -107,7 +107,7 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
         setStatusBarDarkMode(this, ContextCompat.getColor(this, R.color.colorPrimary))
         setContentView(R.layout.activity_video_player)
         keepScreenLongLight()
-
+        setFitsSystemWindows(this, true)
         rootView = constraintLayout
 
         item = Gson().fromJson<CommonData.CommonItemList>(

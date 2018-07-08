@@ -21,6 +21,7 @@ class PictureDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setStatusBarDarkMode(this, ContextCompat.getColor(this, R.color.colorPrimary))
         setContentView(R.layout.activity_picture_detail)
+        setFitsSystemWindows(this, true)
         initView()
     }
 

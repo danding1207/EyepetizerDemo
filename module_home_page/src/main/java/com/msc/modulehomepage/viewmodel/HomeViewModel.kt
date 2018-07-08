@@ -19,6 +19,7 @@ import com.msc.libcoremodel.datamodel.http.entities.CommonData
 import com.msc.libcoremodel.datamodel.http.repository.EyepetizerDataRepository
 import com.msc.libcoremodel.datamodel.http.utils.NetUtils
 import com.msc.modulehomepage.BuildConfig
+import com.msc.modulehomepage.R
 import com.orhanobut.logger.Logger
 import com.tmall.wireless.tangram.structure.BaseCell
 import com.tmall.wireless.tangram.support.SimpleClickSupport
@@ -29,8 +30,21 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
+class HomeViewModel(application: Application) : AndroidViewModel(application), View.OnClickListener {
+
+
+    override fun onClick(view: View) {
+
+        when(view.id) {
+            R.id.iv_action_search->  ARouter.getInstance()
+                    .build(ARouterPath.SEARCH_ACT)
+                    .withTransition(R.anim.activity_anim_top_in, R.anim.activity_anim_top_out)
+                    .navigation()
+        }
+
+    }
 
     private var mApplication: Application
 

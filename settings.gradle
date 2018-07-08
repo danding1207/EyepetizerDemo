@@ -8,5 +8,6 @@ include "module_notification"
 include "module_me"
 include "module_launch"
 include "module_videoplayer"
+include "module_search"
 
 //rootProject.buildFileName = "build.gradle"

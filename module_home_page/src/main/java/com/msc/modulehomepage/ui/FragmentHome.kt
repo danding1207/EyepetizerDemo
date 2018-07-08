@@ -81,6 +81,7 @@ class FragmentHome : BaseFragment() {
             viewModel.getMoreData()
         }
 
+        iv_action_search.setOnClickListener(viewModel)
     }
 
     /**
@@ -89,12 +90,12 @@ class FragmentHome : BaseFragment() {
      */
     private fun subscribeToModel(model: HomeViewModel) {
         //观察数据变化来刷新UI
-        model.liveObservableData!!.observe(this, Observer<CommonData> { commonData ->
+        model.liveObservableData.observe(this, Observer<CommonData> { commonData ->
             Logger.d("subscribeToModel onChanged onChanged")
             refreshLayout.finishRefresh(true)//传入false表示刷新失败
             refreshLayout.finishLoadMore()
             if(commonData!=null) {
-                val data = Gson().toJson(commonData!!.itemList)
+                val data = Gson().toJson(commonData.itemList)
                 val s = JSONArray(data)
                 engine.setData(s)
             }

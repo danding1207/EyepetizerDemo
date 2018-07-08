@@ -41,13 +41,9 @@ class WelcomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
-
         rootView = constraintLayout
-
         viewModel = ViewModelProviders.of(this@WelcomeActivity).get(WelcomeViewModel::class.java!!)
-        viewModel.initData()
         subscribeToModel(viewModel)
-
     }
 
     /**
@@ -84,6 +80,7 @@ class WelcomeActivity : BaseActivity() {
                     }
 
                     override fun onAnimationEnd(animator: Animator) {
+                        Logger.d("MAIN_ACT    1")
                         //跳转到 MainActivity
                         ARouter.getInstance()
                                 .build(ARouterPath.MAIN_ACT)
@@ -148,6 +145,7 @@ class WelcomeActivity : BaseActivity() {
                     player.addListener(object : Player.DefaultEventListener() {
                         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                             if (playbackState == Player.STATE_ENDED) {
+                                Logger.d("MAIN_ACT    2")
                                 //跳转到 MainActivity
                                 ARouter.getInstance()
                                         .build(ARouterPath.MAIN_ACT)
@@ -186,6 +184,7 @@ class WelcomeActivity : BaseActivity() {
                         }
 
                         override fun onAnimationEnd(animator: Animator) {
+                            Logger.d("MAIN_ACT    3")
                             //跳转到 MainActivity
                             ARouter.getInstance()
                                     .build(ARouterPath.MAIN_ACT)

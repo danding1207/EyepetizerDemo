@@ -115,8 +115,6 @@ class WebBannerAdapter(private val context: Context?) : RecyclerView.Adapter<Web
         var tvTitle: TextView = itemView.findViewById<View>(R.id.tv_title) as TextView
         var tvDescription: TextView = itemView.findViewById<View>(R.id.tv_description) as TextView
         var tvTime: TextView = itemView.findViewById<View>(R.id.tv_time) as TextView
-
-
         var cardView: CardView = itemView.findViewById<View>(R.id.cardView) as CardView
     }
 

@@ -37,4 +37,5 @@ kapt {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':lib_opensource')
+    kapt Libs.room_compiler
 }

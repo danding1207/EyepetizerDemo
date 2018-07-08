@@ -326,4 +326,18 @@ abstract class BaseActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
+    /**
+     * 设置页面最外层布局 FitsSystemWindows 属性
+     * @param activity
+     * @param value
+     */
+    fun setFitsSystemWindows( activity:Activity,  value:Boolean) {
+        val contentFrameLayout:ViewGroup =  activity.findViewById(android.R.id.content)
+        val parentView:View = contentFrameLayout.getChildAt(0)
+        if (parentView != null && Build.VERSION.SDK_INT >= 14) {
+            parentView.fitsSystemWindows = value
+        }
+    }
+
+
 }

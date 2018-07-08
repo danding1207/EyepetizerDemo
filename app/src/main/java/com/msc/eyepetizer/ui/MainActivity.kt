@@ -48,6 +48,9 @@ class MainActivity : BaseActivity() {
         setStatusBarLightMode(this, ContextCompat.getColor(this, R.color.white))
 
         setContentView(R.layout.activity_main)
+
+        setFitsSystemWindows(this, true)
+
         navigation.enableAnimation(false)
         navigation.enableItemShiftingMode(false)
         navigation.enableShiftingMode(false)

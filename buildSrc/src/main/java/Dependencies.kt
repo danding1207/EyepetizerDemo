@@ -34,6 +34,7 @@ object Versions {
     const val tinker = "1.9.8"
     const val tinkerpatch = "1.2.8"
     const val walle = "1.1.6"
+    const val stickyheadersrecyclerview = "0.4.3"
 
 }
 
@@ -148,8 +149,11 @@ object Libs {
     val tinker_anno  =     "com.tinkerpatch.tinker:tinker-android-anno:${Versions.tinker}"
     val tinker_compiler  = "com.tinkerpatch.tinker:tinker-android-anno:${Versions.tinker}"
 
-    /** walle 热修复 */
+    /** walle 渠道打包 */
     val walle_runtime  =  "com.meituan.android.walle:library:${Versions.walle}"
+
+    /** stickyheadersrecyclerview  */
+    val stickyheadersrecyclerview_runtime  =  "com.timehop.stickyheadersrecyclerview:library:${Versions.stickyheadersrecyclerview}@aar"
 
     /** android_gradle_plugin  */
     val android_gradle_plugin = "com.android.tools.build:gradle:${Versions.android_gradle_plugin}"

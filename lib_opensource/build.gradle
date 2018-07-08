@@ -59,7 +59,7 @@ dependencies {
     // Architecture components room
     api(Libs.room_runtime, { exclude group: 'com.android.support' })
     api(Libs.room_rxjava2, { exclude group: 'com.android.support' })
-    kapt Libs.room_compiler
+//    kapt Libs.room_compiler
 
     // Architecture components paging
     api(Libs.paging_runtime, { exclude group: 'com.android.support' })
@@ -114,6 +114,9 @@ dependencies {
 
     //photoView
     api(Libs.bugly_runtime, { exclude group: 'com.android.support' })
+
+    //stickyheadersrecyclerview
+    api(Libs.stickyheadersrecyclerview_runtime, { exclude group: 'com.android.support' })
 
 
 
