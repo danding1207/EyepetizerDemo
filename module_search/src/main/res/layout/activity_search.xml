@@ -24,9 +24,25 @@
             android:layout_height="wrap_content"
             android:hint="搜索视频，作者，用户及标签"
             android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
             android:textSize="14sp" />
 
     </android.support.design.widget.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/iv_action_clear_dark"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
+        app:layout_constraintTop_toTopOf="@+id/textInputLayout"
+        app:srcCompat="@drawable/ic_action_clear_dark"
+        android:visibility="gone"
+        />
 
     <TextView
         android:id="@+id/tv_cancle"
@@ -49,5 +65,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
 
 </android.support.constraint.ConstraintLayout>

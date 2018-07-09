@@ -38,7 +38,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application), V
     override fun onClick(view: View) {
 
         when(view.id) {
-            R.id.iv_action_search->  ARouter.getInstance()
+            R.id.iv_action_search->
+                ARouter.getInstance()
                     .build(ARouterPath.SEARCH_ACT)
                     .withTransition(R.anim.activity_anim_top_in, R.anim.activity_anim_top_out)
                     .navigation()

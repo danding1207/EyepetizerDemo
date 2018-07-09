@@ -11,27 +11,28 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.google.gson.Gson
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseFragment
+import com.msc.libcommon.viewcard.FollowCardView
 import com.msc.libcommon.viewcard.TextCardView
 import com.msc.libcommon.viewcard.VideoSmallCardView
+import com.msc.libcommon.viewcardcell.FollowCardViewCell
 import com.msc.libcommon.viewcardcell.TextCardViewCell
 import com.msc.libcommon.viewcardcell.VideoSmallCardViewCell
-import com.msc.libcoremodel.datamodel.http.entities.AllRecData
 import com.msc.libcoremodel.datamodel.http.entities.CommonData
 import com.msc.modulehomepage.R
+import com.msc.modulehomepage.viewcard.AutoPlayFollowCardView
+import com.msc.modulehomepage.viewcard.BannerCardView
+import com.msc.modulehomepage.viewcard.PictureFollowCardView
+import com.msc.modulehomepage.viewcard.SquareCardCollectionView
+import com.msc.modulehomepage.viewcardcell.AutoPlayFollowCardViewCell
+import com.msc.modulehomepage.viewcardcell.BannerCardViewCell
+import com.msc.modulehomepage.viewcardcell.PictureFollowCardViewCell
+import com.msc.modulehomepage.viewcardcell.SquareCardCollectionViewCell
 import com.msc.modulehomepage.viewmodel.HomeViewModel
-import com.msc.modulehomepage.viewcard.*
-import com.msc.modulehomepage.viewcardcell.*
 import com.orhanobut.logger.Logger
 import com.tmall.wireless.tangram.TangramBuilder
 import com.tmall.wireless.tangram.TangramEngine
-import com.tmall.wireless.tangram.support.SimpleClickSupport
-import org.json.JSONArray
-import com.tmall.wireless.tangram.structure.BaseCell
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_home.*
-
+import org.json.JSONArray
 
 @Route(path = ARouterPath.HOME_PAGE_FGT)
 class FragmentHome : BaseFragment() {

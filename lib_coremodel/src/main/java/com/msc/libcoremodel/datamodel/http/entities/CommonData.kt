@@ -10,16 +10,28 @@ class CommonData {
 
     class CommonItemList {
 
-
-
         var id: Int = 0
         var adIndex: Int = 0
         var type: String? = null
         var data: CommonItemListData? = null
         var color: String? = "black"
 
+        var emptyTitle: String? = "black"
+        var emptyDescription: String? = "black"
 
         class CommonItemListData {
+
+            // dataType == BriefCard 时特殊
+            var icon: String? = null
+            var iconType: String? = null
+            var ifPgc: Boolean = false
+            var follow: CommonItemListDataFollow? = null
+            class CommonItemListDataFollow {
+                var itemId: Int = 0
+                var itemType: String? = null
+                var followed: Boolean = false
+            }
+            // dataType == BriefCard 时特殊
 
             // dataType == squareCardCollection 时特殊
             var count: Int = 0
@@ -486,6 +498,17 @@ class CommonData {
         //TODO
         //"tag":null
         //"adTrack":null
+
+
+
     }
+
+
+    val  EMPTYCOMOONITEMLISTDATA: CommonItemList.CommonItemListData=
+            CommonItemList.CommonItemListData()
+
+
+
+
 
 }

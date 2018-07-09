@@ -136,6 +136,9 @@ public interface EyepetizerDataService {
                                                @Query("first_channel") String first_channel,
                                                @Query("last_channel") String last_channel,
                                                @Query("system_version_code") String system_version_code);
+    @GET
+    Observable<CommonData> getMoreSearchData(@Url String url);
+
 
 //    http://baobab.kaiyanapp.com/api/v3/queries/hot?udid=5ab5bd3e87e04215bf7820e58576aa192784ca51&vc=352&vn=4.0&deviceModel=MI%203W&first_channel=eyepetizer_xiaomi_market&last_channel=eyepetizer_xiaomi_market&system_version_code=23
 

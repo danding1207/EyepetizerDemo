@@ -1,4 +1,4 @@
-package com.msc.modulehomepage.viewcardcell
+package com.msc.libcommon.viewcardcell
 
 import android.graphics.drawable.Drawable
 import android.support.constraint.ConstraintLayout
@@ -6,11 +6,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.msc.libcommon.util.StringUtils
-import com.msc.libcoremodel.datamodel.http.entities.AllRecData
 import com.msc.libcommon.base.CommenDataCell
 import com.msc.libcommon.util.DensityUtil
+import com.msc.libcommon.viewcard.FollowCardView
 import com.msc.libcoremodel.datamodel.http.entities.CommonData
-import com.msc.modulehomepage.viewcard.FollowCardView
 
 class FollowCardViewCell : CommenDataCell<FollowCardView, CommonData.CommonItemList>() {
 
