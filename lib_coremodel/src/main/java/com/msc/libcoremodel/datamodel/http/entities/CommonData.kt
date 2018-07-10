@@ -148,7 +148,6 @@ class CommonData {
             var type: String? = null
             var dataType: String? = null
 
-
             var text: String? = null
             var subTitle: String? = null
 
@@ -159,7 +158,6 @@ class CommonData {
             var library: String? = null
 
             var tags: List<CommonItemListDataTags>? = null
-
 
             class CommonItemListDataTags {
                 var id: Int = 0
@@ -184,7 +182,6 @@ class CommonData {
             }
 
             var consumption: CommonItemListDataConsumption? = null
-
 
             class CommonItemListDataConsumption {
                 var collectionCount: Int = 0

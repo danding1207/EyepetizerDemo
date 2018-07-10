@@ -35,6 +35,7 @@ object Versions {
     const val tinkerpatch = "1.2.8"
     const val walle = "1.1.6"
     const val stickyheadersrecyclerview = "0.4.3"
+    const val okdownload = "1.0.3"
 
 }
 
@@ -143,6 +144,9 @@ object Libs {
 
     /** bugly 异常上报 */
     val bugly_runtime  = "com.tencent.bugly:crashreport:${Versions.bugly}"
+
+    /** okdownload 文件下载 */
+    val okdownload_runtime  = "com.liulishuo.okdownload:okdownload:${Versions.okdownload}"
 
     /** tinker 热修复 */
     val tinker_runtime  =  "com.tinkerpatch.sdk:tinkerpatch-android-sdk:${Versions.tinkerpatch}"

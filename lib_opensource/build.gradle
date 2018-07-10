@@ -118,6 +118,8 @@ dependencies {
     //stickyheadersrecyclerview
     api(Libs.stickyheadersrecyclerview_runtime, { exclude group: 'com.android.support' })
 
+    //okdownload
+    api(Libs.okdownload_runtime, { exclude group: 'com.android.support' })
 
 
 //    //若使用annotation需要单独引用,对于tinker的其他库都无需再引用

@@ -2,6 +2,7 @@ package com.msc.libcommon.viewcard
 
 import android.content.Context
 import android.support.v7.widget.CardView
+import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -13,7 +14,6 @@ import com.tmall.wireless.tangram.structure.view.ITangramViewLifeCycle
 
 class VideoHeaderCardView : FrameLayout, ITangramViewLifeCycle {
 
-
     var tvName: TextView? = null
     var tvCategory: TextView? = null
     var tvDescription: TextView? = null
@@ -23,6 +23,11 @@ class VideoHeaderCardView : FrameLayout, ITangramViewLifeCycle {
     var ivOwnerCover: ImageView? = null
     var tvOwnerName: TextView? = null
     var tvOwnerDesc: TextView? = null
+    var recyclerViewTags: RecyclerView? = null
+
+    var ivDownload: ImageView? = null
+    var ivLike: ImageView? = null
+
 
     constructor(context: Context) : super(context) {
         init()
@@ -38,7 +43,6 @@ class VideoHeaderCardView : FrameLayout, ITangramViewLifeCycle {
 
     private fun init() {
         View.inflate(context, R.layout.view_video_header_card, this)
-
         tvName = findViewById(R.id.tv_name)
         tvCategory = findViewById(R.id.tv_category)
         tvDescription = findViewById(R.id.tv_description)
@@ -48,11 +52,17 @@ class VideoHeaderCardView : FrameLayout, ITangramViewLifeCycle {
         ivOwnerCover = findViewById(R.id.iv_owner_cover)
         tvOwnerName = findViewById(R.id.tv_owner_name)
         tvOwnerDesc = findViewById(R.id.tv_owner_desc)
+        recyclerViewTags = findViewById(R.id.recyclerView_tags)
+
+        ivLike= findViewById(R.id.iv_like)
+        ivDownload = findViewById(R.id.iv_download)
 
     }
 
     override fun cellInited(cell: BaseCell<*>) {
-//        setOnClickListener(cell)
+        ivDownload!!.setOnClickListener(cell)
+        ivLike!!.setOnClickListener(cell)
+
     }
 
     override fun postBindView(cell: BaseCell<*>) {

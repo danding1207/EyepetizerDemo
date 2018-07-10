@@ -5,38 +5,30 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
-import android.view.KeyEvent
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.gson.Gson
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.BaseActivity
 import com.msc.libcommon.util.KeyboardUtils
+import com.msc.libcommon.viewcard.*
+import com.msc.libcommon.viewcardcell.*
 import com.msc.libcoremodel.datamodel.http.entities.CommonData
 import com.msc.libcoremodel.datamodel.http.entities.SearchHotsData
 import com.msc.modulesearch.R
 import com.msc.modulesearch.adapter.SearchHotsAdapter
 import com.msc.modulesearch.viewmodel.SearchViewModel
 import com.orhanobut.logger.Logger
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration
 import com.tmall.wireless.tangram.TangramBuilder
 import com.tmall.wireless.tangram.TangramEngine
 import kotlinx.android.synthetic.main.activity_search.*
 import org.json.JSONArray
-import android.view.KeyEvent.KEYCODE_ENTER
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
-import com.msc.libcommon.viewcard.*
-import com.msc.libcommon.viewcardcell.*
-
 
 @Route(path = ARouterPath.SEARCH_ACT)
 class SearchActivity : BaseActivity() {
 
     private val adapter = SearchHotsAdapter()
-    private var headersDecor: StickyRecyclerHeadersDecoration = StickyRecyclerHeadersDecoration(adapter)
 
     private lateinit var viewModel: SearchViewModel
     private lateinit var engine: TangramEngine
@@ -54,16 +46,6 @@ class SearchActivity : BaseActivity() {
 
         recyclerView_hots.layoutManager = LinearLayoutManager(this)
         recyclerView_hots.adapter = adapter
-        recyclerView_hots.addItemDecoration(headersDecor)
-
-        recyclerView_hots.addOnItemTouchListener(viewModel.getStickyRecyclerHeadersTouchListener(recyclerView_hots, headersDecor))
-        recyclerView_hots.addOnItemTouchListener(viewModel.itemsListener)
-
-        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onChanged() {
-                headersDecor.invalidateHeaders()
-            }
-        })
 
         refreshLayout.isEnableRefresh = false
         refreshLayout.setOnLoadMoreListener { refreshlayout ->
@@ -87,8 +69,8 @@ class SearchActivity : BaseActivity() {
 
         tv_cancle.setOnClickListener(viewModel)
         iv_action_clear_dark.setOnClickListener(viewModel)
-        adapter.listener = viewModel
-//        textInputLayout.editText!!.setOnKeyListener(viewModel)
+        recyclerView_hots.addOnItemTouchListener(viewModel.itemsListener)
+        adapter.deleteListener = viewModel
 
         textInputLayout.editText!!.setOnEditorActionListener(viewModel)
         textInputLayout.editText!!.addTextChangedListener(viewModel)
@@ -103,7 +85,7 @@ class SearchActivity : BaseActivity() {
         model.liveObservableSearchHotsData.observe(this, Observer<List<SearchHotsData>> { list ->
             Logger.d("subscribeToModel onChanged onChanged")
             if (list != null) {
-                adapter.setDataList(list)
+                adapter.setDataList(list as ArrayList<SearchHotsData>)
             }
         })
         //观察数据变化来刷新UI

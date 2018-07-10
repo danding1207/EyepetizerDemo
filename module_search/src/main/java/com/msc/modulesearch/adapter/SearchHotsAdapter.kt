@@ -7,59 +7,76 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.msc.libcoremodel.datamodel.http.entities.SearchHotsData
 import com.msc.modulesearch.R
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter
+import com.orhanobut.logger.Logger
 
-class SearchHotsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
+class SearchHotsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var dataList: List<SearchHotsData>? = null
-    var listener: View.OnClickListener? = null
+    private var dataList: ArrayList<SearchHotsData>? = null
+    private var headerDataList: ArrayList<String> = ArrayList()
+    private var headerPositionArray: IntArray? = null
 
-    fun setDataList(dataList: List<SearchHotsData>) {
+    var deleteListener: View.OnClickListener? = null
+
+    val HEADERTYPE = 1001
+    val NORMALTYPE = 1002
+
+    fun setDataList(dataList: ArrayList<SearchHotsData>) {
+
+        headerDataList.clear()
+
+        val typeGroup = dataList.groupBy { it.type }
+        headerPositionArray = IntArray(typeGroup.size)
+
+        dataList.forEachIndexed { index, searchHotsData ->
+            if (!headerDataList.contains(searchHotsData.type)) {
+                val i = headerDataList.size
+                headerDataList.add(searchHotsData.type!!)
+                headerPositionArray!![i] = i + index
+            }
+        }
+        headerPositionArray!!.forEach {
+            dataList.add(it, dataList[it].clone(dataList[it]))
+            dataList[it].isHeader = true
+        }
         this.dataList = dataList
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return SearchHotsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_search_hots, parent, false))
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as SearchHotsViewHolder).tvName.text = dataList!![position].name
-    }
-
-    override fun getHeaderId(position: Int): Long {
-        return if (position == 0) {
-            -1
-        } else {
-            getItem(position).type!![0].toLong()
+    override fun getItemViewType(position: Int): Int {
+        if (dataList == null)
+            return NORMALTYPE
+        return when (position) {
+            in headerPositionArray!! -> HEADERTYPE
+            else -> NORMALTYPE
         }
     }
 
-    private fun getItem(position: Int): SearchHotsData {
-        return dataList!![position]
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            HEADERTYPE -> SearchHotsHeaderViewHolder(LayoutInflater.from(parent.context)
+                    .inflate(R.layout.view_search_hots_header, parent, false))
+            else -> SearchHotsViewHolder(LayoutInflater.from(parent.context)
+                    .inflate(R.layout.view_search_hots, parent, false))
+        }
     }
 
-    override fun onCreateHeaderViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        return SearchHotsHeaderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_search_hots_header, parent, false))
-    }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is SearchHotsViewHolder -> holder.tvName.text = dataList!![position].name
+            is SearchHotsHeaderViewHolder -> {
+                holder.tvTitle.text = dataList!![position].typeTitle
+                if (dataList!![position].isCanDelete)
+                    holder.tvDelete.visibility = View.VISIBLE
+                else
+                    holder.tvDelete.visibility = View.INVISIBLE
 
-    override fun onBindHeaderViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as SearchHotsHeaderViewHolder).tvTitle.text = dataList!![position].typeTitle
-        if (dataList!![position].isCanDelete)
-            holder.tvDelete.visibility = View.VISIBLE
-        else
-            holder.tvDelete.visibility = View.INVISIBLE
-
-        if (listener != null) holder.tvDelete.setOnClickListener(listener)
+                if (deleteListener != null) holder.tvDelete.setOnClickListener(deleteListener)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
         return if (dataList == null) 0 else dataList!!.size
-    }
-
-    //必须重写  不然item会错乱
-    override fun getItemId(position: Int): Long {
-        return getItem(position).name!![0].hashCode().toLong()
     }
 
     inner class SearchHotsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

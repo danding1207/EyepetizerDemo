@@ -61,7 +61,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
-
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         //按下了右下角的搜索,扫描枪测试actionId为0
         //输入法显示的时候，actionId=3，就是右下角的按钮的id
@@ -81,7 +80,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
                 data.name = v.text.trim().toString()
                 SearchHotsDatabase.getDefault(mApplication).searchHotsDao
                         .insert(data)
-                initSearchHotsData(liveObservableSearchHotsData)
+                initSearchHotsData(true)
             }
 
             return true
@@ -101,6 +100,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
                 Logger.i("=======TouchListener=========   delete")
 
                 SearchHotsDatabase.getDefault(mApplication).searchHotsDao.delete(SearchHotsDatabase.getDefault(mApplication).searchHotsDao.searchHotsHistoryAll)
+                initSearchHotsData(true)
             }
 
         }
@@ -108,22 +108,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
 
     private var mApplication: Application
 
-    private var headersListener: StickyRecyclerHeadersTouchListener? = null
     var itemsListener: RecyclerItemClickListener
-
-    fun getStickyRecyclerHeadersTouchListener(recyclerView: RecyclerView,
-                                              decor: StickyRecyclerHeadersDecoration): StickyRecyclerHeadersTouchListener {
-        if (headersListener == null) {
-            headersListener = StickyRecyclerHeadersTouchListener(recyclerView, decor)
-            headersListener!!.setOnHeaderClickListener { header, position, headerId ->
-                Logger.i("=======TouchListener=========   Header position: $position, id: $headerId")
-
-                SearchHotsDatabase.getDefault(mApplication).searchHotsDao.delete(SearchHotsDatabase.getDefault(mApplication).searchHotsDao.searchHotsHistoryAll)
-
-            }
-        }
-        return headersListener!!
-    }
 
     /**
      * LiveData支持了lifecycle生命周期检测
@@ -155,7 +140,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
                                 return@Function ABSENT //网络未连接返回空
                             }
                             val applyData = MutableLiveData<List<SearchHotsData>>()
-                            initSearchHotsData(applyData)
+                            initSearchHotsData(false, applyData)
                             applyData
                         }) as MutableLiveData<List<SearchHotsData>>
 
@@ -167,7 +152,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
                                 return@Function ABSSENT //网络未连接返回空
                             }
                             val applyData = MutableLiveData<CommonData>()
-//                            initSearchHotsData(applyData)
                             applyData
                         }) as MutableLiveData<CommonData>
 
@@ -180,19 +164,20 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
                 Logger.i("=======TouchListener=========   position: $position")
                 val data = liveObservableSearchHotsData.value!![position]
 
+                if (data.isHeader) return
+
                 liveObservableSearchData.value = data.name
 
                 initSearchResultDataData(data.name!!)
 
-                val list = SearchHotsDatabase.getDefault(mApplication).searchHotsDao.
-                        loadSearchHotsDataByName(data.name!!)
+                val list = SearchHotsDatabase.getDefault(mApplication).searchHotsDao.loadSearchHotsDataByName(data.name!!)
                 //加入搜索历史记录
                 if (list.isEmpty() && data.type == "nethots") {
                     data.isCanDelete = true
                     data.type = "cacheList"
                     data.typeTitle = "搜索历史"
                     SearchHotsDatabase.getDefault(mApplication).searchHotsDao.insert(data)
-                    initSearchHotsData(liveObservableSearchHotsData)
+                    initSearchHotsData(true)
                 }
             }
         })
@@ -202,18 +187,37 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
      * 刷新数据
      * @param
      */
-    fun initSearchHotsData() {
-        initSearchHotsData(liveObservableSearchHotsData)
+    fun initSearchHotsData(onlyRoom: Boolean) {
+        initSearchHotsData(onlyRoom, liveObservableSearchHotsData)
     }
 
     /**
      * 刷新数据
      * @param
      */
-    private fun initSearchHotsData(liveObservableData: MutableLiveData<List<SearchHotsData>>) {
+    private fun initSearchHotsData(onlyRoom: Boolean, liveObservableData: MutableLiveData<List<SearchHotsData>>) {
         Logger.d("=======SearchViewModel--initData=========")
 
         val historylist = SearchHotsDatabase.getDefault(mApplication).searchHotsDao.searchHotsHistoryAll
+
+        if (onlyRoom) {
+
+            var notHeader: List<SearchHotsData>? = null
+
+            if (liveObservableData.value != null) {
+                notHeader = liveObservableData.value!!.filter {
+                    it.type == "nethots" && it.isHeader==false
+                }
+            }
+
+            if (historylist != null) {
+                if (notHeader != null)
+                    historylist.addAll(notHeader)
+                liveObservableData.value = historylist
+            } else
+                liveObservableData.value = notHeader
+            return
+        }
 
         EyepetizerDataRepository.getSearchHotsDataRepository(
                 Utils.getUDID(),
@@ -235,24 +239,12 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
                         Logger.d("=======SearchViewModel--onNext=========")
                         if (historylist != null)
                             (value as ArrayList).addAll(0, historylist)
-
-
-                        (value as ArrayList).add(0, SearchHotsData("", "", "", false))
-
-                        value.forEach {
-                            Logger.d("=======historylist=========    ${it.id}    ${it.type}    ${it.typeTitle}    ${it.name}    ${it.isCanDelete}")
-                        }
-
-
-
                         liveObservableData.value = value
                     }
 
                     override fun onError(e: Throwable) {
                         Logger.d("=======SearchViewModel--onError=========")
                         if (historylist != null) {
-                            (historylist as ArrayList).add(0, SearchHotsData("", "", "", false))
-
                             liveObservableData.value = historylist
                         } else
                             liveObservableData.value = ABSENT.value
@@ -263,6 +255,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
                         Logger.d("=======SearchViewModel--onComplete=========")
                     }
                 })
+
 
     }
 
