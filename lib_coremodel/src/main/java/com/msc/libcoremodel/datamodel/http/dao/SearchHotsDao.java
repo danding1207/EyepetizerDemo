@@ -39,7 +39,7 @@ public interface  SearchHotsDao {
     /**
      * 项数据库添加数据
      *
-     * @param phone
+     * @param dataList
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<SearchHotsData> dataList);
@@ -47,7 +47,7 @@ public interface  SearchHotsDao {
     /**
      * 项数据库添加数据
      *
-     * @param phone
+     * @param data
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SearchHotsData data);
@@ -56,7 +56,7 @@ public interface  SearchHotsDao {
     /**
      * 修改数据
      *
-     * @param phone
+     * @param data
      */
     @Update()
     void update(SearchHotsData data);

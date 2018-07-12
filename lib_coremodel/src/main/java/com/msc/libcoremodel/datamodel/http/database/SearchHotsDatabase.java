@@ -8,7 +8,6 @@ import com.msc.libcoremodel.datamodel.http.dao.SearchHotsDao;
 import com.msc.libcoremodel.datamodel.http.entities.SearchHotsData;
 
 @Database(entities = {SearchHotsData.class}, version = 1, exportSchema = false)
-//@TypeConverters({ConversionFactory.class})
 public abstract class SearchHotsDatabase extends RoomDatabase {
 
     public static SearchHotsDatabase getDefault(Context context) {

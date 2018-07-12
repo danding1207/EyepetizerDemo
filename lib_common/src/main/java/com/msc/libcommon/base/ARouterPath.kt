@@ -44,4 +44,9 @@ object ARouterPath {
     /**WelcomeActivity */
     const val LAUNCH_ACT = "/launch/activity"
 
+
+
+    /**DownLoadListActivity */
+    const val DOWNLOADLIST_ACT = "/downLoad/activity"
+
 }

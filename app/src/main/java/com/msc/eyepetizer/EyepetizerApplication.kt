@@ -12,6 +12,10 @@ import com.tencent.tinker.loader.app.ApplicationLike
 import com.tinkerpatch.sdk.TinkerPatch
 import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike
 import com.meituan.android.walle.WalleChannelReader
+import com.downloader.PRDownloader
+import com.downloader.PRDownloaderConfig
+
+
 
 
 class EyepetizerApplication : BaseApplication() {
@@ -41,6 +45,15 @@ class EyepetizerApplication : BaseApplication() {
 
         val channel = WalleChannelReader.getChannel(this.applicationContext)
         Logger.i("Current channel is ： $channel")
+
+        // Enabling database for resume support even after the application is killed:
+        // Setting timeout globally for the download network requests:
+        val config = PRDownloaderConfig.newBuilder()
+                .setDatabaseEnabled(true)
+                .setReadTimeout(30000)
+                .setConnectTimeout(30000)
+                .build()
+        PRDownloader.initialize(applicationContext, config)
 
     }
 

@@ -36,7 +36,7 @@ object Versions {
     const val walle = "1.1.6"
     const val stickyheadersrecyclerview = "0.4.3"
     const val okdownload = "1.0.3"
-
+    const val prdownloader = "0.4.0"
 }
 
 object Libs {
@@ -147,6 +147,9 @@ object Libs {
 
     /** okdownload 文件下载 */
     val okdownload_runtime  = "com.liulishuo.okdownload:okdownload:${Versions.okdownload}"
+
+    /** prdownloader 文件下载 */
+    val prdownloader_runtime  = "com.mindorks.android:prdownloader:${Versions.prdownloader}"
 
     /** tinker 热修复 */
     val tinker_runtime  =  "com.tinkerpatch.sdk:tinkerpatch-android-sdk:${Versions.tinkerpatch}"

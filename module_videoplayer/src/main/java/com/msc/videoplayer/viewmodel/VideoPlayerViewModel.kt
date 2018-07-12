@@ -6,26 +6,23 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
-import android.support.annotation.NonNull
-import android.support.annotation.Nullable
 import android.support.design.widget.Snackbar
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
+import com.downloader.PRDownloader
 import com.google.gson.Gson
 import com.liulishuo.okdownload.DownloadTask
-import com.liulishuo.okdownload.SpeedCalculator
-import com.liulishuo.okdownload.core.Util
-import com.liulishuo.okdownload.core.breakpoint.BlockInfo
-import com.liulishuo.okdownload.core.breakpoint.BreakpointInfo
+import com.liulishuo.okdownload.StatusUtil
 import com.liulishuo.okdownload.core.cause.EndCause
-import com.liulishuo.okdownload.core.listener.DownloadListener4WithSpeed
-import com.liulishuo.okdownload.core.listener.assist.Listener4SpeedAssistExtend
+import com.liulishuo.okdownload.core.listener.DownloadListener2
 import com.msc.libcommon.R
 import com.msc.libcommon.base.ARouterPath
 import com.msc.libcommon.base.CommenDataCell
 import com.msc.libcommon.util.FileUtil
 import com.msc.libcommon.util.Utils
+import com.msc.libcoremodel.datamodel.http.database.VideoDownloadDatabase
 import com.msc.libcoremodel.datamodel.http.entities.CommonData
+import com.msc.libcoremodel.datamodel.http.entities.VideoDownloadData
 import com.msc.libcoremodel.datamodel.http.repository.EyepetizerDataRepository
 import com.msc.libcoremodel.datamodel.http.utils.NetUtils
 import com.msc.videoplayer.BuildConfig
@@ -37,6 +34,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.lang.Exception
 
 class VideoPlayerViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -77,102 +75,64 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
                         }) as MutableLiveData<CommonData>
     }
 
-    fun initTask() {
-
+    fun initTask(targetView: View) {
         if (item == null) return
 
-        val filename = item!!.data!!.title
+        val list = VideoDownloadDatabase.getDefault(mApplication)
+                .videoDownloadDao.loadVideoDownloadHistoryByFileId(item!!.data!!.id)
 
-        val url = item!!.data!!.playUrl!!
+        if (list == null || list.isEmpty()) {
 
-        task = DownloadTask
-                .Builder(url, FileUtil.getVideoFile(mApplication))
-                .setFilename(filename)
-                // the minimal interval millisecond for callback progress
-                .setMinIntervalMillisCallbackProcess(16)
-                // ignore the same task has already completed in the past.
-                .setPassIfAlreadyCompleted(true)
-                .build()
+            val filename = "${item!!.data!!.id}.mp4"
 
-        task!!.tag = "mark-task-started"
+            val url = item!!.data!!.playUrl!!
 
-        task!!.enqueue(object : DownloadListener4WithSpeed() {
+            task = DownloadTask
+                    .Builder(url, FileUtil.getVideoFile(mApplication))
+                    .setFilename(filename)
+                    // the minimal interval millisecond for callback progress
+                    .setMinIntervalMillisCallbackProcess(200)
+                    // ignore the same task has already completed in the past.
+                    .setPassIfAlreadyCompleted(true)
+                    .build()
 
-            private var totalLength: Long = 0
-            private var readableTotalLength: String? = null
-
-            override fun taskStart(@NonNull task: DownloadTask) {
-
-                Logger.d("DownloadTask---->taskStart")
-
-            }
-
-            override fun infoReady(@NonNull task: DownloadTask,
-                                   @NonNull info: BreakpointInfo,
-                                   fromBreakpoint: Boolean,
-                                   @NonNull model: Listener4SpeedAssistExtend.Listener4SpeedModel) {
-
-                totalLength = info.totalLength
-                readableTotalLength = Util.humanReadableBytes(info.totalLength, true)
-                Logger.d("DownloadTask---->infoReady:totalLength= ${info.totalLength}")
-                Logger.d("DownloadTask---->infoReady:readableTotalLength= ${Util.humanReadableBytes(info.totalLength, true)}")
-                Logger.d("DownloadTask---->infoReady:Percent= ${info.totalOffset /info.totalLength}")
-
-            }
-
-            override fun connectStart(@NonNull task: DownloadTask, blockIndex: Int,
-                                      @NonNull requestHeaders: Map<String, List<String>>) {
-
-                Logger.d("DownloadTask---->connectStart: Connect Start $blockIndex")
-
-            }
-
-            override fun connectEnd(@NonNull task: DownloadTask, blockIndex: Int,
-                                    responseCode: Int,
-                                    @NonNull responseHeaders: Map<String, List<String>>) {
-
-                Logger.d("DownloadTask---->connectStart: Connect End $blockIndex")
-
-            }
-
-            override fun progressBlock(@NonNull task: DownloadTask, blockIndex: Int,
-                                       currentBlockOffset: Long,
-                                       @NonNull blockSpeed: SpeedCalculator) {
-            }
-
-            override fun progress(@NonNull task: DownloadTask, currentOffset: Long,
-                                  @NonNull taskSpeed: SpeedCalculator) {
-
-                Logger.d("DownloadTask---->progress:readableOffset= ${Util.humanReadableBytes(currentOffset, true)}")
-                Logger.d("DownloadTask---->progress:progressStatus= ${Util.humanReadableBytes(currentOffset, true)} / $readableTotalLength")
-                Logger.d("DownloadTask---->progress:speed=${taskSpeed.speed()}")
-                Logger.d("DownloadTask---->progress:Percent= ${currentOffset/(totalLength as Float)}")
-
-            }
-
-            override fun blockEnd(@NonNull task: DownloadTask, blockIndex: Int,
-                                  info: BlockInfo,
-                                  @NonNull blockSpeed: SpeedCalculator) {
-            }
-
-            override fun taskEnd(task: DownloadTask,
-                                 cause: EndCause,
-                                 realCause: Exception?,
-                                 taskSpeed: SpeedCalculator) {
-
-                Logger.d("DownloadTask---->taskEnd:taskSpeed= ${taskSpeed.averageSpeed()}")
-
-                Logger.d("DownloadTask---->taskEnd:taskSpeed= ${taskSpeed.averageSpeed()}")
-
-
-//                // mark
-                task.tag = null
-
-                if (cause == EndCause.COMPLETED) {
-                    Logger.d("DownloadTask---->taskEnd:COMPLETED")
+            task!!.enqueue(object : DownloadListener2() {
+                override fun taskStart(task: DownloadTask) {
+                    Logger.d("DownloadTask---->taskStart")
                 }
-            }
-        })
+
+                override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: Exception?) {
+                    Logger.d("DownloadTask---->taskEnd")
+                }
+            })
+
+            val status = StatusUtil.getStatus(task!!)
+            val info = StatusUtil.getCurrentInfo(task!!)
+
+            val data = VideoDownloadData()
+            data.downloadId = task!!.id
+            data.downloadStatus = status
+            data.dataJson = Gson().toJson(item)
+            data.filePath = "${FileUtil.getVideoFile(mApplication).absolutePath}/$filename"
+            data.fileId = item!!.data!!.id
+            data.playUrl = item!!.data!!.playUrl
+            data.cover = item!!.data!!.cover!!.feed
+            data.fileName = item!!.data!!.title
+            data.duration = item!!.data!!.duration
+            data.totalOffset = info?.totalOffset ?: 0
+            data.totalLength = info?.totalLength ?: 0
+
+            VideoDownloadDatabase.getDefault(mApplication)
+                    .videoDownloadDao.insert(data)
+
+            Snackbar.make(targetView, "缓存中...", Snackbar.LENGTH_SHORT).show()
+
+        } else {
+            val status = PRDownloader.getStatus(list[0].downloadId)
+            Logger.d("DownloadTask---->status:${status.name}")
+            Snackbar.make(targetView, "已加入缓存", Snackbar.LENGTH_SHORT).show()
+        }
+
     }
 
     /**
@@ -284,8 +244,7 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
                 "header" -> {
                     when (targetView!!.id) {
                         R.id.iv_download -> {
-                            Snackbar.make(targetView, "开始缓存", Snackbar.LENGTH_SHORT).show()
-                            initTask()
+                            initTask(targetView)
                         }
                         R.id.iv_like -> {
                             Snackbar.make(targetView, "添加至收藏", Snackbar.LENGTH_SHORT).show()

@@ -31,6 +31,9 @@ class FragmentMe : BaseFragment() {
 
         tv_version.text = "Version ${BuildConfig.VERSION_NAME}.${BuildConfig.VERSION_CODE}"
 
+
+        iv_download.setOnClickListener(viewModel)
+        tv_download.setOnClickListener(viewModel)
     }
 
 

@@ -121,6 +121,9 @@ dependencies {
     //okdownload
     api(Libs.okdownload_runtime, { exclude group: 'com.android.support' })
 
+    //prdownloader
+    api(Libs.prdownloader_runtime, { exclude group: 'com.android.support' })
+
 
 //    //若使用annotation需要单独引用,对于tinker的其他库都无需再引用
 //    annotationProcessor("com.tinkerpatch.tinker:tinker-android-anno:${TINKER_VERSION}") { changing = true }

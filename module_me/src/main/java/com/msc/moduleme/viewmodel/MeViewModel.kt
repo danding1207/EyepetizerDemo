@@ -6,20 +6,17 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
-import com.msc.libcommon.util.Utils
+import android.view.View
+import com.alibaba.android.arouter.launcher.ARouter
+import com.msc.libcommon.base.ARouterPath
 import com.msc.libcoremodel.datamodel.http.entities.AllRecData
-
-import com.msc.libcoremodel.datamodel.http.repository.EyepetizerDataRepository
 import com.msc.libcoremodel.datamodel.http.utils.NetUtils
+import com.msc.moduleme.R
 import com.orhanobut.logger.Logger
-
-import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 
-class MeViewModel(application: Application) : AndroidViewModel(application) {
+class MeViewModel(application: Application) : AndroidViewModel(application), View.OnClickListener {
+
 
     private var mApplication: Application
 
@@ -61,14 +58,27 @@ class MeViewModel(application: Application) : AndroidViewModel(application) {
      * 刷新数据
      * @param
      */
-    fun initData(liveObservableData: MutableLiveData<AllRecData>) {
+    private fun initData(liveObservableData: MutableLiveData<AllRecData>) {
         Logger.d("=======MeViewModel--initData=========")
+
+
     }
 
     override fun onCleared() {
         super.onCleared()
         mDisposable.clear()
         Logger.d("=======MeViewModel--onCleared=========")
+    }
+
+    override fun onClick(view: View) {
+
+        when (view.id) {
+            R.id.iv_download, R.id.tv_download ->
+                ARouter.getInstance()
+                        .build(ARouterPath.DOWNLOADLIST_ACT)
+                        .navigation()
+        }
+
     }
 
     companion object {
