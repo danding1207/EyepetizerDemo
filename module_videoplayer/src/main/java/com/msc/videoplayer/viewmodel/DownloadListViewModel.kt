@@ -3,25 +3,23 @@ package com.msc.videoplayer.viewmodel
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.support.design.widget.Snackbar
 import android.view.View
 import com.alibaba.android.arouter.launcher.ARouter
-import com.google.gson.Gson
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.StatusUtil
-import com.msc.libcommon.R
 import com.msc.libcommon.base.ARouterPath
-import com.msc.libcommon.base.CommenDataCell
 import com.msc.libcommon.util.FileUtil
+import com.msc.libcommon.viewcardcell.DownloadCardViewCell
 import com.msc.libcoremodel.datamodel.http.database.VideoDownloadDatabase
-import com.msc.libcoremodel.datamodel.http.entities.CommonData
 import com.msc.libcoremodel.datamodel.http.entities.VideoDownloadData
+import com.msc.videoplayer.R
 import com.orhanobut.logger.Logger
 import com.tmall.wireless.tangram.structure.BaseCell
 import com.tmall.wireless.tangram.support.SimpleClickSupport
 import io.reactivex.disposables.CompositeDisposable
+import java.io.File
 
-class DownloadListViewModel(application: Application) : AndroidViewModel(application) {
+class DownloadListViewModel(application: Application) : AndroidViewModel(application), View.OnClickListener {
 
     private var mApplication: Application
 
@@ -30,6 +28,7 @@ class DownloadListViewModel(application: Application) : AndroidViewModel(applica
      * @return
      */
     var liveObservableData: MutableLiveData<List<VideoDownloadData>>
+    var liveObservableEditModeData: MutableLiveData<Boolean>
 
     private val mDisposable = CompositeDisposable()
 
@@ -40,7 +39,9 @@ class DownloadListViewModel(application: Application) : AndroidViewModel(applica
         Logger.d("=======DownloadListViewModel--init=========")
         mApplication = application
         listener = DownloadListViewModelClickSupport()
+        liveObservableEditModeData = MutableLiveData()
         liveObservableData = MutableLiveData()
+        liveObservableEditModeData.value = false
     }
 
     /**
@@ -66,6 +67,9 @@ class DownloadListViewModel(application: Application) : AndroidViewModel(applica
         }
 
         list.forEach {
+
+            Logger.d("DownloadCardView--->list.forEach:$it")
+
             val filename = "${it.fileId}.mp4"
             val url = it.playUrl!!
             val task = DownloadTask
@@ -80,12 +84,17 @@ class DownloadListViewModel(application: Application) : AndroidViewModel(applica
             val status = StatusUtil.getStatus(task!!)
             val info = StatusUtil.getCurrentInfo(task)
 
-            it.downloadStatus = status
-            it.totalOffset = info?.totalOffset ?: 0
-            it.totalLength = info?.totalLength ?: 0
+            if(it.downloadStatus!=StatusUtil.Status.COMPLETED){
+                it.downloadStatus = status
+                it.totalOffset = info?.totalOffset ?: 0
+                it.totalLength = info?.totalLength ?: 0
 
-            VideoDownloadDatabase.getDefault(mApplication)
-                    .videoDownloadDao.update(it)
+                VideoDownloadDatabase.getDefault(mApplication)
+                        .videoDownloadDao.update(it)
+            }
+
+            Logger.d("DownloadCardView--->list.forEach-afterFresh:$it")
+
         }
 
         list.add(VideoDownloadData("end"))
@@ -103,6 +112,34 @@ class DownloadListViewModel(application: Application) : AndroidViewModel(applica
         private val ABSENT = MutableLiveData<List<VideoDownloadData>>()
     }
 
+
+
+    override fun onClick(view: View) {
+        when(view.id) {
+            R.id.tv_edit->{
+                liveObservableEditModeData.value = !(liveObservableEditModeData.value!!)
+            }
+            R.id.tv_delete_all->{
+                VideoDownloadDatabase.getDefault(mApplication)
+                        .videoDownloadDao.videoDownloadHistoryAll?.forEach {
+                    val file = File(it.filePath)
+                    if (file.exists()){
+                        file.delete()
+                    }
+                    VideoDownloadDatabase.getDefault(mApplication)
+                            .videoDownloadDao.delete(it)
+                }
+
+                initData(liveObservableData)
+            }
+            R.id.tv_delete->{
+
+
+
+            }
+        }
+    }
+
     inner class DownloadListViewModelClickSupport : SimpleClickSupport() {
         init {
             setOptimizedMode(true)
@@ -110,13 +147,38 @@ class DownloadListViewModel(application: Application) : AndroidViewModel(applica
 
         override fun defaultClick(targetView: View?, cell: BaseCell<*>?, eventType: Int) {
             super.defaultClick(targetView, cell, eventType)
-            val mData: VideoDownloadData? = (cell as CommenDataCell<*, VideoDownloadData>).mData
+            val mData: VideoDownloadData? = (cell as DownloadCardViewCell).mData
+            val task: DownloadTask? = cell.task
+
             when (cell.stringType) {
                 "download" -> {
-//                        ARouter.getInstance()
-//                                .build(ARouterPath.VIDEO_PLAYER_ACT)
-//                                .withString("data", Gson().toJson(mData))
-//                                .navigation()
+                    when (targetView!!.id) {
+                        R.id.iv_small_cover ->
+                            when (mData!!.downloadStatus) {
+                                StatusUtil.Status.COMPLETED -> {
+                                    if (mData.dataJson != null) {
+                                        ARouter.getInstance()
+                                                .build(ARouterPath.VIDEO_PLAYER_ACT)
+                                                .withString("data", mData.dataJson)
+                                                .navigation()
+                                    }
+                                }
+                                else -> {
+                                }
+                            }
+
+                        R.id.iv_action ->
+
+                            when (StatusUtil.getStatus(task!!)) {
+                                StatusUtil.Status.COMPLETED -> {
+                                }
+                                StatusUtil.Status.RUNNING, StatusUtil.Status.PENDING -> cell.taskCancel()
+                                StatusUtil.Status.IDLE -> cell.taskStart()
+                                else -> cell.taskStart()
+                            }
+
+                    }
+
                 }
             }
         }

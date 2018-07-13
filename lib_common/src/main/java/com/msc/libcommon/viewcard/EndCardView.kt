@@ -34,7 +34,7 @@ class EndCardView : FrameLayout, ITangramViewLifeCycle {
     }
 
     override fun cellInited(cell: BaseCell<*>) {
-        setOnClickListener(cell)
+//        setOnClickListener(cell)
     }
 
     override fun postBindView(cell: BaseCell<*>) {

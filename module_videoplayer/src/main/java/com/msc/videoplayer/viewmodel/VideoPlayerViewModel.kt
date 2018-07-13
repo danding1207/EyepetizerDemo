@@ -112,8 +112,9 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
             val data = VideoDownloadData()
             data.downloadId = task!!.id
             data.downloadStatus = status
-            data.dataJson = Gson().toJson(item)
             data.filePath = "${FileUtil.getVideoFile(mApplication).absolutePath}/$filename"
+            item!!.data!!.playUrl = data.filePath
+            data.dataJson = Gson().toJson(item)
             data.fileId = item!!.data!!.id
             data.playUrl = item!!.data!!.playUrl
             data.cover = item!!.data!!.cover!!.feed
@@ -121,6 +122,8 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
             data.duration = item!!.data!!.duration
             data.totalOffset = info?.totalOffset ?: 0
             data.totalLength = info?.totalLength ?: 0
+
+            Logger.d("DownloadCardView--->start:$data")
 
             VideoDownloadDatabase.getDefault(mApplication)
                     .videoDownloadDao.insert(data)
@@ -228,7 +231,6 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
         init {
             setOptimizedMode(true)
         }
-
         override fun defaultClick(targetView: View?, cell: BaseCell<*>?, eventType: Int) {
             super.defaultClick(targetView, cell, eventType)
             val mData: CommonData.CommonItemList? = (cell as CommenDataCell<*, CommonData.CommonItemList>).mData

@@ -62,6 +62,10 @@ class DownloadListActivity : BaseActivity(){
         engine.enableAutoLoadMore(false)
         engine.addSimpleClickSupport(viewModel.listener)
 
+
+        tv_edit.setOnClickListener(viewModel)
+        tv_delete_all.setOnClickListener(viewModel)
+        tv_delete.setOnClickListener(viewModel)
     }
 
     /**
@@ -76,6 +80,18 @@ class DownloadListActivity : BaseActivity(){
                 val data = Gson().toJson(list)
                 val s = JSONArray(data)
                 engine.setData(s)
+            }
+        })
+        model.liveObservableEditModeData.observe(this, Observer<Boolean> { isEditMode ->
+            Logger.d("subscribeToModel onChanged onChanged")
+            if(isEditMode!!) {
+                tv_edit.text = "取消"
+                tv_delete_all.visibility = View.VISIBLE
+                tv_delete.visibility = View.VISIBLE
+            } else {
+                tv_edit.text = "编辑"
+                tv_delete_all.visibility = View.GONE
+                tv_delete.visibility = View.GONE
             }
         })
     }

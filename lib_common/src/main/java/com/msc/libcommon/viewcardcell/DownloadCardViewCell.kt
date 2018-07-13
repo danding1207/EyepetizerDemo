@@ -1,7 +1,6 @@
 package com.msc.libcommon.viewcardcell
 
 import android.support.constraint.ConstraintLayout
-import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.liulishuo.okdownload.DownloadTask
@@ -19,33 +18,38 @@ import com.msc.libcommon.util.DensityUtil
 import com.msc.libcommon.util.FileUtil
 import com.msc.libcommon.util.StringUtils
 import com.msc.libcommon.viewcard.DownloadCardView
+import com.msc.libcoremodel.datamodel.http.database.VideoDownloadDatabase
 import com.msc.libcoremodel.datamodel.http.entities.VideoDownloadData
+import com.orhanobut.logger.Logger
 
 class DownloadCardViewCell : CommenDataCell<DownloadCardView, VideoDownloadData>() {
 
-    private var task: DownloadTask? = null
+    var task: DownloadTask? = null
+    var view: DownloadCardView? = null
 
     override fun bindView(view: DownloadCardView) {
         super.bindView(view)
+        this.view = view
+        Logger.d("DownloadCardView--->bindView:${mData.toString()}")
 
         view.tvTitle!!.text = mData!!.fileName
-         when (mData!!.downloadStatus) {
+        when (mData!!.downloadStatus) {
             StatusUtil.Status.COMPLETED -> {
-                view.tvStatus!!.text ="已完成"
+                view.tvStatus!!.text = "已完成"
                 view.ivAction!!.visibility = View.INVISIBLE
             }
             StatusUtil.Status.RUNNING, StatusUtil.Status.PENDING -> {
-                view.tvStatus!!.text ="缓存中 / ${mData!!.totalOffset * 100 / mData!!.totalLength}"
+                view.tvStatus!!.text = "缓存中 / ${if (mData!!.totalLength == 0L) 0 else mData!!.totalOffset * 100 / mData!!.totalLength}%"
                 view.ivAction!!.visibility = View.VISIBLE
                 view.ivAction!!.setImageResource(R.drawable.action_pause)
             }
             StatusUtil.Status.IDLE -> {
-                view.tvStatus!!.text ="缓存暂停 / ${mData!!.totalOffset * 100 / mData!!.totalLength}"
+                view.tvStatus!!.text = "缓存暂停 / ${if (mData!!.totalLength == 0L) 0 else mData!!.totalOffset * 100 / mData!!.totalLength}%"
                 view.ivAction!!.visibility = View.VISIBLE
                 view.ivAction!!.setImageResource(R.drawable.action_start)
             }
             else -> {
-                view.tvStatus!!.text ="缓存暂停 / ${mData!!.totalOffset * 100 / mData!!.totalLength}"
+                view.tvStatus!!.text = "缓存暂停 / ${if (mData!!.totalLength == 0L) 0 else mData!!.totalOffset * 100 / mData!!.totalLength}%"
                 view.ivAction!!.visibility = View.VISIBLE
                 view.ivAction!!.setImageResource(R.drawable.action_reload)
             }
@@ -92,7 +96,7 @@ class DownloadCardViewCell : CommenDataCell<DownloadCardView, VideoDownloadData>
                                        model: Listener4SpeedAssistExtend.Listener4SpeedModel) {
                     totalLength = info.totalLength
                     readableTotalLength = Util.humanReadableBytes(totalLength, true)
-                    view.tvStatus!!.text = "缓存中 / ${info.totalOffset * 100 / totalLength}"
+                    view.tvStatus!!.text = "缓存中 / ${if (totalLength == 0L) 0 else info.totalOffset * 100 / totalLength}%"
                 }
 
                 override fun connectStart(task: DownloadTask, blockIndex: Int,
@@ -114,7 +118,7 @@ class DownloadCardViewCell : CommenDataCell<DownloadCardView, VideoDownloadData>
 //                    val progressStatus = "$readableOffset/$readableTotalLength"
 //                    val speed = taskSpeed.speed()
 //                    val progressStatusWithSpeed = "$progressStatus($speed)"
-                    view.tvStatus!!.text = "缓存中 / ${currentOffset * 100 / totalLength}"
+                    view.tvStatus!!.text = "缓存中 / ${currentOffset * 100 / totalLength}%"
                 }
 
                 override fun blockEnd(task: DownloadTask, blockIndex: Int, info: BlockInfo,
@@ -125,16 +129,106 @@ class DownloadCardViewCell : CommenDataCell<DownloadCardView, VideoDownloadData>
                                      realCause: Exception?,
                                      taskSpeed: SpeedCalculator) {
 //                    val statusWithSpeed = cause.toString() + " " + taskSpeed.averageSpeed()
-
                     // mark
                     task.tag = null
                     if (cause == EndCause.COMPLETED) {
+                        view.ivAction!!.visibility = View.INVISIBLE
                         view.tvStatus!!.text = "已完成"
                     }
                 }
             })
 
         }
+
+    }
+
+    fun taskCancel() {
+
+        task!!.cancel()
+        val info = StatusUtil.getCurrentInfo(task!!)
+
+        val totalOffset = info?.totalOffset ?: 0
+        val totalLength = info?.totalLength ?: 0
+
+        view!!.tvStatus!!.text = "缓存暂停 / ${if (totalLength == 0L) 0 else
+            totalOffset * 100 / totalLength}%"
+        view!!.ivAction!!.visibility = View.VISIBLE
+        view!!.ivAction!!.setImageResource(R.drawable.action_start)
+
+    }
+
+    fun taskStart() {
+
+        val info = StatusUtil.getCurrentInfo(task!!)
+
+        val totalOffset = info?.totalOffset ?: 0
+        val totalLengthInfo = info?.totalLength ?: 0
+
+        view!!.tvStatus!!.text = "缓存中 / ${if (totalLengthInfo == 0L) 0 else
+            totalOffset * 100 / totalLengthInfo}%"
+
+        view!!.ivAction!!.visibility = View.VISIBLE
+        view!!.ivAction!!.setImageResource(R.drawable.action_pause)
+
+        task!!.enqueue(object : DownloadListener4WithSpeed() {
+            private var totalLength: Long = 0
+            private var readableTotalLength: String? = null
+
+            override fun taskStart(task: DownloadTask) {
+            }
+
+            override fun infoReady(task: DownloadTask, info: BreakpointInfo,
+                                   fromBreakpoint: Boolean,
+                                   model: Listener4SpeedAssistExtend.Listener4SpeedModel) {
+                totalLength = info.totalLength
+                readableTotalLength = Util.humanReadableBytes(totalLength, true)
+                view!!.tvStatus!!.text = "缓存中 / ${if (totalLength == 0L) 0 else info.totalOffset * 100 / totalLength}%"
+            }
+
+            override fun connectStart(task: DownloadTask, blockIndex: Int,
+                                      requestHeaders: Map<String, List<String>>) {
+            }
+
+            override fun connectEnd(task: DownloadTask, blockIndex: Int, responseCode: Int,
+                                    responseHeaders: Map<String, List<String>>) {
+            }
+
+            override fun progressBlock(task: DownloadTask, blockIndex: Int,
+                                       currentBlockOffset: Long,
+                                       blockSpeed: SpeedCalculator) {
+            }
+
+            override fun progress(task: DownloadTask, currentOffset: Long,
+                                  taskSpeed: SpeedCalculator) {
+//                    val readableOffset = Util.humanReadableBytes(currentOffset, true)
+//                    val progressStatus = "$readableOffset/$readableTotalLength"
+//                    val speed = taskSpeed.speed()
+//                    val progressStatusWithSpeed = "$progressStatus($speed)"
+                view!!.tvStatus!!.text = "缓存中 / ${currentOffset * 100 / totalLength}%"
+            }
+
+            override fun blockEnd(task: DownloadTask, blockIndex: Int, info: BlockInfo,
+                                  blockSpeed: SpeedCalculator) {
+            }
+
+            override fun taskEnd(task: DownloadTask, cause: EndCause,
+                                 realCause: Exception?,
+                                 taskSpeed: SpeedCalculator) {
+//                    val statusWithSpeed = cause.toString() + " " + taskSpeed.averageSpeed()
+                // mark
+                task.tag = null
+                if (cause == EndCause.COMPLETED) {
+                    view!!.ivAction!!.visibility = View.INVISIBLE
+                    view!!.tvStatus!!.text = "已完成"
+
+                    mData!!.downloadStatus = StatusUtil.Status.COMPLETED
+
+                    VideoDownloadDatabase.getDefault(view!!.context)
+                            .videoDownloadDao.update(mData)
+
+                }
+            }
+        })
 
     }
 

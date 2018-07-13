@@ -66,4 +66,9 @@ class VideoDownloadData {
         this.totalOffset = totalOffset
         this.totalLength = totalLength
     }
+
+    override fun toString(): String {
+        return "VideoDownloadData(id=$id, downloadStatus=$downloadStatus, playUrl=$playUrl, cover=$cover, filePath=$filePath, fileId=$fileId, downloadId=$downloadId, fileName=$fileName, duration=$duration, totalOffset=$totalOffset, totalLength=$totalLength, dataJson=$dataJson, type='$type')"
+    }
+
 }

@@ -403,7 +403,7 @@ class CommonData {
                         "\"count\":$count, " +
 //                        "\"itemList\":$itemList, " +
                         "\"itemList\":${
-                            itemList!!.forEach { it->it.toString() }
+                            if(itemList==null) null else itemList!!.forEach { it->it.toString() }
                         }, " +
                         "\"header\":${header.toString()}, " +
                         "\"content\":${content.toString()}, " +
@@ -427,7 +427,7 @@ class CommonData {
                         "\"library\":\"$library\", " +
 //                        "\"tags\":$tags, " +
                         "\"tags\":${
-                            tags!!.forEach { it->it.toString() }
+                            if(tags==null) null else tags!!.forEach { it->it.toString() }
                         }, " +
                         "\"consumption\":${consumption.toString()}, " +
                         "\"resourceType\":\"$resourceType\", " +
@@ -443,7 +443,7 @@ class CommonData {
                         "\"releaseTime\":$releaseTime, " +
 //                        "\"playInfo\":$playInfo, " +
                         "\"playInfo\":${
-                            playInfo!!.forEach { it->it.toString() }
+                            if(playInfo==null) null else playInfo!!.forEach { it->it.toString() }
                         }, " +
                         "\"descriptionEditor\":\"$descriptionEditor\", " +
                         "\"date\":$date, " +
@@ -455,11 +455,11 @@ class CommonData {
                         "\"played\":$played, " +
 //                        "\"labelList\":$labelList, " +
                         "\"labelList\":${
-                            labelList!!.forEach { it->it.toString() }
+                            if(labelList==null) null else labelList!!.forEach { it->it.toString() }
                         }, " +
 //                        "\"subTitles\":$subTitles" +
                         "\"subTitles\":${
-                            subTitles!!.forEach { it->it.toString() }
+                            if(subTitles==null) null else subTitles!!.forEach { it->it.toString() }
                         }" +
                         "}"
             }

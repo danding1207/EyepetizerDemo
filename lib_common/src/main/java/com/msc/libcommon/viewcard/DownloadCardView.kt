@@ -52,4 +52,5 @@ class DownloadCardView : FrameLayout, ITangramViewLifeCycle {
 
     override fun postUnBindView(cell: BaseCell<*>) {
     }
+
 }

@@ -252,10 +252,10 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
         startPosition = C.TIME_UNSET
     }
 
-    fun initializePlayer() {
+    private fun initializePlayer() {
         if (player == null) {
 
-            Logger.d("mediaDataSourceFactory    initializePlayer")
+            Logger.d("mediaDataSourceFactory--->initializePlayer:$item")
             val uri: Uri = if(item.data!!.playUrl!=null) {
                 Uri.parse(item.data!!.playUrl)
             } else if (item.data!!.content!=null
@@ -267,7 +267,7 @@ class VideoPlayerActivity : BaseActivity(), View.OnClickListener, PlaybackPrepar
                 return
             }
 
-            Logger.d("mediaDataSourceFactory    uri")
+            Logger.d("mediaDataSourceFactory--->uri:${uri.path}")
 
             if (Util.maybeRequestReadExternalStoragePermission(this, uri)) {
                 // The player will be reinitialized if the permission is granted.
